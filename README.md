@@ -6,6 +6,7 @@
 - neDb async (<https://github.com/Akumzy/nedb-async>)
 - axios (<https://github.com/axios/axios>)
 - react hook form (<https://react-hook-form.com>)
+- styled-components (<https://styled-components.com>)
 
 -----------------------------------------
 
