@@ -1,7 +1,7 @@
 import { GET_ALL_EES_DATA } from '../../../lib/db/actions/read'
 import { ADD_EES_DATA } from '../../../lib/db/actions/add'
 
-export default async function getEss(req, res) {
+export default async function handleEssRequest(req, res) {
   const { method } = req
   switch (method) {
     case 'GET':

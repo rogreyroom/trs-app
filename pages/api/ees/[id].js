@@ -1,7 +1,7 @@
 import { GET_EES_DATA_BY_ID } from '../../../lib/db/actions/read'
 
 
-export default async function getEesById(req, res) {
+export default async function handleEesByIdRequest(req, res) {
   const {
     query: { id },
   } = req
