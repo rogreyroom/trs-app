@@ -1,17 +1,14 @@
 {
-  "name": "create-next-electron-app",
+  "name": "trs-app",
   "version": "0.1.0",
-  "description": "A simple starter project to get up and developing quickly with the blend of Next and Electron JS for building a Native Desktop App on various OS Platforms like Windows, Linux and macOS using Electron Builder.",
+  "description": "TRS is an app that lets an employer/manager to record working hours, overtime and evaluation of employees.",
   "main": "main.js",
-  "author": "Souleh Shaikh <author.souleh@thegeekytutor.com>",
+  "author": "Robert Adamczewski <robert@adamczewski.me>",
   "license": "MIT",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/soulehshaikh99/create-next-electron-app"
-  },
-  "bugs": {
-    "url": "https://github.com/soulehshaikh99/create-next-electron-app/issues"
+    "url": "https://github.com/rogreyroom/trs-app"
   },
   "build": {
     "icon": "public/favicon.png",
@@ -37,7 +34,11 @@
     "electron-pack": "electron-builder"
   },
   "dependencies": {
-    "electron-serve": "^1.0.0"
+    "@hapi/joi": "^17.1.1",
+    "axios": "^0.21.0",
+    "electron-serve": "^1.0.0",
+    "nedb-async": "^0.1.3",
+    "react-hook-form": "^6.11.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

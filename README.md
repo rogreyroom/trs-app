@@ -1,3 +1,14 @@
+# RTS
+
+## Build with
+
+- create next electron app (<https://github.com/soulehshaikh99/create-next-electron-app>)
+- neDb async (<https://github.com/Akumzy/nedb-async>)
+- axios (<https://github.com/axios/axios>)
+- react hook form (<https://react-hook-form.com>)
+
+-----------------------------------------
+
 <div align="center">
 <img alt="Electron Next Crossover Banner" src="https://raw.githubusercontent.com/soulehshaikh99/assets/master/create-electron-framework-app/readme/svg/Electron_Next.svg" width="580" />
 </div>
@@ -19,7 +30,7 @@ The boilerplate code to get started creating Cross-platform Desktop Apps with El
 
 The aim of this project is to provide Web Developers using `next.js` the power to create cross-platform desktop apps using `electron`.
 
-#### 🧐 What packages does the project use?
+#### 🧐 What packages does the project use
 
 **`electron`** enables you to create desktop applications with pure JavaScript by providing a runtime with rich native (operating system) APIs. You could see it as a variant of the Node.js runtime that is focused on desktop applications instead of web servers.
 
@@ -66,7 +77,7 @@ $ yarn electron-pack # or npm run electron-pack
 
 ### 💫 Create this boilerplate from scratch (Manual Setup)
 
-#### 1) Use create-next-app scaffolding tool to get started with its default template.
+#### 1) Use create-next-app scaffolding tool to get started with its default template
 
 ```bash
 $ yarn create next-app create-next-electron-app
@@ -76,7 +87,7 @@ $ yarn create next-app create-next-electron-app
 #### 2) Switch to project directory
 
 ```bash
-$ cd create-next-electron-app
+cd create-next-electron-app
 ```
 
 #### 3) Move all dependencies to devDependencies using IDE / Text Editor
@@ -101,7 +112,7 @@ $ yarn add --dev electron electron-builder wait-on concurrently
 #### 5) Install Production Dependency
 
 ```bash
-$ yarn add electron-serve # or npm i electron-serve
+yarn add electron-serve # or npm i electron-serve
 ```
 
 #### 6) Your dependencies should look something like this
