@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Title } from './Title'
+import { LogoTitle } from './LogoTitle'
 import { Button } from './Button'
 import { SvgEes } from './Icons/EesIcon'
 import { SvgPdf } from './Icons/PdfIcon'
@@ -24,7 +24,7 @@ const Navigation = styled.nav`
 export const TopBar = () => {
   return (
     <TopBarContainer>
-      <Title  href="/">RTS</Title>
+      <LogoTitle  href="/">RTS</LogoTitle>
       <Navigation>
         <Button href='/ees'>
           <SvgEes />
