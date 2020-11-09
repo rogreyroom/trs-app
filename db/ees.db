@@ -1,4 +1,3 @@
-{"type":"task-oriented","count_type":"auto","symbol":"XXL","percent":125,"percent_range":"0 - 50","description":"Mały biały opis","_id":"0rAPbvHJqVo2qOHu"}
 {"type":"task-oriented","count_type":"auto","symbol":"2W","percent":"25","description":"pracownik przepracuję dwie soboty w miesiącu lub podczas dwóch weekendów osiągnie stan 12 godzin","_id":"94JL3S80mEfRsUl1"}
 {"type":"task-oriented","count_type":"auto","symbol":"4W","percent":"50","description":"pracownik przepracuję cztery soboty w miesiącu lub podczas czterech weekendów osiągnie stan 24 godzin","_id":"94JL3S80mEfRsUl2"}
 {"type":"task-oriented","count_type":"auto","symbol":"2H","percent":"50","description":"pracownik przepracuję w dni robocze 20 nadgodzin w miesiącu","_id":"94JL3S80mEfRsUl3"}
