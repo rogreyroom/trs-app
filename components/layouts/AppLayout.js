@@ -14,8 +14,8 @@ const StyledMain = styled.main`
   min-height: 100%;
   margin-top: var(--xs);
   flex: 1;
+  padding: 0 var(--xl) var(--xl) var(--xl);
 `
-
 
 const AppLayout = ({ children }) => {
   return (
