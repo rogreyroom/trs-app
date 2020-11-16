@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { axios } from '../../lib/axios-config'
 import styled from 'styled-components'
@@ -5,58 +6,7 @@ import AppLayout from '../../components/layouts/AppLayout'
 import { Title } from '../../components/Title'
 import { IconButton } from '../../components/IconButton'
 import { SvgEdit } from '../../components/Icons/EditIcon'
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`
-
-const StyledThead = styled.thead`
-  border-bottom: 1px solid var(--c-blue-03);
-`
-
-const StyledTh = styled.th`
-  color: var(--c-white);
-  font-weight: var(--fw-normal);
-  font-size: var(--fs-text);
-  line-height: var(--lh-large);
-  text-align: center;
-  padding: var(--xs) var(--normal);
-
-  &:last-child {
-    text-align: left;
-  }
-`
-
-const StyledTbody = styled.tbody`
-  &::before {
-    content: '';
-    display: block;
-    height: var(--normal);
-    width: 100%;
-  }
-`
-
-const StyledTr = styled.tr`
-  border-bottom: 1px solid var(--c-blue-01);
-`
-
-const StyledTd = styled.td`
-  color: var(--c-white);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-text);
-  text-align: center;
-  padding: var(--xs) var(--normal);
-  margin: var(--xxs) 0;
-
-  &:first-child > * {
-    margin: 0 auto;
-  }
-
-  &:last-child {
-    text-align: left;
-  }
-`
+import { StyledTable, StyledThead, StyledTbody, StyledTr, StyledTh, StyledTd } from '../../components/styled/StyledTableComponents'
 
 export default function Ees({ allEesData }) {
   return (
