@@ -1,4 +1,4 @@
-import { getLayout as getAppLayout } from './app'
+import { getLayout as getAppLayout } from './AppLayout'
 
 const MainLayout = ({ children }) => {
   return (
