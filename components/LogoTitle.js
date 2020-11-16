@@ -19,6 +19,18 @@ const StyledButton = styled.button`
   -webkit-appearance: none;
   -moz-appearance: none;
   align-self: center;
+  border: 4px solid transparent;
+
+  &:hover {
+    box-shadow: 0 0 1px 2px var(--c-accent);
+    filter: var(--s-glow);
+  }
+
+  &:focus {
+    outline: 3px solid transparent;
+    box-shadow: 0 0 1px 2px var(--c-accent);
+    filter: var(--s-glow);
+  }
 `
 
 export const LogoTitle = ({ children, href }) => {
