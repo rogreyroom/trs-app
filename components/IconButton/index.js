@@ -24,6 +24,8 @@ const StyledButton = styled.button.attrs(props => ({
   -moz-appearance: none;
   cursor: pointer;
   transition: all 250ms ease-in-out;
+  justify-content: center;
+  align-items: center;
 
   & > svg {
     width: var(--size);
