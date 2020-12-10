@@ -1,17 +1,14 @@
+import { DashboardProvider } from '@/contexts/DashboardContext'
 import { AppContainer } from '@/components/AppContainer'
 import { Header } from '@/components/Header'
-import { Aside } from '@/components/Aside'
-import { Main } from '@/components/Main'
-
 
 const DashboardLayout = ({ children }) => {
   return (
     <AppContainer dashboard>
       <Header />
-      <Aside />
-      <Main dashboard>
+      <DashboardProvider>
         { children }
-      </Main>
+      </DashboardProvider>
     </AppContainer>
   )
 }
