@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { SvgOnSwitch, SvgOffSwitch, SvgPeople, SvgSwitch } from '@/components/Icons'
-
+import { useContext } from 'react'
+import { DashboardContext } from '@/contexts/DashboardContext'
 
 const StyledNav = styled.nav`
   display: flex;
@@ -39,23 +38,16 @@ const StyledButton = styled.button`
 `
 
 export const Navbar = () => {
-  const [toggle, setToggle] = useState(true)
-  const router = useRouter()
-
-  const handleSwitchEmployees = (e) => {
-    setToggle(toggle => !toggle)
-    console.log('Filter employee list between active and inactive', toggle);
-  }
+  const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter
+  const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
 
   return (
     <StyledNav>
-      <Link href='/dashboard/employee/add'>
-        <StyledButton>
+        <StyledButton type='button' onClick={() => setAddEmployeePage(true)}>
           <SvgPeople />
         </StyledButton>
-      </Link>
-      <StyledButton type='button' onClick={handleSwitchEmployees}>
-        { toggle && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
+      <StyledButton type='button' onClick={() => setEmployeesFilter(employeesFilter => !employeesFilter)}>
+        { employeesFilter && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
       </StyledButton>
     </StyledNav>
   )

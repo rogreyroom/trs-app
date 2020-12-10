@@ -1,7 +1,6 @@
-import useSWR from 'swr'
-import { axios } from '@/lib/axios-config'
 import styled from 'styled-components';
-import { Button } from './Button'
+import { useContext } from 'react'
+import { DashboardContext } from '@/contexts/DashboardContext'
 
 
 const StyledList = styled.ul`
@@ -22,6 +21,38 @@ const StyledListItem = styled.li`
   width: 100%;
 `
 
+const StyledButton = styled.button`
+  --text-color: var(--c-white);
+
+  display: inline-block;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  background: transparent;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: var(--fs-text);
+  line-height: 1;
+  height: max-content;
+  cursor: pointer;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  align-self: center;
+
+  &:hover {
+    --text-color: var(--c-accent);
+    filter: var(--s-glow);
+  }
+
+  &:focus {
+    outline: 3px solid transparent;
+    box-shadow: 0 0 1px 2px var(--c-accent);
+    filter: var(--s-glow);
+  }
+`
+
 const StyledInfo = styled.div`
   display: flex;
   width: 100%;
@@ -36,27 +67,31 @@ const StyledInfo = styled.div`
   }
 
   /* maybe add some spinner + styles when loading */
-
 `
 
-const url = 'api/employees'
-const fetcher = url => axios.get(url).then(res => res.data)
-
 export const EmployeeList = () => {
-  const { data, error } = useSWR(url, fetcher)
+  const [employees, setEmployees] = useContext(DashboardContext).data
+  const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter
+  const [employee, setEmployee] = useContext(DashboardContext).employee
+  const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
 
-  if (error) return <StyledInfo><h1>Something went wrong!</h1></StyledInfo>
-  if (!data) return <StyledInfo><h1>Loading...</h1></StyledInfo>
+  const handleEmployeeClick = (id) => {
+    setAddEmployeePage(null)
+    setEmployee(id)
+  }
 
   return (
       <StyledList>
         {
-          data.map(({ _id, name, surname }) => (
+          employees &&
+          employees.map(({ _id, name, surname, employment_status }) => (
+            employment_status === employeesFilter ? (
             <StyledListItem key={ _id }>
-              <Button href={`${encodeURIComponent(_id)}`}>
+              <StyledButton type='button' onClick={() => handleEmployeeClick(_id)}>
                 {surname} {name}
-              </Button>
+              </StyledButton>
             </StyledListItem>
+            ) : null
           ))
         }
       </StyledList>
