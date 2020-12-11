@@ -1,17 +1,18 @@
+import useSWR from 'swr'
+import { axios } from '@/lib/axios-config'
+import { useContext, useState, useEffect } from 'react'
+import { DashboardContext } from '@/contexts/DashboardContext'
+import { SubPagesProvider } from '@/contexts/SubPagesContext'
 import { Aside } from '@/components/Aside'
 import { Main } from '@/components/Main'
 import { Header, MainNav, DetailsSection, ContentSection } from '@/components/Employee'
-import { SubPagesProvider } from '@/contexts/SubPagesContext'
 
-import { useContext, useState, useEffect } from 'react'
-import { DashboardContext } from '@/contexts/DashboardContext'
+const fetcher = url => axios.get(url).then(res => res.data)
 
-export const Board = ({ data }) => {
-  // const [employees, setEmployees] = useContext(DashboardContext).data
+export const Board = () => {
+  const [employees, setEmployees] = useContext(DashboardContext).data
   const [employee, setEmployee] = useContext(DashboardContext).employee
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
-
-
 
   if ( addEmployeePage ) {
     return (
@@ -19,15 +20,18 @@ export const Board = ({ data }) => {
       <Aside />
       <Main>
         <h1>Add Employee page</h1>
-        <p>some form to add new data</p>
-        <p>Add some extra styles to the main component when adding new employee</p>
+        <p>Display form to add new data</p>
       </Main>
     </>
     )
   } else if (employee) {
-    const data1 = data.filter(emp => emp._id === employee)
+    const initialEmployeeData = employees.filter(emp => emp._id === employee)[0]
+    const { data, error } = useSWR(`api/employees/${employee}`, fetcher, { initialData: initialEmployeeData })
 
-    console.log('BOARD DATA', data, employee, data1);
+  if (error) return <h1>Something went wrong!</h1>
+  if (!data) return <h1>Loading...</h1>
+
+    console.log('BOARD DATA', employees, employee, initialEmployeeData,  data);
 
   const {
     _id,
@@ -41,7 +45,7 @@ export const Board = ({ data }) => {
     calendar,
     employment_start_date,
     employment_termination_date
-  } = data1[0]
+  } = data
 
 
   return (
