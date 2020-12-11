@@ -136,7 +136,6 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Urlop przydzielony</p><span>{ assigned }</span>
         <p>Urlop do wykorzystania</p><span>{ leaveDaysAmount }</span>
         <p>Urlop pozostały</p><span>{ leaveDaysAmountLeft }</span>
-        <p>Urlop wykorzystany w miesiącu</p><span>{ currentMonthHolidaysAmount }</span>
         <p>Chorobowe</p><span>{ currentMonthSicksAmount }</span>
         <p>Inne wolne</p><span>{ currentMonthOtherLeavesAmount }</span>
       </EmployeeDetailsSectionContent>
@@ -145,9 +144,12 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Ilość przepracowanych godzin</p><span>{ currentMonthWorkedHoursAmount }</span>
         <p>Ilość przepracowanych nadgodzin</p><span>{ currentMonthOvertimeHoursAmount }</span>
         <p>Ilość przepracowanych w weekend</p><span>{ currentMonthWeekendsHoursAmount }</span>
+        <p>Urlop w miesiącu</p><span>{ currentMonthHolidaysAmount }</span>
+        <p>Chorobowe w miesiącu</p><span>{ currentMonthSicksAmount }</span>
+        <p>Inne wolne w miesiącu</p><span>{ currentMonthOtherLeavesAmount }</span>
       </EmployeeDetailsSectionContent>
       <StyledButton onClick={() => setShow(show => !show)} area='more'>
-        Więcej
+        { !show && (Więcej) || (Mniej) }
       </StyledButton>
       { show && (
         <EmployeeDetailsSectionContent area='content3'>
