@@ -86,3 +86,57 @@ export const Employee = ({preloadedValues}) => {
     </>
   )
 }
+
+// -> click DODAJ PRACOWNIKA {__*3__}
+// * otwiera się okno z formularzem do dodania nowego pracownika
+//   (
+//     w oknie widoczne są:
+//   - formularz z następującymi polami:
+//       [
+//     - imię
+//     - nazwisko
+//     - stanowisko
+//     - data zatrudnienia
+//     - urlop zaległy
+//     - urlop przysługujący
+//     - miesiąc do wyboru
+//       - stawka godzinowa
+//       - stawka nadgodzinowa (pole nie wymagane do wpisania. To pole to stawka godzinowa * mnożnik stawki nadgodzinowej)
+//       - stawka urlopowa
+//       - stawka chorobowa
+//       - stawka ubezpieczania
+//       - podstawa bonusu/oceny
+//       - mnożnik stawki nadgodzinowej
+//       - mnożnik ilości nadgodzin i weekendowych
+//     - data od kiedy obowiązuje zakres zadań
+//     - pole do wpisania zakresu zadań
+//       ]
+//   - przycisk Anuluj (czyści formularz i przechodzi do panelu głównego aplikacji) __*3*1__
+//   - przycisk Zapisz (zapisuje dane w bazie, czyści formularz i przechodzi do panelu głównego aplikacji) __*3*2__
+//   )
+
+
+// -> click EDYCJA {__*5*1__}
+// * otwiera się okno z formularzem do edycji danych pracownika
+//   (
+//     w oknie widoczne są:
+//   - formularz z następującymi polami:>>>>>>a czy edycja nie powinna zawierać tego samego co dodawanie nowego emploja?:)
+//       [
+//     - imię
+//     - nazwisko
+//     - stanowisko
+//     - urlop zaległy
+//     - urlop przysługujący
+//     - miesiąc do wyboru
+//       - stawka godzinowa
+//       - stawka nadgodzinowa (pole nie wymagane do wpisania. To pole to stawka godzinowa * mnożnik stawki nadgodzinowej)
+//       - stawka urlopowa
+//       - stawka chorobowa
+//       - stawka ubezpieczania
+//       - podstawa bonusu/oceny
+//       - mnożnik stawki nadgodzinowej
+//       - mnożnik ilości nadgodzin
+//       ]
+//   - przycisk Anuluj (czyści formularz i przechodzi do panelu pracownika) __*5*1*1__
+//   - przycisk Zapisz (zapisuje dane w bazie, czyści formularz i przechodzi do panelu pracownika) __*5*1*2__
+//   )

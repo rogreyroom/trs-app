@@ -50,3 +50,18 @@ export const Ees = ({preloadedValues}) => {
     </>
   )
 }
+
+// -> click EDYTUJ REGUŁĘ {__1*1__}
+// * otwiera się panel z formularzem do edycji reguły
+//     (
+//       w oknie widoczne są:
+//   - formularz z następującymi polami:
+//         [
+//     - rodzaj (zadaniowy/uznaniowy)
+//     - symbol
+//     - % z podstawy premii
+//     - opis przydziału
+//         ]
+//   - przycisk Anuluj (czyści formularz i przechodzi do panelu SOP) __*1*1*1__
+//   - przycisk Zapisz (zapisuje dane w bazie, czyści formularz i przechodzi do panelu SOP) __*1*1*2__
+//     )
