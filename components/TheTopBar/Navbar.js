@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Button } from './Button'
-import { IconButton } from '@/components/IconButton'
+import { IconButton } from '@/components/common/IconButton111'
 import { SvgDashboard, SvgEes, SvgPdf, SvgLogout } from '@/Icons'
 
 const StyledNav = styled.nav`

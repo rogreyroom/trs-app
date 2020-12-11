@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { axios } from '@/lib/axios-config'
 import { getLayout } from '@/components/layouts/TopBarOnlyLayout'
 import { Title } from '@/components/Title'
-import { IconButton } from '@/components/IconButton'
+import { IconButton } from '@/components/common/IconButton111'
 import { SvgEdit } from '@/Icons'
-import { StyledTable, StyledThead, StyledTbody, StyledTr, StyledTh, StyledTd } from '@/components/Table'
+import { StyledTable, StyledThead, StyledTbody, StyledTr, StyledTh, StyledTd } from '@/components/common/Table'
 
 const Ees = ({ allEesData }) => {
    console.log('allEesData',allEesData);

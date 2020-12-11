@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { axios } from '@/lib/axios-config'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { getLayout } from '@/components/layouts/DashboardLayout'
-import { Board } from '@/components/Board'
+import { Board } from '@/components/TheDashboard'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 

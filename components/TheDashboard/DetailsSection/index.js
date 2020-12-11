@@ -149,7 +149,7 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Inne wolne w miesiącu</p><span>{ currentMonthOtherLeavesAmount }</span>
       </EmployeeDetailsSectionContent>
       <StyledButton onClick={() => setShow(show => !show)} area='more'>
-        { !show && (Więcej) || (Mniej) }
+        { !show && ( 'Więcej' ) || ( 'Mniej' ) }
       </StyledButton>
       { show && (
         <EmployeeDetailsSectionContent area='content3'>

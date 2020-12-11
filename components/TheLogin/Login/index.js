@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
-import { StyledForm, StyledFormControlsWrapper, StyledButton } from '../Common/StyledComponents'
-import { Input } from '../Common/Input'
+import { StyledForm, StyledFormControlsWrapper, StyledButton } from '../../TheDashboard/Forms/Common/StyledComponents'
+import { Input } from '../../TheDashboard/Forms/Common/Input'
 
 
 export const Login = () => {

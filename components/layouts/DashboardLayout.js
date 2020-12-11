@@ -1,6 +1,6 @@
 import { DashboardProvider } from '@/contexts/DashboardContext'
 import { AppContainer } from '@/components/AppContainer'
-import { Header } from '@/components/Header'
+import { Header } from '@/components/TheTopBar'
 
 const DashboardLayout = ({ children }) => {
   return (

@@ -13,10 +13,10 @@ box-shadow: var(--s-panel);
 color: var(--c-white);
 `
 
-const HolidayPage = dynamic(() => import('@/components/SubPages/Holiday'), { ssr: false })
-const SickPage = dynamic(() => import('@/components/SubPages/Sick'), { ssr: false })
-const LeavePage = dynamic(() => import('@/components/SubPages/Leave'), { ssr: false })
-const RtsPage = dynamic(() => import('@/components/SubPages/Rts'), { ssr: false })
+const HolidayPage = dynamic(() => import('@/components/TheDashboard/SubPages/Holiday'), { ssr: false })
+const SickPage = dynamic(() => import('@/components/TheDashboard/SubPages/Sick'), { ssr: false })
+const LeavePage = dynamic(() => import('@/components/TheDashboard/SubPages/Leave'), { ssr: false })
+const RtsPage = dynamic(() => import('@/components/TheDashboard/SubPages/Rts'), { ssr: false })
 // const ReportsPage = dynamic(() => import('@/components/SubPages/Reports'), { ssr: false })
 
 export const ContentSection = ({ employee }) => {

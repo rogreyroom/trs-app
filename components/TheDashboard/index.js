@@ -3,9 +3,12 @@ import { axios } from '@/lib/axios-config'
 import { useContext, useState, useEffect } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { SubPagesProvider } from '@/contexts/SubPagesContext'
-import { Aside } from '@/components/Aside'
-import { Main } from '@/components/Main'
-import { Header, MainNav, DetailsSection, ContentSection } from '@/components/Employee'
+import { Aside } from '@/components/TheDashboard/Sidebar'
+import { Main } from '@/components/TheDashboard/Main'
+import { Header } from './Header'
+import { MainNav } from './MainNav'
+import { DetailsSection } from './DetailsSection'
+import { ContentSection } from './ContentSection'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 

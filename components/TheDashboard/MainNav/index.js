@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useContext } from 'react'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
 import { SvgHoliday, SvgSick, SvgLeave, SvgRts, SvgPdf } from '@/Icons'
-import { IconButton } from '../IconButton'
+import { IconButton } from '../../common/IconButton'
 
 
 const EmployeeMainNav = styled.nav`

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { OptionsNav } from '../OptionsNav'
+import { OptionsNav } from './OptionsNav'
 import { useRouter } from 'next/router'
 
 const EmployeeHeader = styled.header`

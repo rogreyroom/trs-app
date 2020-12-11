@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import Head from 'next/head'
 import { getLayout } from '@/components/layouts/LoginLayout'
-import { Login } from '@/components/Forms'
+import { Login } from '@/components/TheDashboard/Forms'
 import styled from 'styled-components';
 
 const Panel = styled.section`
