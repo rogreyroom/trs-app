@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const StyledButton = styled.button.attrs(props => ({
   size: props.size && `--${props.size}` || '--normal',
-  color: props.isJuvenile && '--c-accent' || '--c-white'
+  color: (props.isJuvenile || props.isActive) && '--c-accent' || '--c-white'
 }))`
   --size: var(${props => props.size});
   --color: var(${props => props.color});
@@ -39,13 +39,13 @@ const StyledButton = styled.button.attrs(props => ({
 `
 
 // export const IconButton = forwardRef(({ children, href, size, localAction, ref, onClickAction }) => {
-export const IconButton = forwardRef(({ children, href, size, isJuvenile, localAction, onClickAction }) => {
+export const IconButton = forwardRef(({ children, href, size, isActive, isJuvenile, localAction, onClickAction }) => {
   // console.log('REF:', ref)
   // console.log('onClickHandler:', onClickHandler)
   return (
     localAction &&
 
-    <StyledButton size={size} isJuvenile={isJuvenile} onClick={onClickAction}>
+    <StyledButton size={size} isActive={isActive} isJuvenile={isJuvenile} onClick={onClickAction}>
       { children }
     </StyledButton>
 

@@ -38,8 +38,7 @@ const StyledTitle = styled.h1`
 export const Header = ({ children, name, position, juvenile, status }) => {
   const router = useRouter()
   const { employee } = router.query
-  console.log('Employee Header', children);
-  console.log('Employee Header Router', employee);
+
   return (
     <EmployeeHeader>
       <StyledTitle>{ name }</StyledTitle>

@@ -15,7 +15,7 @@ const StyledButton = styled.button`
   display: flex;
   background: transparent;
   box-shadow: none;
-  color: var(--c-white);
+  color: ${props => props.active ? `var(--c-accent)` : `var(--c-white)`};
   text-align: center;
   text-decoration: none;
   border: none;
@@ -43,10 +43,10 @@ export const Navbar = () => {
 
   return (
     <StyledNav>
-        <StyledButton type='button' onClick={() => setAddEmployeePage(true)}>
+        <StyledButton type='button' active={addEmployeePage} onClick={() => setAddEmployeePage(true)}>
           <SvgPeople />
         </StyledButton>
-      <StyledButton type='button' onClick={() => setEmployeesFilter(employeesFilter => !employeesFilter)}>
+      <StyledButton type='button' active={employeesFilter} onClick={() => setEmployeesFilter(employeesFilter => !employeesFilter)}>
         { employeesFilter && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
       </StyledButton>
     </StyledNav>
