@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Button } from './Button'
-import { IconButton } from '@/components/common/IconButton111'
+import { IconButton, Button  } from '@/components/common/Buttons'
 import { SvgDashboard, SvgEes, SvgPdf, SvgLogout } from '@/Icons'
 
 const StyledNav = styled.nav`
@@ -17,21 +17,23 @@ const StyledNav = styled.nav`
 `
 
 export const Navbar = () => {
+  const router = useRouter()
+
   return (
     <StyledNav>
-      <Button href='/dashboard/'>
+      <Button isActive={router.route === '/dashboard' ? true : false} onClickAction={() => router.push('/dashboard')} >
         <SvgDashboard />
         Panel kierownika
       </Button>
-      <Button href='/dashboard/ees'>
+      <Button isActive={router.route === '/dashboard/ees' ? true : false} onClickAction={() => router.push('/dashboard/ees')} >
         <SvgEes />
         SOP
       </Button>
-      <Button href='/dashboard/reports'>
+      <Button isActive={router.route === '/dashboard/reports' ? true : false} onClickAction={() => router.push('/dashboard/reports')} >
         <SvgPdf />
         Raporty
       </Button>
-      <IconButton href='/' size='l'>
+      <IconButton size='l' onClickAction={() => router.push('/')}>
         <SvgLogout />
       </IconButton>
     </StyledNav>

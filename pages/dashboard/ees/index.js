@@ -4,12 +4,13 @@ import styled from 'styled-components'
 import { axios } from '@/lib/axios-config'
 import { getLayout } from '@/components/layouts/TopBarOnlyLayout'
 import { Title } from '@/components/common/Title'
-import { IconButton } from '@/components/common/IconButton111'
+import { IconButton } from '@/components/common/Buttons'
 import { SvgEdit } from '@/Icons'
 import { StyledTable, StyledThead, StyledTbody, StyledTr, StyledTh, StyledTd } from '@/components/common/Table'
 
 const Ees = ({ allEesData }) => {
-   console.log('allEesData',allEesData);
+  const router = useRouter()
+
   return (
     <>
       <Head>
@@ -36,7 +37,7 @@ const Ees = ({ allEesData }) => {
           {allEesData.map(({ _id, symbol, percent, description }) => (
             <StyledTr key={_id}>
               <StyledTd>
-                <IconButton size='m' href={`/ees/${encodeURIComponent(_id)}`}>
+                <IconButton size='m' onClickAction={() => router.push(`/ees/${encodeURIComponent(_id)}`)} >
                   <SvgEdit/>
                 </IconButton>
               </StyledTd>
@@ -61,8 +62,6 @@ const Ees = ({ allEesData }) => {
 
 export async function getServerSideProps(context) {
   const res = await axios.get('api/ees').catch(error => `Timeout exceeded ${error}`)
-
-  console.log('RES:', res);
 
   const allEesData = (res && res.data) ? await res.data : []
 

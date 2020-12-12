@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { SvgEdit, SvgOnSwitch, SvgOffSwitch, SvgYoung } from '@/Icons'
-import { IconButton } from '@/components/common/IconButton'
+import { IconButton } from '@/components/common/Buttons'
+import { SubPagesContext } from '@/contexts/SubPagesContext';
 
 const EmployeeOptionsNav = styled.nav`
 grid-area: employee-nav;
@@ -13,31 +14,30 @@ padding-left: var(--normal);
 
 
 
-export const OptionsNav = ({juvenile, status}) => {
-  const [toggle, setToggle] = useState(status)
-  // const [young, setYoung] = useState(young => juvenile)
+export const OptionsNav = ({ employee, juvenile, status}) => {
+  const [page, setPage] = useContext(SubPagesContext)
+  const [isClicked, setIsClicked] = useContext(SubPagesContext)
 
-  const handleActiveSwitch = () => {
-    setToggle(toggle => !toggle)
-    console.log('handleActiveSwitch')
+  const handleSubPageClick = (pageName) => {
+    setPage(pageName)
+    setIsClicked(isClicked => pageName)
   }
 
   const handleYoungSwitch = () => {
-    // setYoung(young => !young)
     console.log('handleYoungSwitch')
   }
 
   return (
     <EmployeeOptionsNav>
-      <IconButton size='xl' href='/edit'>
+      <IconButton size='xl' isActive={isClicked === 'edit' ? true : false} onClickAction={() => handleSubPageClick('edit')} >
         <SvgEdit />
       </IconButton>
 
-      <IconButton size='xl' localAction isActive={toggle} onClickAction={handleActiveSwitch}>
-       { toggle && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
+      <IconButton size='xl' isActive={status} onClickAction={() => handleSubPageClick('status')} >
+       { status && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
       </IconButton>
 
-      <IconButton size='xl' localAction isJuvenile={juvenile} onClick={handleYoungSwitch}>
+      <IconButton size='xl' isActive={juvenile} onClickAction={handleYoungSwitch}>
         <SvgYoung />
       </IconButton>
     </EmployeeOptionsNav>

@@ -1,6 +1,8 @@
-import { useState } from 'react';
-import Link from 'next/link'
+import { useContext, useState } from 'react';
+import { SubPagesContext } from '@/contexts/SubPagesContext';
+// import Link from 'next/link'
 import styled from 'styled-components';
+import { TextButton } from '@/components/common/Buttons';
 
 import { getCurrentMonthData, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth, getUsedHolidayDays, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours } from '@/lib/utils'
 
@@ -16,19 +18,17 @@ const EmployeeDetailsSection = styled.section`
   text-align: right;
   color: var(--c-white);
 
-
-
-  & a {
+  & .first-link {
     grid-area: link;
-    font-size: var(--fs-text);
-    color: var(--c-white);
-    text-decoration: underline;
     margin-right: 64px;
-    /* grid-area: ${props => props.linkArea || null}; */
+    justify-self: end;
+  }
 
-    &:hover {
-      color: var(--c-accent);
-    }
+  & .second-link {
+    grid-area: more;
+    margin-top: 0;
+    margin-right: 64px;
+    justify-self: end;
   }
 `
 const EmployeeDetailsSectionContent = styled.section`
@@ -59,47 +59,10 @@ margin: 0 0 var(--xl) 0;
 }
 `
 
-export const StyledButton = styled.button`
-  grid-area: ${props => props.area};
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  display: flex;
-  /* justify-content: center;
-  align-items: center; */
-  text-decoration: underline;
-  font-family: inherit;
-  font-size: var(--fs-text);
-  font-weight: var(--fw-normal);
-  line-height: 1;
-  background: none;
-  color: var(--c-white);
-  border: none;
-  border-radius: none;
-  margin: 0;
-  margin-right: 64px;
-  padding: var(--xxs);
-  /* min-width: 130px; */
-  width: max-content;
-  height: max-content;
-  justify-self: end;
-  cursor: pointer;
-  transition: color 250ms ease-in-out;
-
-
-
-  &:hover {
-    /* box-shadow: var(--s-button-hover); */
-    color: var(--c-accent);
-  }
-
-  &:focus {
-    outline: 3px solid transparent;
-    box-shadow: 0 0 1px 2px var(--c-accent);
-  }
-`
-
 
 export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employmentDates }) => {
+  const [page, setPage] = useContext(SubPagesContext)
+  const [isClicked, setIsClicked] = useContext(SubPagesContext)
   const [show, setShow] = useState(false)
 
   const overdue = assignedLeaveDays.overdue
@@ -124,12 +87,18 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
   const currentMonthBonusRate = 1
   const currentMonthHourlyRateMultiplier = 1
 
+  const handleSubPageClick = (pageName) => {
+    setPage(pageName)
+    setIsClicked(isClicked => pageName)
+  }
+
   return (
     <EmployeeDetailsSection>
-      {/* Change link to button when the responsibilities page will be decided where and how it should appears */}
-      <Link href='/responsibilities'>
-        Zakres obowiązków
-      </Link>
+      <div className='first-link'>
+        <TextButton isUnderlined isActive={isClicked === 'responsibilities' ? true : false} onClickAction={() => handleSubPageClick('responsibilities')}>
+          Zakres obowiązków
+        </TextButton>
+      </div>
       <EmployeeDetailsSectionContent area='content1'>
         <h4>Stan:</h4>
         <p>Urlop zaległy za rok poprzedni</p><span>{ overdue }</span>
@@ -148,9 +117,11 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Chorobowe w miesiącu</p><span>{ currentMonthSicksAmount }</span>
         <p>Inne wolne w miesiącu</p><span>{ currentMonthOtherLeavesAmount }</span>
       </EmployeeDetailsSectionContent>
-      <StyledButton onClick={() => setShow(show => !show)} area='more'>
-        { !show && ( 'Więcej' ) || ( 'Mniej' ) }
-      </StyledButton>
+      <div   className='second-link'>
+        <TextButton isUnderlined isActive={show} onClickAction={() => setShow(show => !show)}>
+          { !show && ( 'Więcej' ) || ( 'Mniej' ) }
+        </TextButton>
+      </div>
       { show && (
         <EmployeeDetailsSectionContent area='content3'>
           <h4>Szczegóły:</h4>
@@ -163,11 +134,6 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
           <p>Stawka PZU</p><span>{ currentMonthInsuranceRate }</span>
           <p>Podstawa premii</p><span>{ currentMonthBonusRate }</span>
           <p>Mnożnik ilości godzin</p><span>{ currentMonthHourlyRateMultiplier }</span>
-          {/*
-            There is more RateMultiplier fields - should I use them?
-            - overtime_rate_multiplier
-            - overtime_hours_multiplier
-          */}
         </EmployeeDetailsSectionContent>
       )}
     </EmployeeDetailsSection>

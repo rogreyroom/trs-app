@@ -9,6 +9,8 @@ import { Header } from './Header'
 import { MainNav } from './MainNav'
 import { DetailsSection } from './DetailsSection'
 import { ContentSection } from './ContentSection'
+import { SvgPeople, SvgDashboard } from '../Icons'
+import { TextButton, Button, IconButton } from '@/components/common/Buttons'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -24,6 +26,24 @@ export const Board = () => {
       <Main>
         <h1>Add Employee page</h1>
         <p>Display form to add new data</p>
+        <TextButton  isActive={true} onClickAction={() => console.log('Click Text')}>Text button</TextButton>
+        <br/>
+        <TextButton isUnderlined isActive={false}>Underlined text button</TextButton>
+        <br/>
+        <Button onClickAction={() => console.log('Click Text Button')}>Button with text only</Button>
+        <br/>
+        <Button isActive>
+          <SvgDashboard />
+          Button with icon in front of text
+        </Button>
+        <br/>
+        {/* <IconButton size='xxl'  onClickAction={() => console.log('Click Icon Button')}>
+          <SvgPeople />
+        </IconButton>
+        <br/>
+        <IconButton isActive>
+          <SvgPeople />
+        </IconButton> */}
       </Main>
     </>
     )
@@ -55,8 +75,8 @@ export const Board = () => {
     <>
       <Aside />
       <Main dashboard>
-        <Header name={`${name} ${surname}`} position={position} juvenile={juvenile_worker} status={employment_status}  />
         <SubPagesProvider>
+          <Header name={`${name} ${surname}`} position={position} id={_id} juvenile={juvenile_worker} status={employment_status}  />
           <MainNav employee={employee} />
           <DetailsSection employeeCalendar={calendar} assignedLeaveDays={{overdue: overdue_leave_amount, assigned: assigned_leave_amount}} employmentDates={{start: employment_start_date, end: employment_termination_date}}/>
           <ContentSection employee={employee} />

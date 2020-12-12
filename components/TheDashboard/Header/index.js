@@ -35,15 +35,13 @@ const StyledTitle = styled.h1`
   margin: 0;
 `
 
-export const Header = ({ children, name, position, juvenile, status }) => {
-  const router = useRouter()
-  const { employee } = router.query
+export const Header = ({ id, name, position, juvenile, status }) => {
 
   return (
     <EmployeeHeader>
       <StyledTitle>{ name }</StyledTitle>
       <span>{ position }</span>
-      <OptionsNav juvenile={juvenile} status={status} />
+      <OptionsNav employee={id} juvenile={juvenile} status={status} />
     </EmployeeHeader>
   )
 }

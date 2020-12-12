@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useContext, useState } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
+import { TextButton } from '@/components/common/Buttons';
+
 
 
 const StyledList = styled.ul`
@@ -13,44 +15,15 @@ const StyledList = styled.ul`
   height: 100%;
 `
 const StyledListItem = styled.li`
-  display: block;
+  display: flex;
   color: var(--c-white);
   text-align: right;
   margin: 0;
   padding: var(--xxs) var(--normal) var(--xxs) var(--xxs);
   width: 100%;
-`
-
-const StyledButton = styled.button`
-  --text-color: ${props => props.active ? `var(--c-accent)` : `var(--c-white)`};
-
-  display: inline-block;
-  border: none;
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
-  background: transparent;
-  color: var(--text-color);
-  font-family: inherit;
-  font-size: var(--fs-text);
-  line-height: 1;
-  height: max-content;
-  cursor: pointer;
-  text-align: center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  align-self: center;
-
-  &:hover {
-    --text-color: var(--c-accent);
-    filter: var(--s-glow);
-  }
-
-  &:focus {
-    outline: 3px solid transparent;
-    box-shadow: 0 0 1px 2px var(--c-accent);
-    filter: var(--s-glow);
-  }
+  height: var(--xl);
+  align-content: center;
+  justify-content: flex-end;
 `
 
 const StyledInfo = styled.div`
@@ -89,9 +62,9 @@ export const EmployeeList = () => {
           employees.map(({ _id, name, surname, employment_status }) => (
             employment_status === employeesFilter ? (
             <StyledListItem key={ _id }>
-              <StyledButton type='button'  active={isActive === _id ? true : false} onClick={() => handleEmployeeClick(_id)}>
+              <TextButton isActive={isActive === _id ? true : false} onClickAction={() => handleEmployeeClick(_id)}>
                 {surname} {name}
-              </StyledButton>
+              </TextButton>
             </StyledListItem>
             ) : null
           ))

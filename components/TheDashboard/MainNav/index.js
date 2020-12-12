@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
 import { SvgHoliday, SvgSick, SvgLeave, SvgRts, SvgPdf } from '@/Icons'
-import { IconButton } from '../../common/IconButton'
+import { IconButton } from '@/components/common/Buttons'
 
 
 const EmployeeMainNav = styled.nav`
@@ -20,26 +20,32 @@ background-image: var(--g-sub-nav);
 
 export const MainNav = ({ employee }) => {
   const [page, setPage] = useContext(SubPagesContext)
+  const [isClicked, setIsClicked] = useContext(SubPagesContext)
+
+  const handleSubPageClick = (pageName) => {
+    setPage(pageName)
+    setIsClicked(isClicked => pageName)
+  }
 
   return (
     <EmployeeMainNav>
-    <IconButton type='button' size='xl' onClickAction={() => setPage('holiday')} localAction>
+    <IconButton size='xl' isActive={isClicked === 'holiday' ? true : false} onClickAction={() => handleSubPageClick('holiday')} >
       <SvgHoliday />
     </IconButton>
 
-    <IconButton type='button' size='xl' onClickAction={() => setPage('sick')} localAction>
+    <IconButton size='xl' isActive={isClicked === 'sick' ? true : false} onClickAction={() => handleSubPageClick('sick')} >
       <SvgSick />
     </IconButton>
 
-    <IconButton type='button' size='xl' onClickAction={() => setPage('leave')} localAction>
+    <IconButton size='xl' isActive={isClicked === 'leave' ? true : false} onClickAction={() => handleSubPageClick('leave')} >
       <SvgLeave />
     </IconButton>
 
-    <IconButton type='button' size='xl' onClickAction={() => setPage('rts')} localAction>
+    <IconButton size='xl' isActive={isClicked === 'rts' ? true : false} onClickAction={() => handleSubPageClick('rts')} >
       <SvgRts />
     </IconButton>
 
-    <IconButton type='button' size='xl' onClickAction={() => setPage('reports')} localAction>
+    <IconButton size='xl' isActive={isClicked === 'reports' ? true : false} onClickAction={() => handleSubPageClick('reports')} >
       <SvgPdf />
     </IconButton>
   </EmployeeMainNav>
