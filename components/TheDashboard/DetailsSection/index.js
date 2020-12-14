@@ -4,7 +4,7 @@ import { SubPagesContext } from '@/contexts/SubPagesContext';
 import styled from 'styled-components';
 import { TextButton } from '@/components/common/Buttons';
 
-import { getCurrentMonthData, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth, getUsedHolidayDays, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours } from '@/lib/utils'
+import { getCurrentMonthData, getHolidayLeaveDaysForCurrentMonth, getUsedSickDays, getUsedLeaveDays, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth, getUsedHolidayDays, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getCurrentMonthHourlyRate, getCurrentMonthOvertimeRate, getCurrentMonthHolidayRate, getCurrentMonthSickLeaveRate, getCurrentMonthInsuranceRate, getCurrentMonthBonusRate, getCurrentMonthHourlyRateMultiplier } from '@/lib/utils'
 
 const EmployeeDetailsSection = styled.section`
   grid-area: details;
@@ -69,23 +69,22 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
   const assigned = assignedLeaveDays.assigned
   const leaveDaysAmount = overdue + assigned
   const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeCalendar)
-
+  const sickDaysAmount = getUsedSickDays(employeeCalendar)
+  const otherLeaveDaysAmount = getUsedLeaveDays(employeeCalendar)
   const currentMonthData = getCurrentMonthData(employeeCalendar)
-  const currentMonthHolidaysAmount = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
-  const currentMonthSicksAmount = getSickLeaveDaysForCurrentMonth(currentMonthData)
-  const currentMonthOtherLeavesAmount = getOtherLeaveDaysForCurrentMonth(currentMonthData)
-
-  const currentMonthWorkedHoursAmount = getCurrentMonthWorkedHours(currentMonthData)
-  const currentMonthOvertimeHoursAmount = getCurrentMonthOvertimeHours(currentMonthData)
-  const currentMonthWeekendsHoursAmount = getCurrentMonthWeekendsHours(currentMonthData)
-
-  const currentMonthHourlyRate = 1
-  const currentMonthOvertimeRate = 1
-  const currentMonthHolidayRate = 1
-  const currentMonthSickLeaveRate = 1
-  const currentMonthInsuranceRate = 1
-  const currentMonthBonusRate = 1
-  const currentMonthHourlyRateMultiplier = 1
+  const currentMonthHolidaysAmount = currentMonthData.length > 0 ? getHolidayLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
+  const currentMonthSicksAmount = currentMonthData.length > 0 ? getSickLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
+  const currentMonthOtherLeavesAmount = currentMonthData.length > 0 ? getOtherLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
+  const currentMonthWorkedHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWorkedHours(currentMonthData[0]) : 0
+  const currentMonthOvertimeHoursAmount = currentMonthData.length > 0 ? getCurrentMonthOvertimeHours(currentMonthData[0]) : 0
+  const currentMonthWeekendsHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWeekendsHours(currentMonthData[0]) : 0
+  const currentMonthHourlyRate = currentMonthData.length > 0 ? getCurrentMonthHourlyRate(currentMonthData[0]) : 0
+  const currentMonthOvertimeRate = currentMonthData.length > 0 ? getCurrentMonthOvertimeRate(currentMonthData[0]) : 0
+  const currentMonthHolidayRate = currentMonthData.length > 0 ? getCurrentMonthHolidayRate(currentMonthData[0]) : 0
+  const currentMonthSickLeaveRate = currentMonthData.length > 0 ? getCurrentMonthSickLeaveRate(currentMonthData[0]) : 0
+  const currentMonthInsuranceRate = currentMonthData.length > 0 ? getCurrentMonthInsuranceRate(currentMonthData[0]) : 0
+  const currentMonthBonusRate = currentMonthData.length > 0 ? getCurrentMonthBonusRate(currentMonthData[0]) : 0
+  const currentMonthHourlyRateMultiplier = currentMonthData.length > 0 ? getCurrentMonthHourlyRateMultiplier(currentMonthData[0]) : 0
 
   const handleSubPageClick = (pageName) => {
     setPage(pageName)
@@ -105,8 +104,8 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Urlop przydzielony</p><span>{ assigned }</span>
         <p>Urlop do wykorzystania</p><span>{ leaveDaysAmount }</span>
         <p>Urlop pozostały</p><span>{ leaveDaysAmountLeft }</span>
-        <p>Chorobowe</p><span>{ currentMonthSicksAmount }</span>
-        <p>Inne wolne</p><span>{ currentMonthOtherLeavesAmount }</span>
+        <p>Chorobowe</p><span>{ sickDaysAmount }</span>
+        <p>Inne wolne</p><span>{ otherLeaveDaysAmount }</span>
       </EmployeeDetailsSectionContent>
       <EmployeeDetailsSectionContent area='content2'>
         <h4>Aktualny miesiąc:</h4>
