@@ -4,12 +4,13 @@ $fonts: (
     'Roboto',
     sans-serif,
   ),
-  fw-light: 300,
+  fw-light: 100,
   fw-normal: 400,
   fw-black: 900,
   fs-base: 16px,
   fs-h1: 2rem,
   fs-h4: 1.124rem,
+  fs-h5: 1rem,
   fs-h6: 0.875rem,
   fs-text: 1rem,
   lh-base: 1.6,
@@ -20,6 +21,7 @@ $fonts: (
 $colors: (
   c-accent: hsl(350,75,57,1),
   c-white: hsl(213,55,90,1),
+  c-grey: hsl(214, 13, 50, 1),
   c-black: hsl(213,55,13,1),
   c-blue-01: hsl(223,53,18,1),
   c-blue-02: hsl(213,54,21,1),
@@ -70,7 +72,9 @@ $sizes: (
   xxl: 3rem, // 48px
 );
 
-
+.hiddenInput {
+  display: none;
+}
 
 // @import url('https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans:wght@700&display=swap&subset=latin-ext');
 
