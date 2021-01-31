@@ -1,19 +1,21 @@
-import Link from 'next/link'
+// import Link from 'next/link'
 import styled from 'styled-components'
 
 const StyledTitle = styled.h1.attrs(props => ({
-  size: props.isLogo && '--xl' || '--l'
+  size: props.isLogo && '--xl' || '--l',
+  color: props.isWhite && '--c-white' || '--c-accent'
 }))`
   --size: var(${props => props.size});
+  --color: var(${props => props.color});
 
   font-size: var(--size);
-  color: var(--c-accent);
+  color: var(--color);
   margin: 0;
 `
 
-export const Title = ({ children, isLogo }) => {
+export const Title = ({ children, isLogo, isWhite }) => {
   return (
-    <StyledTitle isLogo={isLogo}>
+    <StyledTitle isLogo={isLogo} isWhite={isWhite}>
       {children}
     </StyledTitle>
   )
