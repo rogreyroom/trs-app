@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
-import { SvgHoliday, SvgSick, SvgLeave, SvgRts, SvgPdf } from '@/Icons'
-import { IconButton } from '@/components/common/Buttons'
+import { SvgHoliday, SvgSick, SvgLeave, SvgRts, SvgPdf } from '@/icons'
+import { IconButton } from '@/common/Buttons'
 
 
 const EmployeeMainNav = styled.nav`
@@ -19,33 +19,31 @@ background-image: var(--g-sub-nav);
 `
 
 export const MainNav = ({ employee }) => {
-  const [page, setPage] = useContext(SubPagesContext)
-  const [isClicked, setIsClicked] = useContext(SubPagesContext)
+  const [page, setPage] = useContext(SubPagesContext).page
 
   const handleSubPageClick = (pageName) => {
-    setPage(pageName)
-    setIsClicked(isClicked => pageName)
+    setPage(page => pageName)
   }
 
   return (
     <EmployeeMainNav>
-    <IconButton size='xl' isActive={isClicked === 'holiday' ? true : false} onClickAction={() => handleSubPageClick('holiday')} >
+    <IconButton size='xl' isActive={page === 'holiday' ? true : false} onClickAction={() => handleSubPageClick('holiday')} >
       <SvgHoliday />
     </IconButton>
 
-    <IconButton size='xl' isActive={isClicked === 'sick' ? true : false} onClickAction={() => handleSubPageClick('sick')} >
+    <IconButton size='xl' isActive={page === 'sick' ? true : false} onClickAction={() => handleSubPageClick('sick')} >
       <SvgSick />
     </IconButton>
 
-    <IconButton size='xl' isActive={isClicked === 'leave' ? true : false} onClickAction={() => handleSubPageClick('leave')} >
+    <IconButton size='xl' isActive={page === 'leave' ? true : false} onClickAction={() => handleSubPageClick('leave')} >
       <SvgLeave />
     </IconButton>
 
-    <IconButton size='xl' isActive={isClicked === 'rts' ? true : false} onClickAction={() => handleSubPageClick('rts')} >
+    <IconButton size='xl' isActive={page === 'rts' ? true : false} onClickAction={() => handleSubPageClick('rts')} >
       <SvgRts />
     </IconButton>
 
-    <IconButton size='xl' isActive={isClicked === 'reports' ? true : false} onClickAction={() => handleSubPageClick('reports')} >
+    <IconButton size='xl' isActive={page === 'reports' ? true : false} onClickAction={() => handleSubPageClick('reports')} >
       <SvgPdf />
     </IconButton>
   </EmployeeMainNav>
