@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { OptionsNav } from './OptionsNav'
-import { useRouter } from 'next/router'
 
 const EmployeeHeader = styled.header`
 grid-area: title;
@@ -12,6 +11,7 @@ grid-template-rows: 32px 18px;
   grid-column: 1 / 2;
   grid-row: 1;
   margin: 0;
+  align-self: start;
 }
 
 & span {
@@ -20,11 +20,13 @@ grid-template-rows: 32px 18px;
   margin: 0;
   font-size: var(--s);
   color: var(--c-blue-03);
+  align-self: end;
 }
 
 & nav {
   grid-column: 2 / 3;
-  grid-row: 1 / 2;
+  grid-row: 1 / 3;
+  align-items: center;
   margin: 0;
 }
 `
@@ -35,13 +37,13 @@ const StyledTitle = styled.h1`
   margin: 0;
 `
 
-export const Header = ({ id, name, position, juvenile, status }) => {
+export const Header = ({ employeeId, name, position }) => {
 
   return (
     <EmployeeHeader>
       <StyledTitle>{ name }</StyledTitle>
+      <OptionsNav id={employeeId} />
       <span>{ position }</span>
-      <OptionsNav employee={id} juvenile={juvenile} status={status} />
     </EmployeeHeader>
   )
 }
