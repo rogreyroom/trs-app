@@ -1,17 +1,26 @@
+import styled from 'styled-components';
 import { useContext, useState } from 'react';
 import { SubPagesContext } from '@/contexts/SubPagesContext';
-// import Link from 'next/link'
-import styled from 'styled-components';
-import { TextButton } from '@/components/common/Buttons';
-
-import { getCurrentMonthData, getHolidayLeaveDaysForCurrentMonth, getUsedSickDays, getUsedLeaveDays, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth, getUsedHolidayDays, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getCurrentMonthHourlyRate, getCurrentMonthOvertimeRate, getCurrentMonthHolidayRate, getCurrentMonthSickLeaveRate, getCurrentMonthInsuranceRate, getCurrentMonthBonusRate, getCurrentMonthHourlyRateMultiplier } from '@/lib/utils'
+import { TextButton } from '@/common/Buttons';
+import {
+  getCurrentMonthData,
+  getHolidayLeaveDaysForCurrentMonth,
+  getUsedSickDays,
+  getUsedLeaveDays,
+  getSickLeaveDaysForCurrentMonth,
+  getOtherLeaveDaysForCurrentMonth,
+  getUsedHolidayDays,
+  getCurrentMonthWorkedHours,
+  getCurrentMonthOvertimeHours,
+  getCurrentMonthWeekendsHours,
+} from '@/lib/utils'
 
 const EmployeeDetailsSection = styled.section`
   grid-area: details;
   display: grid;
-  grid-template-areas: 'link link' 'content1 content1' 'content2 content2' 'more more' 'content3 content3';
+  grid-template-areas: 'link link' 'content1 content1' 'content2 content2';
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 32px repeat(2, min-content) 32px min-content;
+  grid-template-rows: 32px repeat(2, min-content);
   margin: 0;
   margin-top: var(--xl);
   padding-top: var(--xl);
@@ -61,14 +70,12 @@ margin: 0 0 var(--xl) 0;
 
 
 export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employmentDates }) => {
-  const [page, setPage] = useContext(SubPagesContext)
-  const [isClicked, setIsClicked] = useContext(SubPagesContext)
-  const [show, setShow] = useState(false)
+  const [page, setPage] = useContext(SubPagesContext).page
 
   const overdue = assignedLeaveDays.overdue
   const assigned = assignedLeaveDays.assigned
   const leaveDaysAmount = overdue + assigned
-  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeCalendar)
+  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeCalendar)  // NaN
   const sickDaysAmount = getUsedSickDays(employeeCalendar)
   const otherLeaveDaysAmount = getUsedLeaveDays(employeeCalendar)
   const currentMonthData = getCurrentMonthData(employeeCalendar)
@@ -78,23 +85,15 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
   const currentMonthWorkedHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWorkedHours(currentMonthData[0]) : 0
   const currentMonthOvertimeHoursAmount = currentMonthData.length > 0 ? getCurrentMonthOvertimeHours(currentMonthData[0]) : 0
   const currentMonthWeekendsHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWeekendsHours(currentMonthData[0]) : 0
-  const currentMonthHourlyRate = currentMonthData.length > 0 ? getCurrentMonthHourlyRate(currentMonthData[0]) : 0
-  const currentMonthOvertimeRate = currentMonthData.length > 0 ? getCurrentMonthOvertimeRate(currentMonthData[0]) : 0
-  const currentMonthHolidayRate = currentMonthData.length > 0 ? getCurrentMonthHolidayRate(currentMonthData[0]) : 0
-  const currentMonthSickLeaveRate = currentMonthData.length > 0 ? getCurrentMonthSickLeaveRate(currentMonthData[0]) : 0
-  const currentMonthInsuranceRate = currentMonthData.length > 0 ? getCurrentMonthInsuranceRate(currentMonthData[0]) : 0
-  const currentMonthBonusRate = currentMonthData.length > 0 ? getCurrentMonthBonusRate(currentMonthData[0]) : 0
-  const currentMonthHourlyRateMultiplier = currentMonthData.length > 0 ? getCurrentMonthHourlyRateMultiplier(currentMonthData[0]) : 0
 
   const handleSubPageClick = (pageName) => {
-    setPage(pageName)
-    setIsClicked(isClicked => pageName)
+    setPage(page => pageName)
   }
 
   return (
     <EmployeeDetailsSection>
       <div className='first-link'>
-        <TextButton isUnderlined isActive={isClicked === 'responsibilities' ? true : false} onClickAction={() => handleSubPageClick('responsibilities')}>
+        <TextButton isUnderlined isActive={page === 'responsibilities' ? true : false} onClickAction={() => handleSubPageClick('responsibilities')}>
           Zakres obowiązków
         </TextButton>
       </div>
@@ -109,6 +108,7 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
       </EmployeeDetailsSectionContent>
       <EmployeeDetailsSectionContent area='content2'>
         <h4>Aktualny miesiąc:</h4>
+        <p>Suma godzin</p><span>{ currentMonthWorkedHoursAmount + currentMonthOvertimeHoursAmount + currentMonthWeekendsHoursAmount }</span>
         <p>Ilość przepracowanych godzin</p><span>{ currentMonthWorkedHoursAmount }</span>
         <p>Ilość przepracowanych nadgodzin</p><span>{ currentMonthOvertimeHoursAmount }</span>
         <p>Ilość przepracowanych w weekend</p><span>{ currentMonthWeekendsHoursAmount }</span>
@@ -116,25 +116,6 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
         <p>Chorobowe w miesiącu</p><span>{ currentMonthSicksAmount }</span>
         <p>Inne wolne w miesiącu</p><span>{ currentMonthOtherLeavesAmount }</span>
       </EmployeeDetailsSectionContent>
-      <div   className='second-link'>
-        <TextButton isUnderlined isActive={show} onClickAction={() => setShow(show => !show)}>
-          { !show && ( 'Więcej' ) || ( 'Mniej' ) }
-        </TextButton>
-      </div>
-      { show && (
-        <EmployeeDetailsSectionContent area='content3'>
-          <h4>Szczegóły:</h4>
-          <p>Data zatrudnienia</p><span>{ employmentDates.start }</span>
-          <p>Data rozwiązania umowy</p><span>{ employmentDates.end }</span>
-          <p>Stawka godzinowa</p><span>{ currentMonthHourlyRate }</span>
-          <p>Stawka nadgodzinowa</p><span>{ currentMonthOvertimeRate }</span>
-          <p>Stawka urlopowa</p><span>{ currentMonthHolidayRate }</span>
-          <p>Stawka chorobowe</p><span>{ currentMonthSickLeaveRate }</span>
-          <p>Stawka PZU</p><span>{ currentMonthInsuranceRate }</span>
-          <p>Podstawa premii</p><span>{ currentMonthBonusRate }</span>
-          <p>Mnożnik ilości godzin</p><span>{ currentMonthHourlyRateMultiplier }</span>
-        </EmployeeDetailsSectionContent>
-      )}
     </EmployeeDetailsSection>
   )
 }
