@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
-import { TextButton } from '@/components/common/Buttons';
+import { TextButton } from '@/common/Buttons'
+
+import useSWR from 'swr'
 
 
 
@@ -42,16 +44,28 @@ const StyledInfo = styled.div`
   /* maybe add some spinner + styles when loading */
 `
 
+
 export const EmployeeList = () => {
   const [employees, setEmployees] = useContext(DashboardContext).data
   const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter
   const [employee, setEmployee] = useContext(DashboardContext).employee
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
   const [isActive, setIsActive] = useState(false)
+  const { data } = useSWR(`/api/employees`, { initialData: employees })
+
+  useEffect(() => {
+    setEmployees(employees => data)
+    return () => {
+      setEmployees(employees => employees)
+    }
+  }, [data])
+
+  const getEmployeeData = (id) => data.filter(employee => employee._id === id)[0]
 
   const handleEmployeeClick = (id) => {
-    setAddEmployeePage(null)
-    setEmployee(id)
+    setAddEmployeePage(addEmployeePage => null)
+    const employeeData = getEmployeeData(id)
+    employeeData && setEmployee(employee => employeeData)
     setIsActive(isActive => id)
   }
 
@@ -59,15 +73,15 @@ export const EmployeeList = () => {
       <StyledList>
         {
           employees &&
-          employees.map(({ _id, name, surname, employment_status }) => (
-            employment_status === employeesFilter ? (
+          employees.map(({ _id, name, surname, employment_status }) => {
+            return employment_status === employeesFilter ? (
             <StyledListItem key={ _id }>
               <TextButton isActive={isActive === _id ? true : false} onClickAction={() => handleEmployeeClick(_id)}>
                 {surname} {name}
               </TextButton>
             </StyledListItem>
             ) : null
-          ))
+          })
         }
       </StyledList>
 )}
