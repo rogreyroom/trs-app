@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { getLayout } from '@/components/layouts/DashboardLayout'
+import { getLayout } from '@/layouts/DashboardLayout'
 import styled from 'styled-components';
 
 
