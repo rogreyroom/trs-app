@@ -1,8 +1,6 @@
-import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
 import Head from 'next/head'
-import { getLayout } from '@/components/layouts/LoginLayout'
-import { Login } from '@/components/TheDashboard/Forms'
+import { getLayout } from '@/layouts/LoginLayout'
+import { Login } from '@/components/TheLogin'
 import styled from 'styled-components';
 
 const Panel = styled.section`
@@ -21,15 +19,6 @@ const Panel = styled.section`
 `
 
 const Index = () => {
-  const router = useRouter()
-  const { register, errors, handleSubmit, reset } = useForm()
-
-  const onSubmit = (data, e) => {
-    console.log('Login user', data)
-    router.push('/dashboard')
-  }
-
-
   return (
     <>
       <Head>
