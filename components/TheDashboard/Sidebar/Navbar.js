@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useContext } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
-import { IconButton } from '@/components/common/Buttons'
-import { SvgOnSwitch, SvgOffSwitch, SvgPeople, SvgSwitch } from '@/components/Icons'
+import { IconButton } from '@/common/Buttons'
+import { SvgOnSwitch, SvgOffSwitch, SvgPeople } from '@/icons'
 
 const StyledNav = styled.nav`
   display: flex;
@@ -15,12 +15,16 @@ export const Navbar = () => {
   const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
 
+  const handleFilter = () => {
+    setEmployeesFilter(employeesFilter => !employeesFilter)
+  }
+
   return (
     <StyledNav>
       <IconButton size='xl' isActive={addEmployeePage} onClickAction={() => setAddEmployeePage(true)}>
         <SvgPeople />
       </IconButton>
-      <IconButton size='xl' isActive={employeesFilter} onClickAction={() => setEmployeesFilter(employeesFilter => !employeesFilter)}>
+      <IconButton size='xl' isActive={employeesFilter} onClickAction={handleFilter}>
         { employeesFilter && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
       </IconButton>
     </StyledNav>
