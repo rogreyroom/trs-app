@@ -2,10 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/lib/*": ["lib/*"],
       "@/components/*": ["components/*"],
       "@/contexts/*": ["contexts/*"],
-      "@/lib/*": ["lib/*"],
-      "@/Icons": ["components/Icons/index.js"],
+      "@/icons": ["components/icons/index.js"],
+      "@/layouts/*": ["components/layouts/*"],
+      "@/common/*": ["components/common/*"],
+      "@/dashboard/*": ["components/TheDashboard/*"],
+      "@/subPages/*": ["components/TheDashboard/SubPages/*"],
     }
   }
 }
