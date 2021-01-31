@@ -1,5 +1,5 @@
-import { GET_ALL_EMPLOYEES_DATA } from '../../../lib/db/actions/read'
-import { ADD_EMPLOYEES_DATA } from '../../../lib/db/actions/add'
+import { GET_ALL_EMPLOYEES_DATA } from '@/lib/db/actions/read'
+import { ADD_EMPLOYEES_DATA } from '@/lib/db/actions/add'
 
 export default async function handleEmployeesRequest(req, res) {
   const { method } = req
