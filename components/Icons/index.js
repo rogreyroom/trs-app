@@ -1,4 +1,5 @@
 export * from './EditIcon'
+export * from './RemoveIcon'
 export * from './EesIcon'
 export * from './HolidayIcon'
 export * from './LeaveIcon'
