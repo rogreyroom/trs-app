@@ -1,0 +1,35 @@
+@import '../fonts/roboto.scss';
+
+:root {
+  @each $property, $value in $fonts {
+    --#{$property}: #{$value};
+  }
+}
+
+body {
+  font-family: var(--ff-body);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+}
+
+h1, h4 {
+  font-weight: var(--fw-black);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+}
+
+h6 {
+  font-size: var(--fs-h6);
+  font-weight: var(--fw-normal);
+}
+
+p, a, button {
+  font-size: var(--fs-text);
+}

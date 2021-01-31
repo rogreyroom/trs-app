@@ -1,0 +1,42 @@
+/* Global */
+
+:root {
+  @each $property, $value in $sizes {
+    --#{$property}: #{$value};
+  }
+}
+
+
+// Create css variables
+// $vars: map-merge($colors, $sizes);
+
+// :root {
+  // @each $property, $value in $vars {
+  //   --#{$property}: #{$value};
+  // }
+
+  // --body-background-color: var(--white);
+  // --body-font-color: var(--black);
+// }
+
+
+// body {
+//   font-family: map-get($fonts, ff-body);
+//   font-weight: map-get($fonts, fw-normal);
+//   font-size: map-get($fonts, fs-base);
+//   line-height: map-get($fonts, lh-base);
+//   background: var(--body-background-color);
+//   color: var(--body-font-color);
+//   padding: var(--default);
+// }
+
+// h1,
+// h2,
+// h3,
+// h4 {
+//   font-family: map-get($fonts, ff-header);
+//   font-weight: map-get($fonts, fw-bold);
+//   color: var(--black);
+// }
+
+

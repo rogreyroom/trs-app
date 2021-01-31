@@ -1,0 +1,10 @@
+$colorVars:  map-merge($colors, $gradients);
+
+:root {
+  @each $property, $value in $colorVars {
+    --#{$property}: #{$value};
+  }
+  @each $property, $value in $shadows {
+    --#{$property}: #{$value};
+  }
+}
