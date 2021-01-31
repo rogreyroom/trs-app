@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { IconButton, Button  } from '@/components/common/Buttons'
-import { SvgDashboard, SvgEes, SvgPdf, SvgLogout } from '@/Icons'
+import { IconButton, Button  } from '@/common/Buttons'
+import { SvgDashboard, SvgEes, SvgPdf, SvgLogout } from '@/icons'
 
 const StyledNav = styled.nav`
   display: flex;
