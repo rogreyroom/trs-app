@@ -78,13 +78,13 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
   const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeCalendar)  // NaN
   const sickDaysAmount = getUsedSickDays(employeeCalendar)
   const otherLeaveDaysAmount = getUsedLeaveDays(employeeCalendar)
-  const currentMonthData = getCurrentMonthData(employeeCalendar)
-  const currentMonthHolidaysAmount = currentMonthData.length > 0 ? getHolidayLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
-  const currentMonthSicksAmount = currentMonthData.length > 0 ? getSickLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
-  const currentMonthOtherLeavesAmount = currentMonthData.length > 0 ? getOtherLeaveDaysForCurrentMonth(currentMonthData[0]) : 0
-  const currentMonthWorkedHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWorkedHours(currentMonthData[0]) : 0
-  const currentMonthOvertimeHoursAmount = currentMonthData.length > 0 ? getCurrentMonthOvertimeHours(currentMonthData[0]) : 0
-  const currentMonthWeekendsHoursAmount = currentMonthData.length > 0 ? getCurrentMonthWeekendsHours(currentMonthData[0]) : 0
+  const currentMonthData = getCurrentMonthData(employeeCalendar)[0]
+  const workedHours = getCurrentMonthWorkedHours(currentMonthData)
+  const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
+  const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
+  const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
+  const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData)
+  const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData)
 
   const handleSubPageClick = (pageName) => {
     setPage(page => pageName)
@@ -108,13 +108,13 @@ export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employment
       </EmployeeDetailsSectionContent>
       <EmployeeDetailsSectionContent area='content2'>
         <h4>Aktualny miesiąc:</h4>
-        <p>Suma godzin</p><span>{ currentMonthWorkedHoursAmount + currentMonthOvertimeHoursAmount + currentMonthWeekendsHoursAmount }</span>
-        <p>Ilość przepracowanych godzin</p><span>{ currentMonthWorkedHoursAmount }</span>
-        <p>Ilość przepracowanych nadgodzin</p><span>{ currentMonthOvertimeHoursAmount }</span>
-        <p>Ilość przepracowanych w weekend</p><span>{ currentMonthWeekendsHoursAmount }</span>
-        <p>Urlop w miesiącu</p><span>{ currentMonthHolidaysAmount }</span>
-        <p>Chorobowe w miesiącu</p><span>{ currentMonthSicksAmount }</span>
-        <p>Inne wolne w miesiącu</p><span>{ currentMonthOtherLeavesAmount }</span>
+        <p>Suma godzin</p><span>{ workedHours + overtimeHours + weekendsHours }</span>
+        <p>Ilość przepracowanych godzin</p><span>{ workedHours }</span>
+        <p>Ilość przepracowanych nadgodzin</p><span>{ overtimeHours }</span>
+        <p>Ilość przepracowanych w weekend</p><span>{ weekendsHours }</span>
+        <p>Urlop w miesiącu</p><span>{ holidayDays }</span>
+        <p>Chorobowe w miesiącu</p><span>{ sickDays }</span>
+        <p>Inne wolne w miesiącu</p><span>{ otherLeaveDays }</span>
       </EmployeeDetailsSectionContent>
     </EmployeeDetailsSection>
   )
