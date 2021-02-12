@@ -26,7 +26,7 @@ export const StyledTh = styled.th`
   }
 `
 
-export const StyledTbody = styled.tbody`
+export const StyledTBody = styled.tbody`
   &::before {
     content: '';
     display: block;
@@ -55,3 +55,5 @@ export const StyledTd = styled.td`
     text-align: left;
   }
 `
+
+export const StyledTFooter = styled.tfoot``
