@@ -4,7 +4,7 @@ export const StyledRtsFormContainer = styled.section`
   width: 100%;
   height: 100%;
   margin: 0;
-  display: grid;
+
 `
 
 export const StyledRtsForm = styled.form`

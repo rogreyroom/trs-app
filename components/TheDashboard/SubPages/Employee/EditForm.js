@@ -68,9 +68,11 @@ const getDefaultValues = (employeeData, theYear, theMonth) => {
     hourly_rate: values.hourly_rate,
     holiday_rate: values.holiday_rate,
     sick_leave_rate: values.sick_leave_rate,
+    other_leave_rate: values.other_leave_rate,
     insurance_rate: values.insurance_rate,
     retainment_rate: values.retainment_rate,
     bonus_rate: values.bonus_rate,
+    to_account_rate: values.to_account_rate,
     overtime_rate_multiplier: values.overtime_rate_multiplier,
     overtime_hours_multiplier: values.overtime_hours_multiplier
   }
@@ -102,8 +104,10 @@ export const EditEmployeeForm = ({ id }) => {
     setValue('hourly_rate', selectedOptionsValue.hourly_rate)
     setValue('holiday_rate', selectedOptionsValue.holiday_rate)
     setValue('sick_leave_rate', selectedOptionsValue.sick_leave_rate)
+    setValue('other_leave_rate', selectedOptionsValue.other_leave_rate)
     setValue('insurance_rate', selectedOptionsValue.insurance_rate)
     setValue('retainment_rate', selectedOptionsValue.retainment_rate)
+    setValue('to_account_rate', selectedOptionsValue.to_account_rate)
     setValue('bonus_rate', selectedOptionsValue.bonus_rate)
     setValue('overtime_rate_multiplier', selectedOptionsValue.overtime_rate_multiplier)
     setValue('overtime_hours_multiplier', selectedOptionsValue.overtime_hours_multiplier)
@@ -127,10 +131,13 @@ export const EditEmployeeForm = ({ id }) => {
       year: parseInt(data.year),
       month: parseInt(data.month),
       hourly_rate: parseFloat(data.hourly_rate),
+      overtime_rate: (parseFloat(data.hourly_rate) * parseFloat(data.overtime_rate_multiplier)),
       holiday_rate: parseFloat(data.holiday_rate),
       sick_leave_rate: parseFloat(data.sick_leave_rate),
+      other_leave_rate: parseFloat(data.other_leave_rate),
       insurance_rate: parseFloat(data.insurance_rate),
       retainment_rate: parseFloat(data.retainment_rate),
+      to_account_rate: parseFloat(data.to_account_rate),
       bonus_rate: parseFloat(data.bonus_rate),
       overtime_rate_multiplier: parseFloat(data.overtime_rate_multiplier),
       overtime_hours_multiplier: parseFloat(data.overtime_hours_multiplier)
@@ -149,10 +156,13 @@ export const EditEmployeeForm = ({ id }) => {
       year: employeeYearMonthValues.year,
       month: employeeYearMonthValues.month,
       hourly_rate: employeeYearMonthValues.hourly_rate,
+      overtime_rate: (employeeYearMonthValues.hourly_rate * employeeYearMonthValues.overtime_rate_multiplier),
       holiday_rate: employeeYearMonthValues.holiday_rate,
       sick_leave_rate: employeeYearMonthValues.sick_leave_rate,
+      other_leave_rate: employeeYearMonthValues.other_leave_rate,
       insurance_rate: employeeYearMonthValues.insurance_rate,
       retainment_rate: employeeYearMonthValues.retainment_rate,
+      to_account_rate: employeeYearMonthValues.to_account_rate,
       bonus_rate: employeeYearMonthValues.bonus_rate,
       overtime_rate_multiplier: employeeYearMonthValues.overtime_rate_multiplier,
       overtime_hours_multiplier: employeeYearMonthValues.overtime_hours_multiplier
@@ -194,8 +204,10 @@ export const EditEmployeeForm = ({ id }) => {
           <Input name='holiday_rate' type='number' min='0.00' step='0.01' label='Stawka urlopowa' error={!!errors.holiday_rate} errorMessage={errors?.holiday_rate && [errorMessages.notEmpty]} ref={register} />
           <Input name='sick_leave_rate' type='number' min='0.00' step='0.01' label='Stawka chorobowa' error={!!errors.sick_leave_rate} errorMessage={errors?.sick_leave_rate && [errorMessages.notEmpty]} ref={register} />
           <Input name='insurance_rate' type='number' min='0.00' step='0.01' label='Stawka ubezpieczenia' error={!!errors.insurance_rate} errorMessage={errors?.insurance_rate && [errorMessages.notEmpty]} ref={register} />
+          <Input name='other_leave_rate' type='number' min='0.00' step='0.01' label='Stawka okolicznościowa' error={!!errors.other_leave_rate} errorMessage={errors?.other_leave_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
           <Input name='retainment_rate' type='number' min='0.00' step='0.01' label='Stawka PPK' error={!!errors.retainment_rate} errorMessage={errors?.retainment_rate && [errorMessages.notEmpty]} ref={register} />
           <Input name='bonus_rate' type='number' min='0.00' step='0.01' label='Stawka premii' error={!!errors.bonus_rate} errorMessage={errors?.bonus_rate && [errorMessages.notEmpty]} ref={register} />
+          <Input name='to_account_rate' type='number' min='0' step='1' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
           <Input name='overtime_rate_multiplier' type='number' min='0.00' step='0.01' label='Mnożnik stawki nadgodzin' error={!!errors.overtime_rate_multiplier} errorMessage={errors?.overtime_rate_multiplier && [errorMessages.notEmpty]} ref={register} />
           <Input name='overtime_hours_multiplier' type='number' min='0.00' step='0.01' label='Mnożnik ilości nadgodzin' error={!!errors.overtime_hours_multiplier} errorMessage={errors?.overtime_hours_multiplier && [errorMessages.notEmpty]} ref={register} />
         </StyledEditFieldsWrap>

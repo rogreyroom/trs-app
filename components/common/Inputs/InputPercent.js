@@ -22,11 +22,10 @@ const StyledPercentWrapper = styled.div`
   }
 `
 
-// Is it necessary
-export const PercentInput = forwardRef(({ name, label, error, errorMessage, value, onChange }, ref) => {
+export const PercentInput = forwardRef(({ name, label, error, errorMessage, min, max, step,  value, onChange }, ref) => {
   return (
     <StyledPercentWrapper isEvalInput>
-      <StyledInput type='number' name={name} ref={ref} error={error} value={value} onChange={onChange} />
+      <StyledInput type='number' name={name} ref={ref} error={error} min={min} max={max} step={step} value={value} onChange={onChange} />
       <Label name={name} label={label} />
       <Error error={error} errorMessage={errorMessage} />
     </StyledPercentWrapper>

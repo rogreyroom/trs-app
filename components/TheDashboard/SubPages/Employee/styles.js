@@ -18,7 +18,7 @@ export const StyledAddEmployeeInputsWrapper = styled.section`
   display: grid;
   grid-gap: var(--s);
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   grid-auto-flow: column;
 `
 

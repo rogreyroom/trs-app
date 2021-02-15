@@ -41,8 +41,9 @@ export const CommonInputStyles = css`
 
   /* TODO: Style the disable version if needed */
   &[disabled] {
-    --input-border: #ccc;
-    background-color: #eee;
+    --input-border: var(--c-blue-01);
+    background-color: var(--c-blue-01);
+    color: var(--c-blue-03);
     cursor: not-allowed;
   }
 `

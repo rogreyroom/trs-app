@@ -1,16 +1,16 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
+// A4 595px x 842px -> resolution 72DPI
 export const StyledTable = styled.table`
-  width: max-content;
-  height: max-content;
+  max-width: 595px;
+  max-height: 842px;
   border-collapse: collapse;
-  margin-top: var(--xxl);
   align-self: start;
   justify-self: center;
 `
 
 export const StyledThead = styled.thead`
-  border-bottom: 1px solid var(--c-blue-03);
+  border: 1px solid var(--c-black);
 `
 
 export const StyledTh = styled.th`
@@ -26,7 +26,7 @@ export const StyledTh = styled.th`
   }
 `
 
-export const StyledTBody = styled.tbody`
+export const StyledTbody = styled.tbody`
   &::before {
     content: '';
     display: block;
@@ -55,5 +55,3 @@ export const StyledTd = styled.td`
     text-align: left;
   }
 `
-
-export const StyledTFooter = styled.tfoot``

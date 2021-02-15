@@ -4,21 +4,6 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 // import { eesFormSchema } from '../../../lib/db/schemas'
 
-
-
-import {
-  StyledRtsFormContainer,
-  StyledRtsForm,
-  StyledRtsCalendarWrapper,
-  StyledRtsInputsWrapper,
-  StyledRtsEvalControlsWrapper,
-  StyledRtsEvalInputsWrapper,
-  StyledRtsEvalOutputWrapper,
-  StyledEvalList,
-  StyledEvalListItem,
-
-} from './styles'
-
 import { StyledFormControlsWrapper } from '@/common/CommonWrappers'
 import { SvgEdit, SvgRemove } from '@/icons'
 import { Input, PercentInput, EvaluationTextarea } from '@/common/Inputs';
@@ -35,7 +20,23 @@ import { DashboardContext } from '@/contexts/DashboardContext'
 import { axios } from '@/lib/axios-config'
 import useSWR from 'swr';
 
+import isWeekend from 'date-fns/isWeekend'
+import { getGivenMonthData } from '@/lib/utils'
 
+import { confirmAlert } from 'react-confirm-alert'
+import { EvalAlert } from './EvalAlert'
+
+import {
+  StyledRtsFormContainer,
+  StyledRtsForm,
+  StyledRtsCalendarWrapper,
+  StyledRtsInputsWrapper,
+  StyledRtsEvalControlsWrapper,
+  StyledRtsEvalInputsWrapper,
+  StyledRtsEvalOutputWrapper,
+  StyledEvalList,
+  StyledEvalListItem,
+} from './styles'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -43,7 +44,7 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 const schema = Joi.object().keys({
   due_date: Joi.object().length(3).required(),
-  working_hours: Joi.number().required(),
+  working_hours: Joi.number(),
   overtime_hours: Joi.number(),
   weekend_hours: Joi.number(),
 })
@@ -54,37 +55,37 @@ export const RtsForm = ({ id }) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee
   const [isEvalEdit, setIsEvalEdit] = useState(false)
   const [editedEvalIndex, setEditedEvalIndex] = useState(null)
-
-  // Get ees data
-  const { data: eesData } = useSWR(`api/ees/`, fetcher)
-  const formFieldsDefaultValues = {due_date: null, working_hours: null, overtime_hours: null, weekend_hours: null, evaluationDescription: '', ew_percent: null}
-  const { register, control, watch, getValues, handleSubmit, reset, errors, formState: { isSubmitSuccessful } } = useForm({
-    // mode: 'onBlur',
-    // resolver: joiResolver(employeeFormSchema),
-    resolver: joiResolver(schema),
-    defaultValues: formFieldsDefaultValues
-  })
   // Refs
   const evalDescriptionRef = useRef(null)
   const evalPercentRef = useRef(null)
-
-  // Form watch
-  const watchCalendarChange = watch('due_date', null)
-  const [isRtsEdit, setIsRtsEdit] = useState(false)
-
+  // Hours enable state
+  const [isDateWeekday, setIsDateWeekday] = useState(true)
+  const [isDateWeekend, setIsDateWeekend] = useState(true)
   // Data holders
   const [submittedData, setSubmittedData] = useState({})
   const [evalArray, setEvalArray] = useState([])
-
   // Evaluation chosen option [SP, MP, LP, EW]
   const [evaluation, setEvaluation] = useState(null)
-
   // React controlled components
+  const [ewEvalCalendarDate, setEwEvalCalendarDate] = useState(0)
   const [evalDescription, setEvalDescription] = useState('')
   const [ewEvalPercent, setEwEvalPercent] = useState(0)
   const [workingHours, setWorkingHours] = useState(0)
   const [overtimeHours, setOvertimeHours] = useState(0)
   const [weekendHours, setWeekendHours] = useState(0)
+  // React-hook-form
+  const formFieldsDefaultValues = {due_date: null, working_hours: 0, overtime_hours: 0, weekend_hours: 0, evaluationDescription: '', ew_percent: 0}
+  const { register, control, watch, getValues, setValue, handleSubmit, reset, errors, formState: { isSubmitSuccessful } } = useForm({
+    // resolver: joiResolver(employeeFormSchema),
+    resolver: joiResolver(schema),
+    defaultValues: formFieldsDefaultValues
+  })
+  // Form watch
+  const watchCalendarChange = watch('due_date')
+  const [isRtsEdit, setIsRtsEdit] = useState(false)
+  // Get ees data
+  const { data: eesData } = useSWR(`api/ees/`, fetcher)
+
 
   const handleHours = (getValuesFunction) => {
     const newValue = getValuesFunction('working_hours')
@@ -101,6 +102,11 @@ export const RtsForm = ({ id }) => {
     setWeekendHours(weekendHours => newValue)
   }
 
+  const handleEwEvalCalendar = (e) => {
+    const newValue = e.target.value
+    setEwEvalCalendarDate(ewEvalCalendarDate => newValue)
+  }
+
   const handleEwEvalPercent = (e) => {
     const newValue = e.target.value
     setEwEvalPercent(ewEvalPercent => newValue)
@@ -109,6 +115,11 @@ export const RtsForm = ({ id }) => {
   const handleEvalDescription = (e) => {
     const newValue = e.target.value
     setEvalDescription(evalDescription => newValue)
+  }
+
+  const handleEvaluationSet = (e, evalName) => {
+    e.preventDefault()
+    setEvaluation(evaluation => evalName)
   }
 
   const handleEvaluationEdit = (evalArrayIndex, e) => {
@@ -127,34 +138,166 @@ export const RtsForm = ({ id }) => {
     setEvalArray(evalArray => newEvalArray)
   }
 
+  const checkEWEvalPercentageMaximumValue = (isEdit) => {
+    const {year, month} = ewEvalCalendarDate
+    const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0]
+
+    const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
+      if ( curr.evaluation.length > 0 ) {
+        const ewEvals = curr.evaluation.reduce((ewRes, ewCurr) => {
+          if ( ewCurr.name === 'EW' ) {
+            ewRes.push(ewCurr)
+          }
+          return ewRes
+        }, [])
+
+        if ( ewEvals.length > 0 ) {
+          res.push(...ewEvals)
+        }
+      }
+      return res
+    }, [])
+
+    if ( isEdit === 'edit' && evalArray.length > 0 ) {
+      const evalArrayObj = evalArray[editedEvalIndex]
+      const evaluationArrayIndex = evaluationArray.findIndex(obj => JSON.stringify(obj) === JSON.stringify(evalArrayObj))
+      evaluationArray.splice(evaluationArrayIndex, 1)
+    }
+
+    if ( evaluationArray.length > 0 ) {
+      const ewEvalValue = evaluationArray.reduce((res, curr) => {
+        return res + parseInt(curr.percent)
+      }, 0)
+
+      if ( ewEvalValue === 200 ) {
+        return { res: true, data: 0 }
+      } else if ( ewEvalValue < 200 ) {
+        if ( ( ewEvalValue + parseInt(ewEvalPercent) ) > 200 ) {
+          const newPercent = ( ewEvalValue + parseInt(ewEvalPercent) ) - 200
+          const maxToAddIs = parseInt(ewEvalPercent) - newPercent
+          return { res: true, data: maxToAddIs }
+        }
+        return { res: false, data: parseInt(ewEvalPercent) }
+      }
+    }
+    return { res: false, data:  parseInt(ewEvalPercent) }
+  }
+
+  const evaluationPercentAmountCheck = (theCheck) => {
+    const isToMuch = checkEWEvalPercentageMaximumValue(theCheck)
+
+    const makeAdd = (newPercent) => {
+      const percentIs = ['SP', 'MP', 'LP'].includes(evaluation) ? eesData.filter(({symbol}) => symbol === evaluation)[0].percent : newPercent
+      setEvalArray(evalArray => [...evalArray, {name: evaluation, description: evalDescription, percent: percentIs}])
+      setEvalDescription(evalDescription => '')
+      if (evaluation === 'EW') setEwEvalPercent(ewEvalPercent => 0)
+      setEvaluation(null)
+    }
+
+    const makeEdit = (newPercent) => {
+      const newEvalArray = [...evalArray]
+      evaluation === 'EW' ?
+        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription, percent : newPercent}
+        :
+        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription}
+      setEvalArray(evalArray => newEvalArray)
+      setEditedEvalIndex(editedEvalIndex => null)
+      setIsEvalEdit(isEvalEdit => false)
+      setEvalDescription(evalDescription => '')
+      setEwEvalPercent(ewEvalPercent => 0)
+      setEvaluation(null)
+    }
+
+    if ( isToMuch.res && isToMuch.data > 0 ) {
+      console.log('isToMuch.res && isToMuch.data > 0')
+
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <EvalAlert
+              title='Limit osiągnięty'
+              message={`Możesz dodać jedynie ${isToMuch.data}% żeby nie przekroczyć miesięcznej maksymalnej wartości 200%`}
+              yesButtonLabel='Dodaj'
+              noButtonLabel='Usuń'
+              isNoButtonPresent={true}
+              yesAction={() => {
+                if ( theCheck === 'add' ) {
+                  makeAdd(isToMuch.data)
+                } else if ( theCheck === 'edit' ) {
+                  makeEdit(isToMuch.data)
+                }
+                onClose()
+              }}
+              noAction={() => {
+                setEvaluation(null)
+                setEvalDescription(null)
+                setEwEvalPercent(ewEvalPercent => 0)
+                onClose()
+              }}
+            />
+          )
+        }
+      })
+    } else if ( isToMuch.res && isToMuch.data === 0 ) {
+      console.log('isToMuch.res && isToMuch.data === 0')
+
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <EvalAlert
+              title='Limit osiągnięty'
+              message={`Limit oceny EW w tym miesiącu został osiągnięty!`}
+              yesButtonLabel='Rozumię'
+              isNoButtonPresent={false}
+              yesAction={() => {
+                setEvaluation(null)
+                setEvalDescription(null)
+                setEwEvalPercent(ewEvalPercent => 0)
+                onClose()
+              }}
+            />
+          )
+        }
+      })
+    } else if ( !isToMuch.res ) {
+      console.log('!isToMuch.res')
+
+      if ( theCheck === 'add' ) {
+        makeAdd(isToMuch.data)
+      } else if ( theCheck === 'edit' ) {
+        makeEdit(isToMuch.data)
+      }
+    }
+
+
+  }
 
   const handleEvaluationEditSubmit = (e) => {
     e.preventDefault()
-    const newEvalArray = [...evalArray]
-    evaluation === 'EW' ?
-      newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription, percent : ewEvalPercent}
-      :
-      newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription}
-    setEvalArray(evalArray => newEvalArray)
-    setEditedEvalIndex(editedEvalIndex => null)
-    setIsEvalEdit(isEvalEdit => false)
-    setEvalDescription(null)
-    setEwEvalPercent(ewEvalPercent => 0)
-    setEvaluation(null)
+    evaluationPercentAmountCheck('edit')
   }
 
-  const handleEvaluationSubmit = () => {
-    const percentIs = ['SP', 'MP', 'LP'].includes(evaluation) ?
-                    eesData.filter(({symbol}) => symbol === evaluation)[0].percent : ewEvalPercent
-    setEvalArray(evalArray => [...evalArray, {name: evaluation, description: evalDescription, percent: percentIs}])
-    setEvalDescription(evalDescription => '')
-    if (evaluation === 'EW') setEwEvalPercent(ewEvalPercent => 0)
-    setEvaluation(null)
+  const handleEvaluationSubmit = (e) => {
+    e.preventDefault()
+    evaluationPercentAmountCheck('add')
   }
+
+
 
   const onSubmit = async (data) => {
-    // It Adds new data to the employee RTS
-    const resultData= {...data, evaluation: evalArray}
+    let defaultHours
+    if ( !isDateWeekend ) {
+      defaultHours = {
+        working_hours: 0,
+        overtime_hours: 0
+      }
+    } else {
+      defaultHours = {
+        weekend_hours: 0
+      }
+    }
+
+    const resultData= {...data, ...defaultHours, evaluation: evalArray}
     const yearIs = resultData.due_date.year
     const monthIs = resultData.due_date.month
     const valueIs = { ...resultData }
@@ -167,6 +310,8 @@ export const RtsForm = ({ id }) => {
     }
 
     setSubmittedData(submittedData => resultData)
+    reset(formFieldsDefaultValues)
+    setValue('due_date', null)
   }
 
   const handleReset = () => {
@@ -188,8 +333,17 @@ export const RtsForm = ({ id }) => {
 
   useEffect(() => {
     if (watchCalendarChange !== null) {
+       if ( isWeekend(new Date(watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange.day)) ) {
+        setIsDateWeekend(isDateWeekend => false)
+        setIsDateWeekday(isDateWeekday => true)
+      } else {
+        setIsDateWeekday(isDateWeekday => false)
+        setIsDateWeekend(isDateWeekend => true)
+      }
+
       setEvaluation(evaluation => '')
       setEvalDescription(evalDescription => '')
+      setEwEvalCalendarDate(ewEvalCalendarDate => watchCalendarChange)
       const res = getCurrentMonthData(employee.calendar, watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange)
 
       if ( res ) {
@@ -209,12 +363,15 @@ export const RtsForm = ({ id }) => {
 
     if (isSubmitSuccessful) {
       console.log('isSubmitSuccessful')
-      reset(formFieldsDefaultValues)
+      // reset(formFieldsDefaultValues)
+      reset({...submittedData})
+      setValue('due_date', null)
       setEvaluation(null)
       setEvalDescription(null)
       setEvalArray([])
+
     }
-  }, [isSubmitSuccessful, submittedData, reset, watchCalendarChange]);
+  }, [isSubmitSuccessful, submittedData, reset, watchCalendarChange, employee]);
 
   // TODO: add error handling for inputs
 
@@ -227,10 +384,12 @@ export const RtsForm = ({ id }) => {
             <Controller
               control={control}
               name="due_date"
-              render={ ({ onChange, value })  =>
+              // setValue={watchCalendarChange}
+              render={ ({ onChange, value, onBlur })  =>
               <Calendar
               value={value}
               onChange={onChange}
+              onBlur={onBlur}
               locale={plLocale}
               calendarClassName="custom-calendar"
               shouldHighlightWeekends
@@ -243,13 +402,15 @@ export const RtsForm = ({ id }) => {
           <StyledRtsInputsWrapper>
             <h4>Podaj czas pracy</h4>
               <Input
-                name='working_hours'
+                disable ={ isDateWeekday }
                 type='number'
                 label='Obecność'
+                name='working_hours'
                 min='0' max='8' step='1'
                 value={workingHours}
                 onChange={() => handleHours(getValues)}
                 error={!!errors.working_hours}
+                ee={errors}
                 errorMessage={errors?.working_hours && [errorMessages.notEmpty, errorMessages.numericValue]}
                 ref={register}
               />
@@ -258,6 +419,7 @@ export const RtsForm = ({ id }) => {
                 name='overtime_hours'
                 type='number'
                 label='Nadgodziny'
+                disable ={ isDateWeekday }
                 min='0' max='8' step='1'
                 value={overtimeHours}
                 onChange={() => handleOvertime(getValues)}
@@ -270,6 +432,7 @@ export const RtsForm = ({ id }) => {
                 name='weekend_hours'
                 type='number'
                 label='Dyżur'
+                disable ={ isDateWeekend }
                 min='0' max='16' step='1'
                 value={weekendHours}
                 onChange={() => handleWeekend(getValues)}
@@ -282,10 +445,10 @@ export const RtsForm = ({ id }) => {
 
           <StyledRtsEvalControlsWrapper>
               <h4>Ocena pracownika</h4>
-              <ButtonSmall type='button' onClickAction={() => setEvaluation('SP')}>SP</ButtonSmall>
-              <ButtonSmall type='button' onClickAction={() => setEvaluation('MP')}>MP</ButtonSmall>
-              <ButtonSmall type='button' onClickAction={() => setEvaluation('LP')}>LP</ButtonSmall>
-              <ButtonSmall type='button' onClickAction={() => setEvaluation('EW')}>EW</ButtonSmall>
+              <ButtonSmall type='button' onClickAction={(e) => handleEvaluationSet(e,'SP')}>SP</ButtonSmall>
+              <ButtonSmall type='button' onClickAction={(e) => handleEvaluationSet(e,'MP')}>MP</ButtonSmall>
+              <ButtonSmall type='button' onClickAction={(e) => handleEvaluationSet(e,'LP')}>LP</ButtonSmall>
+              <ButtonSmall type='button' onClickAction={(e) => handleEvaluationSet(e,'EW')}>EW</ButtonSmall>
           </StyledRtsEvalControlsWrapper>
 
 
@@ -315,9 +478,9 @@ export const RtsForm = ({ id }) => {
                 ref={evalDescriptionRef} />
 
               { isEvalEdit &&
-                <Button onClickAction={(e ) => handleEvaluationEditSubmit(e)}>Zmień</Button>
+                <Button onClickAction={(e) => handleEvaluationEditSubmit(e)}>Zmień</Button>
                 ||
-                <Button onClickAction={handleEvaluationSubmit}>Zatwierdź</Button>
+                <Button onClickAction={(e) => handleEvaluationSubmit(e)}>Zatwierdź</Button>
               }
             </>
             }

@@ -75,7 +75,7 @@ export const EmployeeList = () => {
           employees &&
           employees.map(({ _id, name, surname, employment_status }) => {
             return employment_status === employeesFilter ? (
-            <StyledListItem key={ _id }>
+            <StyledListItem key={ `${_id}${name}${surname}` }>
               <TextButton isActive={isActive === _id ? true : false} onClickAction={() => handleEmployeeClick(_id)}>
                 {surname} {name}
               </TextButton>

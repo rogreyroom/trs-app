@@ -22,7 +22,9 @@ const juvenileWorkerOptions = [
 
 const createMonthsData = (month, data) => {
   const monthsArray = []
-  const {hourly_rate, holiday_rate, sick_leave_rate, insurance_rate, retainment_rate, bonus_rate, overtime_rate_multiplier, overtime_hours_multiplier} = data
+  const {hourly_rate, holiday_rate, sick_leave_rate, other_leave_rate, insurance_rate, retainment_rate, bonus_rate, to_account_rate, overtime_rate_multiplier, overtime_hours_multiplier} = data
+
+  // TODO: check the bellow when calculating reports
   const overtime_rate = hourly_rate * overtime_rate_multiplier
 
   for ( let idx = 1; idx <= 12; idx++ ) {
@@ -38,8 +40,10 @@ const createMonthsData = (month, data) => {
           overtime_rate: null,
           holiday_rate: null,
           sick_leave_rate: null,
+          other_leave_rate: null,
           insurance_rate: null,
           bonus_rate: null,
+          to_account_rate: null,
           overtime_rate_multiplier: null,
           overtime_hours_multiplier: null
         }
@@ -56,9 +60,11 @@ const createMonthsData = (month, data) => {
           overtime_rate: overtime_rate,
           holiday_rate: holiday_rate,
           sick_leave_rate: sick_leave_rate,
+          other_leave_rate: other_leave_rate,
           insurance_rate: insurance_rate,
           retainment_rate: retainment_rate,
           bonus_rate: bonus_rate,
+          to_account_rate: to_account_rate,
           overtime_rate_multiplier: overtime_rate_multiplier,
           overtime_hours_multiplier: overtime_hours_multiplier
         }
@@ -81,9 +87,11 @@ export const AddEmployeeForm = ({preloadedValues}) => {
     juvenile_worker: false,
     overdue_leave_amount: 0,
     assigned_leave_amount: 0,
+    to_account_rate: 0,
     hourly_rate: 0,
     holiday_rate: 0,
     sick_leave_rate: 0,
+    other_leave_rate: 0,
     insurance_rate: 0,
     retainment_rate: 0,
     bonus_rate: 0,
@@ -141,10 +149,12 @@ export const AddEmployeeForm = ({preloadedValues}) => {
         <Input name='overdue_leave_amount' type='number' min='0' max='26' step='1' label='Urlop zaległy' error={!!errors.overdue_leave_amount} errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='assigned_leave_amount' type='number' min='0' max='26' step='1' label='Urlop przysługujący' error={!!errors.assigned_leave_amount} errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='bonus_rate' type='number' min='0' step='1' label='Stawka premii' error={!!errors.bonus_rate} errorMessage={errors?.bonus_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
+        <Input name='to_account_rate' type='number' min='0' step='1' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <InputDatePicker name='employment_termination_date' label='Data rozwiązania umowy' error={!!errors.employment_termination_date} errorMessage={errors?.employment_termination_date && [errorMessages.empty]} control={control} />
         <Input name='hourly_rate' type='number' min='0.00' step='0.01' label='Stawka godzinowa' error={!!errors.hourly_rate} errorMessage={errors?.hourly_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='holiday_rate' type='number' min='0.00' step='0.01' label='Stawka urlopowa' error={!!errors.holiday_rate}  errorMessage={errors?.holiday_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='sick_leave_rate' type='number' min='0.00' step='0.01' label='Stawka chorobowa' error={!!errors.sick_leave_rate} errorMessage={errors?.sick_leave_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
+        <Input name='other_leave_rate' type='number' min='0.00' step='0.01' label='Stawka okolicznościowa' error={!!errors.other_leave_rate} errorMessage={errors?.other_leave_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='insurance_rate' type='number' min='0.00' step='0.01' label='Stawka ubezpieczenia' error={!!errors.insurance_rate} errorMessage={errors?.insurance_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='retainment_rate' type='number' min='0.00' step='0.01' label='Stawka PPK' error={!!errors.retainment_rate} errorMessage={errors?.retainment_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='overtime_rate_multiplier' type='number' min='0.00' step='0.01' label='Mnożnik stawki nadgodzin' error={!!errors.overtime_rate_multiplier} errorMessage={errors?.overtime_rate_multiplier && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />

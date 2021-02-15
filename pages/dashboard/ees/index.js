@@ -6,7 +6,7 @@ import { getLayout } from '@/layouts/TopBarOnlyLayout'
 import { Title } from '@/common/Title'
 import { IconButton } from '@/common/Buttons'
 import { SvgEdit } from '@/icons'
-import { StyledTable, StyledThead, StyledTbody, StyledTr, StyledTh, StyledTd } from '@/common/Table'
+import { StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd } from '@/common/Table'
 
 const Ees = ({ allEesData }) => {
   const router = useRouter()
@@ -33,7 +33,7 @@ const Ees = ({ allEesData }) => {
               <StyledTh>Zasada przyznania premii</StyledTh>
             </StyledTr>
           </StyledThead>
-          <StyledTbody>
+          <StyledTBody>
           {allEesData.map(({ _id, symbol, percent, description }) => (
             <StyledTr key={_id}>
               <StyledTd>
@@ -52,7 +52,7 @@ const Ees = ({ allEesData }) => {
               </StyledTd>
             </StyledTr>
           ))}
-          </StyledTbody>
+          </StyledTBody>
         </StyledTable>
         )}
       </>
