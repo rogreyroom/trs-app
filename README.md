@@ -5,13 +5,13 @@ The application does not require any external database or internet connection as
 
 ## Application 🚀
 
-![Dashboard screen](screenshots/dashboard.png)
-![Dashboard leave screen](screenshots/leave-screen.png)
-![Dashboard rts screen](screenshots/rts-screen.png)
-![Dashboard ees screen](screenshots/ees-screen.png)
-![Dashboard hr reports screen](screenshots/hr-screen.png)
-![Dashboard employee details screen](screenshots/employee-details-screen.png)
-![Dashboard employee calendar screen](screenshots/employee-calendar-screen.png)
+![Dashboard screen](public/screenshots/dashboard.png)
+![Dashboard leave screen](public/screenshots/leave-screen.png)
+![Dashboard rts screen](public/screenshots/rts-screen.png)
+![Dashboard ees screen](public/screenshots/ees-screen.png)
+![Dashboard hr reports screen](public/screenshots/hr-screen.png)
+![Dashboard employee details screen](public/screenshots/employee-details-screen.png)
+![Dashboard employee calendar screen](public/screenshots/employee-calendar-screen.png)
 
 ## What is it
 
