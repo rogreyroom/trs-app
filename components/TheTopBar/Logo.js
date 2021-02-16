@@ -8,7 +8,7 @@ export const Logo = () => {
   return (
     <TextButton onClickAction={() => router.push('/')} >
       <Title isLogo>
-        RTS
+        TRS
       </Title>
     </TextButton>
   )
