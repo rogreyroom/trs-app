@@ -138,79 +138,43 @@ export const RtsForm = ({ id }) => {
     setEvalArray(evalArray => newEvalArray)
   }
 
-  const checkEWEvalPercentageMaximumValue = (isEdit) => {
-    const {year, month} = ewEvalCalendarDate
-    const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0]
-
-    const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
-      if ( curr.evaluation.length > 0 ) {
-        const ewEvals = curr.evaluation.reduce((ewRes, ewCurr) => {
-          if ( ewCurr.name === 'EW' ) {
-            ewRes.push(ewCurr)
-          }
-          return ewRes
-        }, [])
-
-        if ( ewEvals.length > 0 ) {
-          res.push(...ewEvals)
+  const handleEvaluationSubmit = (e) => {
+    e.preventDefault()
+    if (watchCalendarChange === null) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <EvalAlert
+              title='Uwaga'
+              message={`Nie wybrano daty! Ocena zostanie usunięta.`}
+              yesButtonLabel='OK'
+              isNoButtonPresent={false}
+              yesAction={() => {
+                setEvaluation(null)
+                setEvalDescription(null)
+                setEwEvalPercent(ewEvalPercent => 0)
+                onClose()
+              }}
+            />
+          )
         }
-      }
-      return res
-    }, [])
-
-    if ( isEdit === 'edit' && evalArray.length > 0 ) {
-      const evalArrayObj = evalArray[editedEvalIndex]
-      const evaluationArrayIndex = evaluationArray.findIndex(obj => JSON.stringify(obj) === JSON.stringify(evalArrayObj))
-      evaluationArray.splice(evaluationArrayIndex, 1)
+      })
+      return
     }
 
-    if ( evaluationArray.length > 0 ) {
-      const ewEvalValue = evaluationArray.reduce((res, curr) => {
-        return res + parseInt(curr.percent)
-      }, 0)
-
-      if ( ewEvalValue === 200 ) {
-        return { res: true, data: 0 }
-      } else if ( ewEvalValue < 200 ) {
-        if ( ( ewEvalValue + parseInt(ewEvalPercent) ) > 200 ) {
-          const newPercent = ( ewEvalValue + parseInt(ewEvalPercent) ) - 200
-          const maxToAddIs = parseInt(ewEvalPercent) - newPercent
-          return { res: true, data: maxToAddIs }
-        }
-        return { res: false, data: parseInt(ewEvalPercent) }
-      }
-    }
-    return { res: false, data:  parseInt(ewEvalPercent) }
+    evaluation !== 'EW' ? makeAdd(null) : evaluationPercentAmountCheck('add')
   }
+
+  const handleEvaluationEditSubmit = (e) => {
+    e.preventDefault()
+    evaluationPercentAmountCheck('edit')
+  }
+
+
 
   const evaluationPercentAmountCheck = (theCheck) => {
     const isToMuch = checkEWEvalPercentageMaximumValue(theCheck)
-
-    const makeAdd = (newPercent) => {
-      const percentIs = ['SP', 'MP', 'LP'].includes(evaluation) ? eesData.filter(({symbol}) => symbol === evaluation)[0].percent : newPercent
-      setEvalArray(evalArray => [...evalArray, {name: evaluation, description: evalDescription, percent: percentIs}])
-      setEvalDescription(evalDescription => '')
-      if (evaluation === 'EW') setEwEvalPercent(ewEvalPercent => 0)
-      setEvaluation(null)
-    }
-
-    const makeEdit = (newPercent) => {
-      const newEvalArray = [...evalArray]
-      evaluation === 'EW' ?
-        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription, percent : newPercent}
-        :
-        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription}
-      setEvalArray(evalArray => newEvalArray)
-      setEditedEvalIndex(editedEvalIndex => null)
-      setIsEvalEdit(isEvalEdit => false)
-      setEvalDescription(evalDescription => '')
-      setEwEvalPercent(ewEvalPercent => 0)
-      setEvaluation(null)
-    }
-
     if ( isToMuch.res && isToMuch.data > 0 ) {
-      console.log('isToMuch.res && isToMuch.data > 0')
-
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
@@ -272,17 +236,72 @@ export const RtsForm = ({ id }) => {
 
   }
 
-  const handleEvaluationEditSubmit = (e) => {
-    e.preventDefault()
-    evaluationPercentAmountCheck('edit')
+  const checkEWEvalPercentageMaximumValue = (isEdit) => {
+    const {year, month} = ewEvalCalendarDate
+    const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0]
+
+    const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
+      if ( curr.evaluation.length > 0 ) {
+        const ewEvals = curr.evaluation.reduce((ewRes, ewCurr) => {
+          if ( ewCurr.name === 'EW' ) {
+            ewRes.push(ewCurr)
+          }
+          return ewRes
+        }, [])
+
+        if ( ewEvals.length > 0 ) {
+          res.push(...ewEvals)
+        }
+      }
+      return res
+    }, [])
+
+    if ( isEdit === 'edit' && evalArray.length > 0 ) {
+      const evalArrayObj = evalArray[editedEvalIndex]
+      const evaluationArrayIndex = evaluationArray.findIndex(obj => JSON.stringify(obj) === JSON.stringify(evalArrayObj))
+      evaluationArray.splice(evaluationArrayIndex, 1)
+    }
+
+    if ( evaluationArray.length > 0 ) {
+      const ewEvalValue = evaluationArray.reduce((res, curr) => {
+        return res + parseInt(curr.percent)
+      }, 0)
+
+      if ( ewEvalValue === 200 ) {
+        return { res: true, data: 0 }
+      } else if ( ewEvalValue < 200 ) {
+        if ( ( ewEvalValue + parseInt(ewEvalPercent) ) > 200 ) {
+          const newPercent = ( ewEvalValue + parseInt(ewEvalPercent) ) - 200
+          const maxToAddIs = parseInt(ewEvalPercent) - newPercent
+          return { res: true, data: maxToAddIs }
+        }
+        return { res: false, data: parseInt(ewEvalPercent) }
+      }
+    }
+    return { res: false, data:  parseInt(ewEvalPercent) }
   }
 
-  const handleEvaluationSubmit = (e) => {
-    e.preventDefault()
-    evaluationPercentAmountCheck('add')
-  }
+    const makeAdd = (newPercent) => {
+      const percentIs = ['SP', 'MP', 'LP'].includes(evaluation) ? eesData.filter(({symbol}) => symbol === evaluation)[0].percent : newPercent
+      setEvalArray(evalArray => [...evalArray, {name: evaluation, description: evalDescription, percent: percentIs}])
+      setEvalDescription(evalDescription => '')
+      if (evaluation === 'EW') setEwEvalPercent(ewEvalPercent => 0)
+      setEvaluation(null)
+    }
 
-
+    const makeEdit = (newPercent) => {
+      const newEvalArray = [...evalArray]
+      evaluation === 'EW' ?
+        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription, percent : newPercent}
+        :
+        newEvalArray[editedEvalIndex] = {...newEvalArray[editedEvalIndex], description: evalDescription}
+      setEvalArray(evalArray => newEvalArray)
+      setEditedEvalIndex(editedEvalIndex => null)
+      setIsEvalEdit(isEvalEdit => false)
+      setEvalDescription(evalDescription => '')
+      setEwEvalPercent(ewEvalPercent => 0)
+      setEvaluation(null)
+    }
 
   const onSubmit = async (data) => {
     let defaultHours
