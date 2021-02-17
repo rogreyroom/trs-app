@@ -1,9 +1,9 @@
 {
   "name": "trs-app",
   "version": "0.1.0",
-  "description": "TRS is an app that lets an employer/manager to record working hours, overtime and evaluation of employees.",
+  "description": "It is a project to help some small companies keep employees' work timetable as well as evaluate employees and generate monthly reports.",
   "main": "main.js",
-  "author": "Robert Adamczewski <robert@adamczewski.me>",
+  "author": "Robert Adamczewski <contact@adamczewski.me>",
   "license": "MIT",
   "private": false,
   "repository": {
@@ -11,19 +11,21 @@
     "url": "https://github.com/rogreyroom/trs-app"
   },
   "build": {
+    "appId": "trs.app",
     "icon": "public/favicon.png",
-    "productName": "Next and Electron App",
+    "productName": "TRS",
     "files": [
       "build/**/*",
       "main.js"
     ],
-    "win": {},
-    "linux": {},
-    "mac": {}
+    "win": {
+      "target": "portable"
+    }
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export -o build",
+    "build-old": "next build && next export -o build",
+    "build": "next build",
     "start": "next start",
     "telemetry:status": "next telemetry status",
     "telemetry:enable": "next telemetry enable",
@@ -31,7 +33,7 @@
     "electron": "wait-on http://localhost:3000 && electron .",
     "electron-dev": "concurrently \"yarn dev\" \"yarn electron\"",
     "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder"
+    "electron-pack": "electron-builder --win portable"
   },
   "dependencies": {
     "@hookform/resolvers": "^1.0.1",
