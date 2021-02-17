@@ -27,7 +27,7 @@ When build just run the rts.exe file and you are ready to go.
 
   ```bash
 # Clone the Project
-$ git clone https://github.com/rogreyroom/rts-next-electron-app.git
+$ git clone https://github.com/rogreyroom/rts-app.git
 
 # Install dependencies
 $ yarn # or npm install
