@@ -13,7 +13,6 @@ margin: var(--xl) var(--xxs) var(--xxs) var(--xl);
 background-image: var(--g-panel);
 box-shadow: var(--s-panel);
 color: var(--c-white);
-height: calc(100% - var(--xl));
 `
 
 const EditEmployeePage = dynamic(() => import('@/subPages/Employee/EditEmployee'), { ssr: false })

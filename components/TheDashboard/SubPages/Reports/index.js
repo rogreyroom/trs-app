@@ -14,6 +14,7 @@ const StyledReportsPages = styled.div`
   grid-template-columns: minmax(293px, max-content) 1fr;
   grid-template-rows: 40px 1fr;
   grid-gap: var(--s);
+  height: inherit;
   min-height: 100%;
   max-width: 100%;
   justify-items: start;
@@ -36,10 +37,11 @@ const StyledReportsPages = styled.div`
   }
 `
 const StyledReportLinks = styled.section`
+margin: 0;
   border-right: 1px solid var(--c-blue-03);
   padding-top: var(--l);
   padding-right: var(--l);
-  min-height: 100%;
+  min-height: inherit;
 
   display: grid;
   grid-template-columns: 1fr;
@@ -48,6 +50,7 @@ const StyledReportLinks = styled.section`
 `
 const StyledReportPrintArea = styled.section`
   width: 100%;
+  height: 100%;
 `
 
 const getEmployeeYearsArray = (calendar) => {
