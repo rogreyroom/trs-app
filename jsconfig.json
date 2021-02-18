@@ -5,7 +5,7 @@
       "@/lib/*": ["lib/*"],
       "@/components/*": ["components/*"],
       "@/contexts/*": ["contexts/*"],
-      "@/icons": ["components/icons/index.js"],
+      "@/icons*": ["components/icons/index.js"],
       "@/layouts/*": ["components/layouts/*"],
       "@/common/*": ["components/common/*"],
       "@/dashboard/*": ["components/TheDashboard/*"],
