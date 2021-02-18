@@ -24,8 +24,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build-old": "next build && next export -o build",
-    "build": "next build",
+    "build-static": "next build && next export -o build",
+    "build": "NODE_PATH=. next build",
     "start": "next start",
     "telemetry:status": "next telemetry status",
     "telemetry:enable": "next telemetry enable",
@@ -33,7 +33,7 @@
     "electron": "wait-on http://localhost:3000 && electron .",
     "electron-dev": "concurrently \"yarn dev\" \"yarn electron\"",
     "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder --win portable"
+    "electron-pack": "electron-builder"
   },
   "dependencies": {
     "@hookform/resolvers": "^1.0.1",
