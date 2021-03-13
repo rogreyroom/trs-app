@@ -16,7 +16,7 @@ jspm_packages/
 /coverage
 
 # Next.js
-/.next/
+**/.next/
 /out/
 
 # Vercel
@@ -27,6 +27,7 @@ build/
 
 # Electron Distribution
 dist
+app
 
 # Project Build Automation Directory
 private
