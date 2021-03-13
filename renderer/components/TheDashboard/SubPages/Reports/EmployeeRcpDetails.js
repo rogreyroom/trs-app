@@ -157,7 +157,7 @@ const EmployeeRcpDetails = ({year, month}) => {
   const workedHours = getCurrentMonthWorkedHours(currentMonthData)
   const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
   const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
-  const sumOfHours = workedHours + overtimeHours + weekendsHours
+  const sumOfHours = workedHours + (overtimeHours * overtimeHoursMultiplier) + (weekendsHours * overtimeHoursMultiplier)
   const amountWorkedHours = workedHours * hourlyRate
   const amountOvertimeHours = (overtimeHours * overtimeHoursMultiplier) * overtimeRate
   const amountWeekendsHours = (weekendsHours * overtimeHoursMultiplier) * overtimeRate
