@@ -21,9 +21,11 @@ const StyledPercentWrapper = styled.div`
 `
 
 export const PercentInput = forwardRef(({ name, label, error, errorMessage, min, max, step,  value, onChange }, ref) => {
+  const handleFocus = (event) => event.target.select()
+
   return (
     <StyledPercentWrapper isEvalInput>
-      <StyledInput type='number' name={name} ref={ref} error={error} min={min} max={max} step={step} value={value} onChange={onChange} />
+      <StyledInput type='number' name={name} ref={ref} error={error} min={min} max={max} step={step} value={value} onChange={onChange} onFocus={handleFocus} />
       <Label name={name} label={label} />
       <Error error={error} errorMessage={errorMessage} />
     </StyledPercentWrapper>
