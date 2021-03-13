@@ -1,3 +1,4 @@
+import React from 'react'
 import Head from 'next/head'
 import { getLayout } from '@/layouts/LoginLayout'
 import { Login } from '@/components/TheLogin'
@@ -18,7 +19,7 @@ const Panel = styled.section`
   }
 `
 
-const Index = () => {
+const HomePage = () => {
   return (
     <>
       <Head>
@@ -33,5 +34,5 @@ const Index = () => {
   )
 }
 
-Index.getLayout = getLayout
-export default Index
+HomePage.getLayout = getLayout
+export default HomePage

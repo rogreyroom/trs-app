@@ -138,7 +138,6 @@ export const Modal = ({ children, title }) => {
         <StyledModalBody>
           { children }
         </StyledModalBody>
-        {/* Maybe actions should be pass as a children  */}
         <StyledModalActions>
           <StyledButton type='button' onClick={handleReset}>Anuluj</StyledButton>
           <StyledButton type='submit'>OK</StyledButton>

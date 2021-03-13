@@ -1,9 +1,5 @@
 import { forwardRef, useState, useEffect } from 'react'
-// import styled from 'styled-components';
 import { StyledInput, StyledFieldWrapper } from './_commonStyles'
-
-
-// This should go to @/common/*
 import { Label } from '@/common/Labels'
 import { Error } from '@/common/Errors'
 
@@ -15,10 +11,12 @@ export const Input = forwardRef(({ name, type, label, error, errorMessage, min, 
     isDisabled !== disable && setIsDisabled(isDisabled => disable)
   }, [disable])
 
+  const handleFocus = (event) => event.target.select()
+
   return (
     <StyledFieldWrapper>
       <Label name={name} label={label} />
-      <StyledInput type={type} name={name} ref={ref} error={error} min={min} max={max} step={step} value={value} onChange={onChange} disabled={isDisabled} />
+      <StyledInput type={type} name={name} ref={ref} error={error} min={min} max={max} step={step} value={value} onFocus={handleFocus} onChange={onChange} disabled={isDisabled} />
       <Error error={error} errorMessage={errorMessage} />
     </StyledFieldWrapper>
   )

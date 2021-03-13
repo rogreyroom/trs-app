@@ -13,6 +13,8 @@ const StyledRtsPage = styled.section`
 `
 
 const RtsPage = ({ employeeId }) => {
+
+  // console.log('RTSPAGE id', employeeId);
   return (
     <StyledRtsPage>
       <Title isWhite>Wprowadź dane RCP</Title>

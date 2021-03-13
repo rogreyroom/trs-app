@@ -2,30 +2,22 @@
 import { useForm, Controller } from 'react-hook-form'
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-// import { eesFormSchema } from '../../../lib/db/schemas'
-
 import { StyledFormControlsWrapper } from '@/common/CommonWrappers'
 import { SvgEdit, SvgRemove } from '@/icons'
 import { Input, PercentInput, EvaluationTextarea } from '@/common/Inputs';
 import { Button, ButtonSmall, IconButton } from '@/common/Buttons';
 import { Error } from '@/common/Errors'
 import { errorMessages } from '@/lib/errorMessages'
-
-// https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/core-concepts
 import { plLocale } from '@/lib/calendarLocale'
 import { Calendar } from "react-modern-calendar-datepicker"
-
 import { useRef, useState, useEffect, useContext } from 'react';
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { axios } from '@/lib/axios-config'
-import useSWR from 'swr';
-
+import useSWR, { mutate } from 'swr';
 import isWeekend from 'date-fns/isWeekend'
 import { getGivenMonthData } from '@/lib/utils'
-
 import { confirmAlert } from 'react-confirm-alert'
 import { EvalAlert } from './EvalAlert'
-
 import {
   StyledRtsFormContainer,
   StyledRtsForm,
@@ -38,9 +30,6 @@ import {
   StyledEvalListItem,
 } from './styles'
 
-const fetcher = url => axios.get(url).then(res => res.data)
-
-
 
 const schema = Joi.object().keys({
   due_date: Joi.object().length(3).required(),
@@ -52,6 +41,7 @@ const schema = Joi.object().keys({
 
 
 export const RtsForm = ({ id }) => {
+  const [employees, setEmployees] = useContext(DashboardContext).data
   const [employee, setEmployee] = useContext(DashboardContext).employee
   const [isEvalEdit, setIsEvalEdit] = useState(false)
   const [editedEvalIndex, setEditedEvalIndex] = useState(null)
@@ -76,7 +66,6 @@ export const RtsForm = ({ id }) => {
   // React-hook-form
   const formFieldsDefaultValues = {due_date: null, working_hours: 0, overtime_hours: 0, weekend_hours: 0, evaluationDescription: '', ew_percent: 0}
   const { register, control, watch, getValues, setValue, handleSubmit, reset, errors, formState: { isSubmitSuccessful } } = useForm({
-    // resolver: joiResolver(employeeFormSchema),
     resolver: joiResolver(schema),
     defaultValues: formFieldsDefaultValues
   })
@@ -84,8 +73,10 @@ export const RtsForm = ({ id }) => {
   const watchCalendarChange = watch('due_date')
   const [isRtsEdit, setIsRtsEdit] = useState(false)
   // Get ees data
-  const { data: eesData } = useSWR(`api/ees/`, fetcher)
+  const { data: eesData } = useSWR(`api/ees/`)
+  const { data: employeesData } = useSWR('/api/employees')
 
+  const getEmployeeData = (id, data) => data.filter(employee => employee._id === id)[0]
 
   const handleHours = (getValuesFunction) => {
     const newValue = getValuesFunction('working_hours')
@@ -203,7 +194,7 @@ export const RtsForm = ({ id }) => {
         }
       })
     } else if ( isToMuch.res && isToMuch.data === 0 ) {
-      console.log('isToMuch.res && isToMuch.data === 0')
+      // console.log('isToMuch.res && isToMuch.data === 0')
 
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -224,7 +215,7 @@ export const RtsForm = ({ id }) => {
         }
       })
     } else if ( !isToMuch.res ) {
-      console.log('!isToMuch.res')
+      // console.log('!isToMuch.res')
 
       if ( theCheck === 'add' ) {
         makeAdd(isToMuch.data)
@@ -257,6 +248,7 @@ export const RtsForm = ({ id }) => {
     }, [])
 
     if ( isEdit === 'edit' && evalArray.length > 0 ) {
+      console.log('isEdit');
       const evalArrayObj = evalArray[editedEvalIndex]
       const evaluationArrayIndex = evaluationArray.findIndex(obj => JSON.stringify(obj) === JSON.stringify(evalArrayObj))
       evaluationArray.splice(evaluationArrayIndex, 1)
@@ -277,6 +269,13 @@ export const RtsForm = ({ id }) => {
         }
         return { res: false, data: parseInt(ewEvalPercent) }
       }
+    }
+    console.log('ewEvalValue', evaluationArray, ewEvalPercent);
+    // if new entry should be checked if the entry is equal or not 200
+    if ( parseInt(ewEvalPercent) > 200 ) {
+      const newPercent = parseInt(ewEvalPercent) - 200
+      const maxToAddIs = parseInt(ewEvalPercent) - newPercent
+      return { res: true, data: maxToAddIs }
     }
     return { res: false, data:  parseInt(ewEvalPercent) }
   }
@@ -321,19 +320,68 @@ export const RtsForm = ({ id }) => {
     const monthIs = resultData.due_date.month
     const valueIs = { ...resultData }
 
+    // mutate(`/api/employees/${id}`, { field: 'update_rts', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }}, false)
+
     if (isRtsEdit){
+      // mutate([...employees, employeesData])
       await axios.put(`/api/employees/${id}`, { field: 'update_rts', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }})
       setIsRtsEdit(isRtsEdit => false)
     } else {
+      // mutate([...employees, employeesData])
+      // mutate([...employee, employeeData])
+      // mutate(`/api/employees/${id}`)
       await axios.put(`/api/employees/${id}`, { field: 'add_rts', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }})
     }
+
+
+    // console.log('onSubmit', resultData, employees);
 
     setSubmittedData(submittedData => resultData)
     reset(formFieldsDefaultValues)
     setValue('due_date', null)
+
+
+// console.log('------isSubmitSuccessful', isSubmitSuccessful);
+
+      mutate('/api/employees', async mutatedEmployees => {
+        const updatedEmployees = await axios.get('/api/employees')
+        const updatedEmployee = getEmployeeData(id, updatedEmployees.data)
+          setEmployee(employee => updatedEmployee)
+      })
+
+
+    // if (isSubmitSuccessful) {
+
+    //   console.log('onSubmit isSubmitSuccessful =======================================', employees);
+
+    //   mutate('/api/employees', async mutatedEmployees => {
+    //     // let's update the todo with ID `1` to be completed,
+    //     // this API returns the updated data
+    //     const updatedEmployees = await axios.get('/api/employees')
+
+    //     setEmployees(employees => updatedEmployees)
+
+    //     // filter the list, and return it with the updated item
+    //     // const filteredTodos = todos.filter(todo => todo.id !== '1')
+    //     // return [...filteredTodos, updatedTodo]
+    //   })
+
+
+    //   console.log('===================================================================', employees);
+
+    // }
+
+
+    // const employeeData = getEmployeeData(id, employeesData)
+
+    // console.log('onSubmit employeeData', id, employeeData);
+    // setEmployee(employee => employeeData)
+
+    // console.log('onSubmit employee', employee)
   }
 
-  const handleReset = () => {
+  const handleReset = (e) => {
+    e.preventDefault()
     reset(formFieldsDefaultValues)
     setEvaluation(null)
     setEvalDescription(null)
@@ -344,15 +392,24 @@ export const RtsForm = ({ id }) => {
   const isEqual = (...objects) => objects.every(obj => JSON.stringify(obj) === JSON.stringify(objects[0]))
 
   const getCurrentMonthData = (employeeCalendar, givenYear, givenMonth, givenDate) => {
+    // console.log('getCurrentMonthData')
     const givenYearMonths = employeeCalendar.filter(({year}) => parseInt(year) === givenYear)[0]?.months
     const givenMonthRts = givenYearMonths?.filter(({month}) => parseInt(month) == givenMonth)[0]?.rts
+
+    // console.log('getCurrentMonthData givenMonthRts', givenMonthRts)
     return givenMonthRts?.filter(({ due_date }) => isEqual(due_date, givenDate))[0]
   }
 // ------end utils
 
   useEffect(() => {
+    // console.log('RTS useEffect', employees, employeesData);
+    // const mut = () => mutate(`/api/employees/`)
+    // const r = mut()
+
+    // console.log('RTS useEffect -------> mutated', employees, employeesData, mut, r);
+
     if (watchCalendarChange !== null) {
-       if ( isWeekend(new Date(watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange.day)) ) {
+      if ( isWeekend(new Date(watchCalendarChange.year, watchCalendarChange.month - 1, watchCalendarChange.day)) ) {
         setIsDateWeekend(isDateWeekend => false)
         setIsDateWeekday(isDateWeekday => true)
       } else {
@@ -363,9 +420,55 @@ export const RtsForm = ({ id }) => {
       setEvaluation(evaluation => '')
       setEvalDescription(evalDescription => '')
       setEwEvalCalendarDate(ewEvalCalendarDate => watchCalendarChange)
+
+
+      // console.log('watchCalendarChange employee', employee.calendar, watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange);
+
+
+
+      // console.log('onSubmit isSubmitSuccessful =======================================', employees);
+
+      // mutate('/api/employees', async mutatedEmployees => {
+      //   // let's update the todo with ID `1` to be completed,
+      //   // this API returns the updated data
+      //   const updatedEmployees = await axios.get('/api/employees')
+
+      //   // setEmployees(employees => updatedEmployees)
+
+      //   console.log('updatedEmployees', id, updatedEmployees.data);
+
+      //   const updatedEmployee = getEmployeeData(id, updatedEmployees.data)
+
+
+      //   // const updatedEmployeeCheck = Object.values(updatedEmployee).join('')
+      //   // const employeeCheck = Object.values(employee).join('')
+
+      //   // console.log(updatedEmployeeCheck, employeeCheck);
+
+      //   // if ( updatedEmployeeCheck !== employeeCheck ) {
+      //   //   console.log('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
+      //     setEmployee(employee => updatedEmployee)
+      //   // }
+
+
+
+      //   // filter the list, and return it with the updated item
+      //   // const filteredTodos = todos.filter(todo => todo.id !== '1')
+      //   // return [...filteredTodos, updatedTodo]
+      // })
+
+
+      // console.log('===================================================================', employees);
+
+
+
       const res = getCurrentMonthData(employee.calendar, watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange)
 
+      // console.log('RES', res);
+
       if ( res ) {
+
+        // console.log('useEffect res', res);
         setEvalArray(evalArray => [...res.evaluation])
         setWorkingHours(workingHours => res.working_hours)
         setOvertimeHours(overtimeHours => res.overtime_hours)
@@ -381,8 +484,13 @@ export const RtsForm = ({ id }) => {
     }
 
     if (isSubmitSuccessful) {
-      console.log('isSubmitSuccessful')
+      // console.log('isSubmitSuccessful')
       // reset(formFieldsDefaultValues)
+
+      // setEmployees(employees => employeesData)
+      // const employeeData = getEmployeeData(id)
+      // employeeData && setEmployee(employee => employeeData)
+
       reset({...submittedData})
       setValue('due_date', null)
       setEvaluation(null)
@@ -391,8 +499,6 @@ export const RtsForm = ({ id }) => {
 
     }
   }, [isSubmitSuccessful, submittedData, reset, watchCalendarChange, employee]);
-
-  // TODO: add error handling for inputs
 
   return (
       <StyledRtsFormContainer>
@@ -530,7 +636,7 @@ export const RtsForm = ({ id }) => {
           </StyledRtsEvalOutputWrapper>
 
           <StyledFormControlsWrapper>
-            <Button type='button' onClickAction={handleReset}>Anuluj</Button>
+            <Button type='button' onClickAction={(e) => handleReset(e)}>Anuluj</Button>
             <Button type='submit'>{isRtsEdit ? 'Zmień' : 'Dodaj'}</Button>
           </StyledFormControlsWrapper>
         </StyledRtsForm>

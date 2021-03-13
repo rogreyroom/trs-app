@@ -1,11 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
-import dynamic from 'next/dynamic'
 import styled from 'styled-components'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { Title } from "@/common/Title"
 import { TextButton } from "@/common/Buttons"
 import { Select } from '@/common/Inputs'
 import { getEmployeeYears } from '@/lib/utils'
+import EmployeeRcpDetailsPage  from './EmployeeRcpDetails'
+import EmployeeRcpCalendarPage from './EmployeeRcpCalendar'
 
 const StyledReportsPages = styled.div`
   margin: 0;
@@ -45,7 +46,8 @@ margin: 0;
 
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, 50px);
+  /* grid-template-rows: repeat(4, 50px); */
+  grid-template-rows: repeat(2, 50px) repeat(2, min-content);
   grid-gap: var(--l);
 `
 const StyledReportPrintArea = styled.section`
@@ -77,8 +79,8 @@ const getEmployeeMonthsArray = () => {
   ]
 }
 
-const EmployeeRcpDetailsPage = dynamic(() => import('./EmployeeRcpDetails'), { loading: () => <p>...loading ManagerRcpGeneralPage</p>,ssr: false })
-const EmployeeRcpCalendarPage = dynamic(() => import('./EmployeeRcpCalendar'), { loading: () => <p>...loading ManagerRcpDetailsPage</p>,ssr: false })
+
+
 
 const ReportsPage = ({ employeeId }) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee

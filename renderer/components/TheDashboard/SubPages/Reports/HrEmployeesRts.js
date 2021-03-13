@@ -1,14 +1,9 @@
-import { useContext, useRef } from 'react'
-import { DashboardContext } from '@/contexts/DashboardContext'
+import { useRef, useState, useEffect } from 'react'
 import format from 'date-fns/format'
-
 import { getMonthName, getGivenMonthData, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth } from '@/lib/utils'
-
 import { useReactToPrint } from 'react-to-print'
 import { IconButton } from '@/common/Buttons'
-import { SvgPrint } from '@/icons'
-
-
+import { SvgPrint, SvgRemove } from '@/icons'
 import styled from 'styled-components';
 
 const StyledHrRtsReport = styled.section`
@@ -42,13 +37,15 @@ const StyledPrintArea = styled.div`
     width: 100%;
 
     @media print {
-      max-width: 80%;
+      max-width: 100%;
       margin: 0 auto;
     }
   }
 
   & tr {
     height: 45px;
+
+
   }
 
   & th {
@@ -59,6 +56,12 @@ const StyledPrintArea = styled.div`
 
     @media print {
       color: var(--c-print-black);
+    }
+
+    &:first-child {
+      @media print {
+        display: none;
+      }
     }
   }
 
@@ -72,6 +75,18 @@ const StyledPrintArea = styled.div`
 
     @media print {
       color: var(--c-print-black);
+    }
+
+    &:first-child {
+      padding: var(--xxs);
+
+      & button {
+        margin: 0 auto;
+      }
+
+      @media print {
+        display: none;
+      }
     }
 
     & span {
@@ -108,9 +123,15 @@ const StyledPrintAreaHeader = styled.header`
      }
 `
 
-const HrRcp = ({ year, month }) => {
-  const [employees, setEmployees] = useContext(DashboardContext).data
+const HrRcp = ({ year, month, employees }) => {
   const tableRef = useRef()
+
+  const [employeesData, setEmployeesData] = useState(employees)
+  const [updatedEmployees, setUpdatedEmployees] = useState(employeesData)
+
+  useEffect(() => {
+    setEmployeesData(employeesData => employeesData)
+  }, [employeesData])
 
   const handlePrint = useReactToPrint({
     content: () => tableRef.current,
@@ -130,6 +151,13 @@ const HrRcp = ({ year, month }) => {
     return { employeeHoursSum: sumOfHours, employeeHolidaysSum: holidayDays, employeeSickSum: sickDays, employeeOtherLeaveSum: otherLeaveDays }
   }
 
+  console.log(employeesData);
+
+  const handleRemoveFromViewClick = (idx) => {
+    setUpdatedEmployees(updatedEmployees => updatedEmployees = employeesData.splice(idx,1))
+    setEmployeesData(employeesData => employeesData)
+  }
+
   return (
     <StyledHrRtsReport>
       <IconButton size='xl' isActive={false} onClickAction={handlePrint}>
@@ -144,6 +172,7 @@ const HrRcp = ({ year, month }) => {
         <table>
           <thead>
             <tr>
+              <th>Usuń</th>
               <th>Pracownik</th>
               <th>Ilość przepracowanych godzin</th>
               <th>Ilość dni urlopu</th>
@@ -152,14 +181,21 @@ const HrRcp = ({ year, month }) => {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee, idx) => {
+            {employeesData.map((employee, idx) => {
               const fullName = `${employee.name} ${employee.surname}`
               const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0]
               const employeeData = getEmployeeData(currentMonthData)
               const { employeeHoursSum, employeeHolidaysSum, employeeSickSum, employeeOtherLeaveSum } = employeeData
 
+
               return (
+                // !isHidden &&
                 <tr key={idx}>
+                  <td>
+                    <IconButton size='normal' isActive={false} onClickAction={() => handleRemoveFromViewClick(idx)} >
+                      <SvgRemove />
+                    </IconButton>
+                  </td>
                   <td>{ fullName } { employee.juvenile_worker && <span>pracownik młodociany</span> }</td>
                   <td>{ employeeHoursSum }</td>
                   <td>{ employeeHolidaysSum }</td>

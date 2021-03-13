@@ -3,14 +3,10 @@ import { useController } from "react-hook-form"
 import { plLocale } from '@/lib/calendarLocale'
 import DatePicker from "react-modern-calendar-datepicker";
 import { StyledInput, StyledFieldWrapper } from './_commonStyles'
-
-// This should go to @/common/*
 import { Label } from '@/common/Labels'
 import { Error } from '@/common/Errors'
-//---------------
 
-
-export const InputDatePicker = forwardRef(({ control, name, label, error, errorMessage, isRequired}, ref) => {
+export const InputDatePicker = forwardRef(({ control, name, label, error, errorMessage }, ref) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const { field: { value, ...props  } , meta } = useController({name, control});
 

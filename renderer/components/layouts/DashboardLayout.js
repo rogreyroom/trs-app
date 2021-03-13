@@ -1,14 +1,23 @@
+import { AppContainer } from './AppContainer'
 import { DashboardProvider } from '@/contexts/DashboardContext'
-import { AppContainer } from '@/components/AppContainer'
 import { Header } from '@/components/TheTopBar'
+import { SWRConfig } from 'swr'
+import { axios } from '@/lib/axios-config'
 
 const DashboardLayout = ({ children }) => {
   return (
     <AppContainer dashboard>
       <Header />
-      <DashboardProvider>
-        { children }
-      </DashboardProvider>
+      <SWRConfig
+        value={{
+          refreshInterval: 2000,
+          fetcher: (...args) => axios.get(...args).then(res => res.data)
+        }}
+      >
+        <DashboardProvider>
+          { children }
+        </DashboardProvider>
+      </SWRConfig>
     </AppContainer>
   )
 }

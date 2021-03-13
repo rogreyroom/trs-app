@@ -11,7 +11,6 @@ export const StyledRtsForm = styled.form`
     display: grid;
     grid-template-areas: 'calendar inputs' 'calendar buttons' 'calendar evaluation' 'data data' 'controls controls';
     grid-template-columns: repeat(2, 1fr);
-    /* grid-template-rows: repeat(2, auto) auto 40px; */
     grid-template-rows: repeat(3, auto) 1fr 40px;
     grid-gap: var(--xs);
     min-height: 100%;
@@ -29,7 +28,6 @@ export const StyledRtsForm = styled.form`
     margin: 0;
 
     & > h4 {
-      /* grid-row: 1 / 1; */
       grid-area: title;
       justify-self: start;
       font-size: var(--fs-h4);
@@ -106,7 +104,6 @@ export const StyledRtsEvalInputsWrapper = styled.section`
   grid-area: evaluation;
   align-self: end;
   display: grid;
-  /* grid-template-areas: 'title percent . .' 'textarea button'; */
   grid-template-columns: 50px 80px 1fr max-content;
   grid-template-rows: var(--xl) 130px;
   grid-gap: var(--xs);
@@ -137,7 +134,6 @@ export const StyledRtsEvalInputsWrapper = styled.section`
 export const StyledRtsEvalOutputWrapper = styled.section`
   grid-area: data;
   margin: 0;
-  /* background: hotpink; */
 `
 
 export const StyledEvalList = styled.ul`

@@ -1,4 +1,4 @@
-import { AppContainer } from '@/components/AppContainer'
+import { AppContainer } from './AppContainer'
 
 const LoginLayout = ({ children }) => {
   return (

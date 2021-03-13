@@ -1,17 +1,12 @@
-import { useState, useContext, useRef } from 'react'
+import {  useContext, useRef } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import format from 'date-fns/format'
 import { pl } from 'date-fns/locale'
-
-import { StyledTable, StyledThead, StyledTBody, StyledTFooter, StyledTr, StyledTh, StyledTd } from '@/common/Table'
-import { getMonthName, getGivenMonthData, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth } from '@/lib/utils'
-
+import { getGivenMonthData, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth } from '@/lib/utils'
 import { useReactToPrint } from 'react-to-print'
 import { IconButton } from '@/common/Buttons'
 import { SvgPrint } from '@/icons'
 import styled from 'styled-components';
-
-
 
 const StyledEmployeeDetails = styled.section`
   & button {
@@ -49,7 +44,6 @@ const StyledPrintArea = styled.div`
     @media print {
       color: var(--c-print-black);
     }
-    /* padding: 0.25em 0.5em; */
   }
 
   & > h4 {
@@ -59,7 +53,6 @@ const StyledPrintArea = styled.div`
     font-size: var(--fs-h4);
     font-weight: var(--fw-light);
     color: var(--c-white);
-    /* padding: 0.25em 0.5em; */
     @media print {
       color: var(--c-print-black);
     }
@@ -82,7 +75,7 @@ const StyledPrintArea = styled.div`
     width: 100%;
 
     @media print {
-      max-width: 80%;
+      max-width: 100%;
       margin: 0 auto;
     }
   }
@@ -122,10 +115,19 @@ const StyledPrintArea = styled.div`
       }
     }
 
+    &:last-child {
+      white-space: nowrap;
+      min-width: 100px;
+    }
+
     @media print {
       color: var(--c-print-black);
+      padding: var(--xxs);
     }
+
   }
+
+
 
   & div {
     grid-area: summary;
@@ -153,12 +155,12 @@ const EmployeeRcpDetails = ({year, month}) => {
   const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier
 
   const workedHours = getCurrentMonthWorkedHours(currentMonthData)
-  const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier
-  const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier
+  const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
+  const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
   const sumOfHours = workedHours + overtimeHours + weekendsHours
   const amountWorkedHours = workedHours * hourlyRate
-  const amountOvertimeHours = overtimeHours * overtimeRate
-  const amountWeekendsHours = weekendsHours * overtimeRate
+  const amountOvertimeHours = (overtimeHours * overtimeHoursMultiplier) * overtimeRate
+  const amountWeekendsHours = (weekendsHours * overtimeHoursMultiplier) * overtimeRate
   const amountSumOfHours = amountWorkedHours + amountOvertimeHours + amountWeekendsHours
 
   const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
@@ -242,13 +244,13 @@ const EmployeeRcpDetails = ({year, month}) => {
 
             <tr>
               <td>Nadgodziny</td>
-              <td>{ overtimeHours } <span>godz</span></td>
+              <td>{ overtimeHours * overtimeHoursMultiplier } <span>godz</span></td>
               <td>{ amountOvertimeHours } <span>pln</span></td>
             </tr>
 
             <tr>
               <td>Dyżur</td>
-              <td>{ weekendsHours } <span>godz</span></td>
+              <td>{ weekendsHours * overtimeHoursMultiplier } <span>godz</span></td>
               <td>{ amountWeekendsHours } <span>pln</span></td>
             </tr>
 

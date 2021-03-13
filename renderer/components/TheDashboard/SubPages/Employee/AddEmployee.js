@@ -21,5 +21,3 @@ export const AddEmployeePage = () => {
     </StyledContentSection>
   )
 }
-
-// export default AddEmployeePage

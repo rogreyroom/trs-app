@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useContext, useState, useEffect } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { TextButton } from '@/common/Buttons'
-
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 
@@ -50,23 +50,31 @@ export const EmployeeList = () => {
   const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter
   const [employee, setEmployee] = useContext(DashboardContext).employee
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState('')
   const { data } = useSWR(`/api/employees`, { initialData: employees })
+
+  // console.log('EmployeeList employee', employee, isActive);
+  const router = useRouter()
 
   useEffect(() => {
     setEmployees(employees => data)
-    return () => {
-      setEmployees(employees => employees)
-    }
-  }, [data])
+    employee && setIsActive(isActive => employee._id)
+    // return () => {
+    //   setEmployees(employees => employees)
+    // }
+  }, [data, employee])
 
   const getEmployeeData = (id) => data.filter(employee => employee._id === id)[0]
 
-  const handleEmployeeClick = (id) => {
+  const handleEmployeeClick = (e,id) => {
+    e.preventDefault()
     setAddEmployeePage(addEmployeePage => null)
     const employeeData = getEmployeeData(id)
     employeeData && setEmployee(employee => employeeData)
+    // console.log('handleEmployeeClick id', id, ' isActiveE ', isActive);
     setIsActive(isActive => id)
+    // setIsActive(isActive => id)
+    router.push('/dashboard')
   }
 
   return (
@@ -76,7 +84,7 @@ export const EmployeeList = () => {
           employees.map(({ _id, name, surname, employment_status }) => {
             return employment_status === employeesFilter ? (
             <StyledListItem key={ `${_id}${name}${surname}` }>
-              <TextButton isActive={isActive === _id ? true : false} onClickAction={() => handleEmployeeClick(_id)}>
+              <TextButton isActive={isActive === _id ? true : false} onClickAction={(e) => handleEmployeeClick(e,_id)}>
                 {surname} {name}
               </TextButton>
             </StyledListItem>

@@ -1,8 +1,6 @@
 import { forwardRef } from 'react'
 import styled, { css } from 'styled-components';
 import { StyledInput } from './_commonStyles'
-
-// This should go to @/common/*
 import { Label } from '@/common/Labels'
 import { Error } from '@/common/Errors'
 

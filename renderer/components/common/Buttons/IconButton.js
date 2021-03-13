@@ -27,7 +27,7 @@ const StyledIconButton = styled.button.attrs(props => ({
     color: var(--c-accent);
   }
 
-  &:focus {
+  &:focus, &:active {
     outline: 3px solid transparent;
     box-shadow: 0 0 1px 2px var(--c-accent);
     filter: var(--s-glow);

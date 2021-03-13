@@ -39,7 +39,6 @@ export const CommonInputStyles = css`
     height: 2.25rem;
   }
 
-  /* TODO: Style the disable version if needed */
   &[disabled] {
     --input-border: var(--c-blue-01);
     background-color: var(--c-blue-01);

@@ -1,4 +1,3 @@
-
 import styled from 'styled-components'
 import { axios } from '@/lib/axios-config'
 import { format } from 'date-fns'
@@ -92,6 +91,8 @@ export const LeaveData = ({ leaveType, id }) => {
   const title = getTitle(leaveType, currentYearIs)
   const employeeMonthsData = employee.calendar.find(year => year.year === currentYearIs).months
   const leaveDays = getLeaveDays(employeeMonthsData, leaveType)
+
+
 
   const handleSingleLeaveDelete = async (e, leave) => {
     e.preventDefault()

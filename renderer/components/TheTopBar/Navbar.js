@@ -21,15 +21,15 @@ export const Navbar = () => {
 
   return (
     <StyledNav>
-      <Button isActive={router.route === '/dashboard' ? true : false} onClickAction={() => router.push('/dashboard')} >
+      <Button isActive={router.route === '/employees' ? true : false} onClickAction={() => router.push('/employees')} >
         <SvgDashboard />
         Panel kierownika
       </Button>
-      <Button isActive={router.route === '/dashboard/ees' ? true : false} onClickAction={() => router.push('/dashboard/ees')} >
+      <Button isActive={router.route === '/ees' ? true : false} onClickAction={() => router.push('/ees')} >
         <SvgEes />
         SOP
       </Button>
-      <Button isActive={router.route === '/dashboard/reports' ? true : false} onClickAction={() => router.push('/dashboard/reports')} >
+      <Button isActive={router.route === '/reports' ? true : false} onClickAction={() => router.push('/reports')} >
         <SvgPdf />
         Raporty
       </Button>

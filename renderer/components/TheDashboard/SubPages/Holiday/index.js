@@ -3,7 +3,6 @@ import { Title } from "@/common/Title"
 import { HolidayForm } from "./Form"
 import { LeaveData } from '@/dashboard/LeaveData'
 
-
 const HolidayPage = ({ employeeId }) => {
   return (
     <StyledLeavePages>

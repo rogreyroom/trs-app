@@ -1,3 +1,5 @@
+import { useState, useEffect, useContext } from 'react';
+import { DashboardContext } from '@/contexts/DashboardContext'
 import styled from 'styled-components';
 import { OptionsNav } from './OptionsNav'
 
@@ -19,6 +21,7 @@ grid-template-rows: 32px 18px;
   grid-row: 2;
   margin: 0;
   font-size: var(--s);
+  font-weight: var(--fw-light);
   color: var(--c-blue-03);
   align-self: end;
 }
@@ -37,13 +40,24 @@ const StyledTitle = styled.h1`
   margin: 0;
 `
 
-export const Header = ({ employeeId, name, position }) => {
+
+export const Header = ({ employeeId }) => {
+  const [employee, setEmployee] = useContext(DashboardContext).employee
+  const [employeeChange, setEmployeeChange] = useState(null)
+  const [employeeData, setEmployeeData] = useState({ id: employee._id, name: `${employee.name} ${employee.surname}`, position: employee.position, juvenile: employee.juvenile, status: employee.status  } || {})
+
+  useEffect(() => {
+    if (employeeChange !== employeeId) {
+      setEmployeeChange(employeeChange => employeeId)
+    }
+    setEmployeeData(employeeData => employeeData = { id: employee._id, name: `${employee.name} ${employee.surname}`, position: employee.position, juvenile: employee.juvenile, status: employee.status  })
+  }, [employeeId, employee])
 
   return (
     <EmployeeHeader>
-      <StyledTitle>{ name }</StyledTitle>
-      <OptionsNav id={employeeId} />
-      <span>{ position }</span>
+      <StyledTitle>{ employeeData.name }</StyledTitle>
+      <OptionsNav id={employeeData.id} />
+      <span>{ employeeData.position }</span>
     </EmployeeHeader>
   )
 }

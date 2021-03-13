@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect} from 'react';
 import { SubPagesContext } from '@/contexts/SubPagesContext';
+import { DashboardContext } from '@/contexts/DashboardContext'
 import { TextButton } from '@/common/Buttons';
 import {
   getCurrentMonthData,
@@ -45,7 +46,6 @@ const EmployeeDetailsSectionContent = styled.section`
 grid-area: ${props => props.area};
 display: grid;
 grid-template-columns: 226px 96px;
-/* 245px 35px; */
 grid-auto-rows: minmax(32px, min-content);
 margin: 0 0 var(--xl) 0;
 
@@ -69,22 +69,40 @@ margin: 0 0 var(--xl) 0;
 `
 
 
-export const DetailsSection = ({ employeeCalendar, assignedLeaveDays, employmentDates }) => {
+export const DetailsSection = ({ employeeId, calendar, leaveDays }) => {
   const [page, setPage] = useContext(SubPagesContext).page
+  const [employee, setEmployee] = useContext(DashboardContext).employee
+  // const [employeeCalendar, setEmployeeCalendar] = useState(calendar)
+  // const [assignedLeaveDays, setAssignedLeaveDays] = useState(leaveDays)
 
-  const overdue = assignedLeaveDays.overdue
-  const assigned = assignedLeaveDays.assigned
+  const [employeeChange, setEmployeeChange] = useState(null)
+  const [employeeData, setEmployeeData] = useState({ id :employeeId, calendar: calendar, leaveDays: leaveDays })
+
+  useEffect(() => {
+    if (employeeChange !== employeeId) {
+      setEmployeeChange(employeeChange => employeeId)
+    }
+    // setEmployeeData(employeeData => employeeData = { id: employee._id, calendar: employee.calendar, leaveDays: {overdue: employee.overdue_leave_amount, assigned: employee.assigned_leave_amount} })
+    setEmployeeData(employeeData => employeeData = { id :employeeId, calendar: calendar, leaveDays: leaveDays })
+  }, [employeeId, calendar])
+
+
+  console.log('DetailsSection employeeData', employeeData, employee);
+
+  const overdue = employeeData.leaveDays.overdue
+  const assigned = employeeData.leaveDays.assigned
   const leaveDaysAmount = overdue + assigned
-  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeCalendar)  // NaN
-  const sickDaysAmount = getUsedSickDays(employeeCalendar)
-  const otherLeaveDaysAmount = getUsedLeaveDays(employeeCalendar)
-  const currentMonthData = getCurrentMonthData(employeeCalendar)[0]
+  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeData.calendar)  // NaN
+  const sickDaysAmount = getUsedSickDays(employeeData.calendar)
+  const otherLeaveDaysAmount = getUsedLeaveDays(employeeData.calendar)
+  const currentMonthData = getCurrentMonthData(employeeData.calendar)[0]
   const workedHours = getCurrentMonthWorkedHours(currentMonthData)
   const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
   const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
   const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
   const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData)
   const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData)
+
 
   const handleSubPageClick = (pageName) => {
     setPage(page => pageName)

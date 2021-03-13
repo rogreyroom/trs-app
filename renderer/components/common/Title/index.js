@@ -1,4 +1,3 @@
-// import Link from 'next/link'
 import styled from 'styled-components'
 
 const StyledTitle = styled.h1.attrs(props => ({

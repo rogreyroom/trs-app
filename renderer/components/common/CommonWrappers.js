@@ -1,7 +1,5 @@
 import styled, { css }  from 'styled-components';
 
-
-
 export const StyledForm = styled.form`
   --formPadding: ${props => props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
 
@@ -11,24 +9,12 @@ export const StyledForm = styled.form`
   align-content: center;
   justify-content: space-between;
   width: 100%;
-  /* max-width: 700px; */
   min-height: 100%;
   padding: var(--formPadding);
 `
 
 export const StyledEesFormContainer = styled.section`
   --formTopMargin: ${props => props.topMargin ? `var(--${props.topMargin})` : 'var(--normal)'};
-
-  /* grid-row: 2; */
-
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  margin-top: var(--formTopMargin); */
-
   display: grid;
   grid-template-areas: '. . . .' '. symbol percent .' '. type count_type .' '. description description .' '. . . .';
   grid-template-columns: auto repeat(2, 380px) auto;
@@ -54,22 +40,10 @@ export const StyledEesFormContainer = styled.section`
   & > div:last-child {
     grid-area: description;
   }
-
-
 `
 
 export const StyledEesForm = styled.form`
   --formPadding: ${props => props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
-
-  /* display: flex;
-  flex-direction: column;
-  gap: var(--m);
-  align-content: center;
-  justify-content: space-between;
-  width: 100%;
-  /* max-width: 700px; */
-  /* min-height: 100%; */
-  /* padding: var(--formPadding);  */
 
   display: grid;
   grid-template-areas: 'calendar' 'controls';
@@ -79,7 +53,6 @@ export const StyledEesForm = styled.form`
   width: 100%;
   margin: 0;
 `
-
 
 export const StyledCalendarForm = styled.form`
   display: grid;
@@ -91,21 +64,7 @@ export const StyledCalendarForm = styled.form`
   margin: 0;
 `
 
-
-
-
-
-
-
-
 export const StyledFieldWrapper = styled.div`
-  /* display: grid;
-  grid-template-areas:
-    'label field';
-  grid-template-columns: 235px 240px;
-  grid-template-rows: var(--xl);
-  grid-gap: var(--s);
-  align-items: center; */
   position: relative;
   margin: 0;
   display: flex;
@@ -148,45 +107,6 @@ export const StyledSelectWrapper = styled.div`
   }
 `
 
-// export const StyledCalendarLeaveWrapper = styled.section`
-//   grid-area: calendar;
-//   display: grid;
-//   grid-template-areas: 'title' 'error' 'calendar';
-//   grid-template-columns: 1fr;
-//   grid-template-rows: var(--xl) var(--m) 1fr;
-//   justify-items: center;
-//   align-items: start;
-//   grid-gap: var(--xs);
-//   margin: 0;
-//   max-height: 100%;
-//   position: relative;
-
-//   & > h4 {
-//     grid-area: title;
-//     justify-self: center;
-//     font-size: var(--fs-h5);
-//     font-weight: var(--fw-normal);
-//     color: var(--c-white);
-//   }
-
-//   & > span {
-//     grid-area: error;
-//     position: relative;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     top: 0;
-//     align-content: center;
-//   }
-
-//   & > div {
-//     grid-area: calendar;
-//     justify-self: center;
-//     align-self: center;
-//   }
-
-// `
-
 export const StyledCalendarLeaveWrapper = styled.section.attrs({
   gridTemplate: props => props.employmentStatus ? `'. . .' '. title .' '. calendar .' '. . .'` :  `'title' 'error' 'calendar'`,
   gridColumns: props => props.employmentStatus ? 'repeat(3, 1fr)' :  '1fr',
@@ -198,9 +118,6 @@ export const StyledCalendarLeaveWrapper = styled.section.attrs({
 
 grid-area: calendar;
   display: grid;
-  /* grid-template-areas: 'title' 'error' 'calendar';
-  grid-template-columns: 1fr;
-  grid-template-rows: var(--xl) var(--m) 1fr; */
   grid-template-areas: var(--grid-template);
   grid-template-columns: var(--grid-columns);
   grid-template-rows: var(--grid-rows);
@@ -237,7 +154,6 @@ grid-area: calendar;
 
   & > div {
     grid-area: calendar;
-    /* width: 100%; */
     ${props => props.employmentStatus && css`
       justify-self: center;
       align-self: start;
@@ -246,9 +162,7 @@ grid-area: calendar;
       align-self: center;
     `}
   }
-
 `
-
 
 export const StyledFormControlsWrapper = styled.div`
   grid-area: controls;

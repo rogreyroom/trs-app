@@ -1,9 +1,10 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { useContext } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
 import { useForm } from 'react-hook-form'
 import { joiResolver } from '@hookform/resolvers/joi';
-import { employeeAddFormSchema } from '@/lib/db/schemas'
+// import { employeeAddFormSchema } from '@/lib/db/schemas'
+import Joi from 'joi'
 import { axios } from '@/lib/axios-config'
 import { errorMessages } from '@/lib/errorMessages'
 import { Button } from '@/common/Buttons'
@@ -12,6 +13,40 @@ import { Input, InputDatePicker, Select } from '@/common/Inputs'
 // TO be fixed
 import { StyledEmployeeForm, StyledAddEmployeeInputsWrapper } from './styles'
 import { StyledFormControlsWrapper  } from '@/common/CommonWrappers'
+
+import { useRouter } from 'next/router'
+
+// Add schema
+const employeeAddFormSchema = Joi.object().keys({
+  employment_start_date: Joi.object({
+    year: Joi.number().empty(null),
+    month: Joi.number().empty(null),
+    day: Joi.number().empty(null)
+  }).required(),
+  juvenile_worker: Joi.boolean().required(),
+  name: Joi.string().pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/).required(),
+  surname: Joi.string().pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/).required(),
+  position: Joi.string().pattern(/^[a-zA-Z]|[0-9]\-+$/).required(),
+  overdue_leave_amount: Joi.number().required(),
+  assigned_leave_amount: Joi.number().required(),
+  bonus_rate: Joi.number().required(),
+  employment_termination_date: Joi.object({
+    year: Joi.number().empty(null),
+    month: Joi.number().empty(null),
+    day: Joi.number().empty(null)
+  }).allow(null),
+  hourly_rate: Joi.number().required(),
+  holiday_rate: Joi.number(),
+  sick_leave_rate: Joi.number(),
+  other_leave_rate: Joi.number(),
+  insurance_rate: Joi.number(),
+  retainment_rate: Joi.number(),
+  to_account_rate: Joi.number(),
+  overtime_rate_multiplier: Joi.number(),
+  overtime_hours_multiplier: Joi.number(),
+})
+
+
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -75,6 +110,7 @@ const createMonthsData = (month, data) => {
 }
 
 export const AddEmployeeForm = ({preloadedValues}) => {
+  const router = useRouter()
   const { data, mutate } = useSWR('api/employees', fetcher)
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add
   const [employees, setEmployees] = useContext(DashboardContext).data
@@ -105,8 +141,10 @@ export const AddEmployeeForm = ({preloadedValues}) => {
   })
 
   const onSubmit = async (data) => {
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
     const {name, surname, position, juvenile_worker, employment_start_date, overdue_leave_amount, assigned_leave_amount} = data
-    const calendarMonths = await createMonthsData(employment_start_date.month, data)
+    const calendarMonths = await createMonthsData(currentMonth, data)
     const newEmployeeData = {
       doc: 'employee',
       name: name,
@@ -120,17 +158,21 @@ export const AddEmployeeForm = ({preloadedValues}) => {
       assigned_leave_amount: assigned_leave_amount,
       calendar: [
         {
-          year: employment_start_date.year,
+          year: currentYear,
           months: calendarMonths
         }
       ]
     }
 
-    mutate([...employees, newEmployeeData])
+    console.log('Add form onSubmit', employees);
+    // employees ? mutate([...employees, newEmployeeData]) : mutate([newEmployeeData])
     await axios.post('/api/employees', { ...newEmployeeData })
+    // console.log('RRRR: ', r);
     mutate()
     reset(formDefaultValues)
     setAddEmployeePage(addEmployeePage => null)
+    console.log('redirect');
+    router.push('/employees')
   }
 
   const handleReset = () => {
@@ -149,7 +191,7 @@ export const AddEmployeeForm = ({preloadedValues}) => {
         <Input name='overdue_leave_amount' type='number' min='0' max='26' step='1' label='Urlop zaległy' error={!!errors.overdue_leave_amount} errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='assigned_leave_amount' type='number' min='0' max='26' step='1' label='Urlop przysługujący' error={!!errors.assigned_leave_amount} errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='bonus_rate' type='number' min='0' step='1' label='Stawka premii' error={!!errors.bonus_rate} errorMessage={errors?.bonus_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
-        <Input name='to_account_rate' type='number' min='0' step='1' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
+        <Input name='to_account_rate' type='number' min='0.00' step='0.01' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <InputDatePicker name='employment_termination_date' label='Data rozwiązania umowy' error={!!errors.employment_termination_date} errorMessage={errors?.employment_termination_date && [errorMessages.empty]} control={control} />
         <Input name='hourly_rate' type='number' min='0.00' step='0.01' label='Stawka godzinowa' error={!!errors.hourly_rate} errorMessage={errors?.hourly_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
         <Input name='holiday_rate' type='number' min='0.00' step='0.01' label='Stawka urlopowa' error={!!errors.holiday_rate}  errorMessage={errors?.holiday_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />

@@ -1,7 +1,14 @@
-import dynamic from 'next/dynamic'
 import styled from 'styled-components';
 import { useContext, useState, useEffect } from 'react'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
+import EditEmployee from '@/subPages/Employee/EditEmployee'
+import EmploymentStatus from '@/subPages/EmploymentStatus'
+import Holiday from '@/subPages/Holiday'
+import Sick from '@/subPages/Sick'
+import Leave from '@/subPages/Leave'
+import Rts from '@/subPages/Rts'
+import Responsibilities from '@/subPages/Responsibilities'
+import Reports from '@/subPages/Reports'
 
 export const StyledContentSection = styled.section`
 grid-area: content;
@@ -15,15 +22,6 @@ box-shadow: var(--s-panel);
 color: var(--c-white);
 `
 
-const EditEmployeePage = dynamic(() => import('@/subPages/Employee/EditEmployee'), { ssr: false })
-const EmploymentStatusPage = dynamic(() => import('@/subPages/EmploymentStatus'), { ssr: false })
-const HolidayPage = dynamic(() => import('@/subPages/Holiday'), { ssr: false })
-const SickPage = dynamic(() => import('@/subPages/Sick'), { ssr: false })
-const LeavePage = dynamic(() => import('@/subPages/Leave'), { ssr: false })
-const RtsPage = dynamic(() => import('@/subPages/Rts'), { ssr: false })
-const ReportsPage = dynamic(() => import('@/subPages/Reports'), { ssr: false })
-const ResponsibilitiesPage = dynamic(() => import('@/subPages/Responsibilities'), { ssr: false })
-
 export const ContentSection = ({ employeeId }) => {
   const [page, setPage] = useContext(SubPagesContext).page
   const [employeeChange, setEmployeeChange] = useState(null)
@@ -35,18 +33,41 @@ export const ContentSection = ({ employeeId }) => {
     }
   }, [employeeId])
 
+  const SwitchPage = ({ value, id }) => {
+    switch (value) {
+          case 'edit':
+              return <EditEmployee employeeId={id} />
+              break;
+          case 'status':
+              return <EmploymentStatus employeeId={id} />
+              break;
+          case 'holiday':
+              return <Holiday employeeId={id} />
+              break;
+          case 'sick':
+              return <Sick employeeId={id} />
+              break;
+          case 'leave':
+              return <Leave employeeId={id} />
+              break;
+          case 'rts':
+              // console.log('RTS', id);
+              return <Rts employeeId={id} />
+              break;
+          case 'reports':
+              return <Reports employeeId={id} />
+              break;
+          case 'responsibilities':
+              return <Responsibilities employeeId={id} />
+              break;
+          default:
+              return null;
+        }
+  }
+
   return (
     <StyledContentSection>
-
-      { page === 'edit' ? <EditEmployeePage employeeId={employeeId} /> : null }
-      { page === 'status' ? <EmploymentStatusPage employeeId={employeeId} /> : null }
-      { page === 'holiday' ? <HolidayPage employeeId={employeeId} /> : null }
-      { page === 'sick' ? <SickPage employeeId={employeeId} /> : null }
-      { page === 'leave' ? <LeavePage employeeId={employeeId} /> : null }
-      { page === 'rts' ? <RtsPage employeeId={employeeId} /> : null }
-      { page === 'reports' ? <ReportsPage employeeId={employeeId} /> : null }
-      { page === 'responsibilities' ? <ResponsibilitiesPage employeeId={employeeId} /> : null }
-
+      <SwitchPage value={page} id={employeeId}/>
     </StyledContentSection>
   )
 }

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { axios } from '@/lib/axios-config'
 import { Title } from "@/common/Title"
 import { useForm } from 'react-hook-form'
@@ -7,20 +7,10 @@ import { Button } from '@/common/Buttons'
 import { Textarea } from '@/common/Inputs'
 // import { joiResolver } from '@hookform/resolvers/joi';
 // import { employeesFormSchema } from '@/lib/db/schemas'
+import { DashboardContext } from '@/contexts/DashboardContext'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
-
-// TO be fixed
 import { StyledFormControlsWrapper } from '@/common/CommonWrappers'
-
-
 import styled  from 'styled-components';
-
-
-
-// TODO: All that page needs to be split
-
-
-
 
 export const StyledResponsibilitiesForm = styled.form`
     --max-width: ${props => props.edit ? `100%` : `80%` };
@@ -79,14 +69,10 @@ export const ResponsibilitiesFormSection = styled.section`
   height: 100%;
 `
 
-
-
-const fetcher = (url) => axios.get(url).then(res => res.data)
-
-
-// ===============================================================================================
+// const fetcher = (url) => axios.get(url).then(res => res.data)
 
 const ResponsibilitiesFormAdd = ({ id }) => {
+  const [employee, setEmployee] = useContext(DashboardContext).employee
   const [page, setPage] = useContext(SubPagesContext).page
   const formDefaultValues = { text: '' }
   const {register, errors, handleSubmit, reset  } = useForm({
@@ -94,6 +80,8 @@ const ResponsibilitiesFormAdd = ({ id }) => {
     // resolver: joiResolver(employeesFormSchema),
     defaultValues: formDefaultValues
   })
+
+  const getEmployeeData = (id, data) => data.filter(employee => employee._id === id)[0]
 
   const onSubmit = async (data) => {
     const newResponsibilitiesData = {
@@ -106,7 +94,8 @@ const ResponsibilitiesFormAdd = ({ id }) => {
     setPage(page => 'responsibilities')
   }
 
-  const handleReset = () => {
+  const handleReset = (e) => {
+    e.preventDefault()
     reset()
     setPage(page => 'responsibilities')
   }
@@ -115,7 +104,7 @@ const ResponsibilitiesFormAdd = ({ id }) => {
     <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
       <Textarea name='text' error={!!errors.name} errorMessage={errors?.name && [errorMessages.notEmpty, errorMessages.alphaString] } ref={register} />
       <StyledFormControlsWrapper>
-        <Button type='button' onClickAction={handleReset}>Anuluj</Button>
+        <Button type='button' onClickAction={(e) => handleReset(e)}>Anuluj</Button>
         <Button type='submit'>Dodaj</Button>
       </StyledFormControlsWrapper>
     </StyledResponsibilitiesForm>
@@ -141,7 +130,8 @@ const ResponsibilitiesFormEdit = ({ id, text }) => {
     setPage(page => 'responsibilities')
   }
 
-  const handleReset = () => {
+  const handleReset = (e) => {
+    e.preventDefault()
     reset()
     setPage(page => 'responsibilities')
   }
@@ -150,7 +140,7 @@ const ResponsibilitiesFormEdit = ({ id, text }) => {
     <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
       <Textarea name='text' error={!!errors.name} errorMessage={errors?.name && [errorMessages.notEmpty, errorMessages.alphaString] } ref={register} />
       <StyledFormControlsWrapper>
-        <Button type='button' onClickAction={handleReset}>Anuluj</Button>
+        <Button type='button' onClickAction={(e) => handleReset(e)}>Anuluj</Button>
         <Button type='submit'>Zmień</Button>
       </StyledFormControlsWrapper>
     </StyledResponsibilitiesForm>
@@ -161,7 +151,9 @@ const ResponsibilitiesFormEdit = ({ id, text }) => {
 
 const ResponsibilitiesPage = ({ employeeId }) => {
   const [showForm, setShowForm] = useState(false)
-  const { data, error } = useSWR(`/api/responsibilities/${employeeId}`, fetcher)
+  const { data, error } = useSWR(`/api/responsibilities/${employeeId}`)
+
+  if (error) return <h1>Something went wrong on the server!</h1>
 
   useEffect(() => {
     const hideForm = () => { setShowForm(showForm => false)}
@@ -170,9 +162,6 @@ const ResponsibilitiesPage = ({ employeeId }) => {
       hideForm()
     }
   }, [data])
-
-  if (error) return <h1>Something went wrong on the server!</h1>
-  // if (!data) return <h1>Loading data from server...</h1>
 
   return (
     <StyledResponsibilitiesPage>

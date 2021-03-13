@@ -1,6 +1,5 @@
-import { useState, useContext, useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { DashboardContext } from '@/contexts/DashboardContext'
-import format from 'date-fns/format'
 import { useReactToPrint } from 'react-to-print'
 import { EmployeeCalendar } from './Print'
 import { IconButton } from '@/common/Buttons'

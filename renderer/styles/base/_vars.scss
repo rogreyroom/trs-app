@@ -4,7 +4,7 @@ $fonts: (
     'Roboto',
     sans-serif,
   ),
-  fw-light: 100,
+  fw-light: 200,
   fw-normal: 400,
   fw-black: 900,
   fs-base: 16px,
@@ -19,21 +19,21 @@ $fonts: (
 
 /* Colors */
 $colors: (
-  c-accent: hsl(350,75,57,1),
-  c-white: hsl(213,55,90,1),
-  c-grey: hsl(214, 13, 50, 1),
-  c-black: hsl(213,55,13,1),
-  c-blue-01: hsl(223,53,18,1),
-  c-blue-02: hsl(213,54,21,1),
-  c-blue-03: hsl(213,54,26,1),
-  c-blue-01-alpha: hsl(223,53,18,.8),
-  c-blue-outline: hsl(213,54,45),
-  c-error: hsl(350,79,46,1),
-  c-success: hsl(170,74,45,1),
-  c-print-grey-01: hsl(204, 100, 98, 1),
-  c-print-grey-02: hsl(204, 100, 97, 1),
-  c-print-grey-03: hsl(204, 100, 96, 1),
-  c-print-black: hsl(204, 100, 2, 1)
+  c-accent: hsl(350,75%,57%,100%),
+  c-white: hsl(213,55%,90%,100%),
+  c-grey: hsl(214, 13%, 50%, 100%),
+  c-black: hsl(213,55%,13%,100%),
+  c-blue-01: hsl(223,53%,18%,100%),
+  c-blue-02: hsl(213,54%,21%,100%),
+  c-blue-03: hsl(213,54%,26%,100%),
+  c-blue-01-alpha: hsl(223,53%,18%,80%),
+  c-blue-outline: hsl(213,54%,45%),
+  c-error: hsl(350,79%,46%,100%),
+  c-success: hsl(170,74%,45%,100%),
+  c-print-grey-01: hsl(204, 100%, 98%, 100%),
+  c-print-grey-02: hsl(204, 100%, 97%, 100%),
+  c-print-grey-03: hsl(204, 100%, 96%, 100%),
+  c-print-black: hsl(204, 100%, 2%, 100%)
 );
 
 /* Gradients */
@@ -45,10 +45,10 @@ $gradients: (
 
 /* Shadows */
 // $shadows: (
-  $s-panel: 8px 8px 16px hsl(213,55,13,1);
-  $s-button: 0px 4px 4px hsl(223,53,18,1), 0px -2px 4px hsl(213,55,13,1);
-  $s-button-hover: 0px 0px 2px hsl(213,54,21,1), 0px -6px 4px hsl(213,55,13,1);
-  $s-glow: drop-shadow(0px 0px 6px hsl(350,75,57,0.8));
+  $s-panel: 8px 8px 16px hsl(213,55%,13%,100%);
+  $s-button: 0px 4px 4px hsl(223,53%,18%,100%), 0px -2px 4px hsl(213,55%,13%,100%);
+  $s-button-hover: 0px 0px 2px hsl(213,54%,21%,100%), 0px -6px 4px hsl(213,55%,13%,100%);
+  $s-glow: drop-shadow(0px 0px 6px hsl(350,75%,57%,80%));
 // );
 
 // $shadows: (

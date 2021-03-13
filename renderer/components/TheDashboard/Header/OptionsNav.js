@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { axios } from '@/lib/axios-config'
-import useSWR, {mutate} from 'swr'
-import { useContext, useEffect  } from 'react'
+import {mutate} from 'swr'
+import { useContext, useEffect, useState  } from 'react'
 import { SvgEdit, SvgOnSwitch, SvgOffSwitch, SvgYoung } from '@/icons'
 import { IconButton } from '@/common/Buttons'
 import { SubPagesContext } from '@/contexts/SubPagesContext';
@@ -17,41 +17,48 @@ gap: var(--xs);
 padding-left: var(--normal);
 `
 
-export const OptionsNav = ({ id, juvenile, status}) => {
-  const [page, setPage] = useContext(SubPagesContext).page
-  const [employees, setEmployees] = useContext(DashboardContext).data
+export const OptionsNav = ({ id }) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee
-  const { data } = useSWR(`/api/employees/${id}`, { initialData: employee })
+  const [page, setPage] = useContext(SubPagesContext).page
+  const [juvenileStatus, setJuvenileStatus] = useState(employee.juvenile_worker)
+  const [employeeChange, setEmployeeChange] = useState(null)
+  const [employeeData, setEmployeeData] = useState({ id: employee._id, juvenile: employee.juvenile, status: employee.status } || {})
+
+console.log('OptionsNav1 ', employee.juvenile_worker);
+
 
   useEffect(() => {
-    setEmployee(employee => data)
-    return () => {
-      setEmployee(employee => employee)
+    if (employeeChange !== id) {
+      setEmployeeChange(employeeChange => id)
     }
-  }, [data, employee])
+    setEmployeeData(employeeData => employeeData = { id: employee._id, juvenile: employee.juvenile_worker, status: employee.status })
+    setJuvenileStatus(juvenileStatus => employee.juvenile_worker)
+  }, [id, employee])
 
   const handleSubPageClick = (pageName) => {
-    setPage(pageName)
+    setPage(page => pageName)
   }
 
   const handleYoungSwitch = async () => {
-    const newJuvenileStatus = !employee.juvenile_worker
+    const newJuvenileStatus = !employeeData.juvenile
+    console.log('handleYoungSwitch newJuvenileStatus', newJuvenileStatus);
+    setJuvenileStatus(juvenileStatus => newJuvenileStatus)
     await mutate(`/api/employees/${id}`, data => ({ ...data, juvenile_worker: newJuvenileStatus }))
     await axios.put(`/api/employees/${id}`, { field: 'juvenile', value: { newJuvenileStatus }})
     mutate()
   }
+
+  console.log('OptionsNav2 ', employee.juvenile_worker);
 
   return (
     <EmployeeOptionsNav>
       <IconButton size='xl' isActive={page === 'edit' ? true : false} onClickAction={() => handleSubPageClick('edit')} >
         <SvgEdit />
       </IconButton>
-
-      <IconButton size='xl' isActive={employee.employment_status} onClickAction={() => handleSubPageClick('status')} >
-        { employee.employment_status && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
+      <IconButton size='xl' isActive={employeeData.status} onClickAction={() => handleSubPageClick('status')} >
+        { employeeData.status && ( <SvgOnSwitch /> ) || ( <SvgOffSwitch /> )}
       </IconButton>
-
-      <IconButton size='xl' isActive={employee.juvenile_worker} onClickAction={handleYoungSwitch}>
+      <IconButton size='xl' isActive={juvenileStatus} onClickAction={handleYoungSwitch}>
         <SvgYoung />
       </IconButton>
     </EmployeeOptionsNav>

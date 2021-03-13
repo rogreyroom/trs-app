@@ -1,18 +1,24 @@
-import { AppContainer } from '@/components/AppContainer'
+import { AppContainer } from './AppContainer'
 import { Header } from '@/components/TheTopBar'
 import { Main } from '@/components/TheDashboard/Main'
+import { SWRConfig } from 'swr'
+import { axios } from '@/lib/axios-config'
 
-import { DashboardProvider } from '@/contexts/DashboardContext'
 
 const TopBarOnlyLayout = ({ children }) => {
   return (
     <AppContainer>
       <Header />
-      <DashboardProvider>
-      <Main>
-        { children }
-      </Main>
-      </DashboardProvider>
+      <SWRConfig
+        value={{
+          refreshInterval: 2000,
+          fetcher: (...args) => axios.get(...args).then(res => res.data)
+        }}
+      >
+          <Main>
+            { children }
+          </Main>
+      </SWRConfig>
     </AppContainer>
   )
 }

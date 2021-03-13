@@ -3,8 +3,10 @@ import { DashboardContext } from '@/contexts/DashboardContext'
 import { SubPagesContext } from '@/contexts/SubPagesContext'
 import { useForm } from 'react-hook-form'
 import { joiResolver } from '@hookform/resolvers/joi';
-import { employeeEditFormSchema } from '@/lib/db/schemas'
+// import { employeeEditFormSchema } from '@/lib/db/schemas'
+import Joi from 'joi'
 import { axios } from '@/lib/axios-config'
+import { mutate } from 'swr'
 import { errorMessages } from '@/lib/errorMessages'
 import { Button } from '@/common/Buttons'
 import { Input, InputDatePicker, Select } from '@/common/Inputs'
@@ -12,6 +14,32 @@ import { Input, InputDatePicker, Select } from '@/common/Inputs'
 // TO be fixed
 import { StyledEmployeeForm, StyledEditEmployeeInputsWrapper, StyledEditFieldsWrap } from './styles'
 import { StyledFormControlsWrapper  } from '@/common/CommonWrappers'
+
+// Edit schema
+const employeeEditFormSchema = Joi.object().keys({
+  year: Joi.required(),
+  month: Joi.required(),
+  name: Joi.string().pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/).required(),
+  surname: Joi.string().pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/).required(),
+  position: Joi.string().pattern(/^[a-zA-Z]|[0-9]\-+$/).required(),
+  overdue_leave_amount: Joi.number().required(),
+  assigned_leave_amount: Joi.number().required(),
+  employment_start_date: Joi.object({
+    year: Joi.number().empty(null),
+    month: Joi.number().empty(null),
+    day: Joi.number().empty(null)
+  }).allow(null),
+  hourly_rate: Joi.number().required(),
+  holiday_rate: Joi.number(),
+  sick_leave_rate: Joi.number(),
+  other_leave_rate: Joi.number(),
+  insurance_rate: Joi.number(),
+  retainment_rate: Joi.number(),
+  to_account_rate: Joi.number(),
+  bonus_rate: Joi.number().required(),
+  overtime_rate_multiplier: Joi.number(),
+  overtime_hours_multiplier: Joi.number(),
+})
 
 
 const getEmployeeYearsArray = (employeeData) => {
@@ -64,7 +92,7 @@ const getDefaultValues = (employeeData, theYear, theMonth) => {
     position: employeeData.position,
     overdue_leave_amount: employeeData.overdue_leave_amount,
     assigned_leave_amount: employeeData.assigned_leave_amount,
-    employment_termination_date: employeeData.employment_termination_date,
+    employment_start_date: employeeData.employment_start_date,
     hourly_rate: values.hourly_rate,
     holiday_rate: values.holiday_rate,
     sick_leave_rate: values.sick_leave_rate,
@@ -90,6 +118,8 @@ export const EditEmployeeForm = ({ id }) => {
     resolver: joiResolver(employeeEditFormSchema),
     defaultValues: preloadedValues
   })
+
+  const getEmployeeData = (id, data) => data.filter(employee => employee._id === id)[0]
 
   const yearsSelectOptionsArray = years.reduce((resultArray, year) => {
     const newYearOption = { label: year, value: year }
@@ -124,7 +154,7 @@ export const EditEmployeeForm = ({ id }) => {
       position: data.position,
       overdue_leave_amount: parseInt(data.overdue_leave_amount),
       assigned_leave_amount: parseInt(data.assigned_leave_amount),
-      employment_termination_date: data.employment_termination_date
+      employment_start_date: data.employment_start_date
     }
 
     const employeeCalendarInfoData = {
@@ -149,7 +179,7 @@ export const EditEmployeeForm = ({ id }) => {
       position: preloadedValues.position,
       overdue_leave_amount: preloadedValues.overdue_leave_amount,
       assigned_leave_amount: preloadedValues.assigned_leave_amount,
-      employment_termination_date: preloadedValues.employment_termination_date
+      employment_start_date: preloadedValues.employment_start_date
     }
 
     const employeeCalendarYearMonthValues = {
@@ -171,13 +201,24 @@ export const EditEmployeeForm = ({ id }) => {
     const employeeBasicInfo = JSON.stringify(employeeBasicInfoData) === JSON.stringify(employeeBasicInfoPreloadedValues) ? true : false
     const employeeCalendarInfo = JSON.stringify(employeeCalendarInfoData) === JSON.stringify(employeeCalendarYearMonthValues) ? true : false
 
-    if ( !employeeBasicInfo ) {
-      if ( employeeBasicInfoData.employment_termination_date !== null ) employeeBasicInfoData.employment_status = false
-      await axios.put(`/api/employees/${id}`, { field: 'employee', value: { ...employeeBasicInfoData }})
-    }
+    // if ( !employeeBasicInfo ) {
+    //   if ( employeeBasicInfoData.employment_start_date !== null ) employeeBasicInfoData.employment_status = false
+    //   await axios.put(`/api/employees/${id}`, { field: 'employee', value: { ...employeeBasicInfoData }})
+    // }
 
+    if ( !employeeBasicInfo ) await axios.put(`/api/employees/${id}`, { field: 'employee', value: { ...employeeBasicInfoData }})
     if ( !employeeCalendarInfo ) await axios.put(`/api/employees/${id}`, { field: 'calendar', value: { ...employeeCalendarInfoData }})
+
+    mutate('/api/employees', async mutatedEmployees => {
+        const updatedEmployees = await axios.get('/api/employees')
+        const updatedEmployee = getEmployeeData(id, updatedEmployees.data)
+          setEmployee(employee => updatedEmployee)
+    })
+    console.log('employeeBasicInfo', employeeBasicInfo, 'employeeCalendarInfo', employeeCalendarInfo);
+    setPage(page => 'rts')
   }
+
+
   const handleReset = () => {
     reset()
     setPage(page => 'rts')
@@ -192,7 +233,7 @@ export const EditEmployeeForm = ({ id }) => {
           <Input name='position' type='text' label='Stanowisko' error={!!errors.position} errorMessage={errors?.position && [errorMessages.notEmpty]} ref={register} />
           <Input name='overdue_leave_amount' type='number' min='0' max='26' step='1' label='Urlop zaległy' error={!!errors.overdue_leave_amount} errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty]} ref={register} />
           <Input name='assigned_leave_amount' type='number' min='0' max='26' step='1' label='Urlop przysługujący' error={!!errors.assigned_leave_amount} errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty]} ref={register} />
-          <InputDatePicker name='employment_termination_date' label='Data rozwiązania umowy' error={!!errors.employment_termination_date} errorMessage={errors?.employment_termination_date && [errorMessages.notEmpty]} control={control} />
+          <InputDatePicker name='employment_start_date' label='Data zatrudnienia' error={!!errors.employment_start_date} errorMessage={errors?.employment_start_date && [errorMessages.notEmpty]} control={control} />
         </StyledEditFieldsWrap>
         <StyledEditFieldsWrap>
           <h4>Wybierz rok i miesiąc obowiązywania poniższych składowych</h4>
@@ -207,7 +248,7 @@ export const EditEmployeeForm = ({ id }) => {
           <Input name='other_leave_rate' type='number' min='0.00' step='0.01' label='Stawka okolicznościowa' error={!!errors.other_leave_rate} errorMessage={errors?.other_leave_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
           <Input name='retainment_rate' type='number' min='0.00' step='0.01' label='Stawka PPK' error={!!errors.retainment_rate} errorMessage={errors?.retainment_rate && [errorMessages.notEmpty]} ref={register} />
           <Input name='bonus_rate' type='number' min='0.00' step='0.01' label='Stawka premii' error={!!errors.bonus_rate} errorMessage={errors?.bonus_rate && [errorMessages.notEmpty]} ref={register} />
-          <Input name='to_account_rate' type='number' min='0' step='1' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
+          <Input name='to_account_rate' type='number' min='0.00' step='0.01' label='Podstawa ROR' error={!!errors.to_account_rate} errorMessage={errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]} ref={register} />
           <Input name='overtime_rate_multiplier' type='number' min='0.00' step='0.01' label='Mnożnik stawki nadgodzin' error={!!errors.overtime_rate_multiplier} errorMessage={errors?.overtime_rate_multiplier && [errorMessages.notEmpty]} ref={register} />
           <Input name='overtime_hours_multiplier' type='number' min='0.00' step='0.01' label='Mnożnik ilości nadgodzin' error={!!errors.overtime_hours_multiplier} errorMessage={errors?.overtime_hours_multiplier && [errorMessages.notEmpty]} ref={register} />
         </StyledEditFieldsWrap>

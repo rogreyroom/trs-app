@@ -5,9 +5,8 @@ import isSunday from 'date-fns/isSunday'
 import isSaturday from 'date-fns/isSaturday'
 import format from 'date-fns/format'
 import { pl } from 'date-fns/locale'
-
 import { forwardRef } from 'react'
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getCurrentMonthWorkedHours, getHolidayLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth } from '@/lib/utils'
 
 const PrintArea = styled.div`
@@ -28,7 +27,6 @@ const PrintArea = styled.div`
     @media print {
       color: var(--c-print-black);
     }
-    /* padding: 0.25em 0.5em; */
   }
 
   & > h4 {
@@ -38,7 +36,6 @@ const PrintArea = styled.div`
     font-size: var(--fs-h4);
     font-weight: var(--fw-light);
     color: var(--c-white);
-    /* padding: 0.25em 0.5em; */
     @media print {
       color: var(--c-print-black);
     }
@@ -188,8 +185,6 @@ export const EmployeeCalendar = forwardRef(({ employeeData }, ref) => {
     res.push({ day, dayName, dayNumber, isLeaveDay, workingDayData })
     return res
   }, [])
-
-  console.log('Print data', data);
 
   const workedHours = getCurrentMonthWorkedHours(data)
   const overtimeHours = getCurrentMonthOvertimeHours(data)
