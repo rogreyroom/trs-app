@@ -231,8 +231,8 @@ export const EditEmployeeForm = ({ id }) => {
           <Input name='name' type='text' label='Imię' error={!!errors.name} errorMessage={errors?.name  && [errorMessages.notEmpty]} ref={register} />
           <Input name='surname' type='text' label='Nazwisko' error={!!errors.surname} errorMessage={errors?.surname && [errorMessages.notEmpty]} ref={register} />
           <Input name='position' type='text' label='Stanowisko' error={!!errors.position} errorMessage={errors?.position && [errorMessages.notEmpty]} ref={register} />
-          <Input name='overdue_leave_amount' type='number' min='0' max='26' step='1' label='Urlop zaległy' error={!!errors.overdue_leave_amount} errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty]} ref={register} />
-          <Input name='assigned_leave_amount' type='number' min='0' max='26' step='1' label='Urlop przysługujący' error={!!errors.assigned_leave_amount} errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty]} ref={register} />
+          <Input name='overdue_leave_amount' type='number' min='0' max='46' step='1' label='Urlop zaległy' error={!!errors.overdue_leave_amount} errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty]} ref={register} />
+          <Input name='assigned_leave_amount' type='number' min='0' max='46' step='1' label='Urlop przysługujący' error={!!errors.assigned_leave_amount} errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty]} ref={register} />
           <InputDatePicker name='employment_start_date' label='Data zatrudnienia' error={!!errors.employment_start_date} errorMessage={errors?.employment_start_date && [errorMessages.notEmpty]} control={control} />
         </StyledEditFieldsWrap>
         <StyledEditFieldsWrap>
