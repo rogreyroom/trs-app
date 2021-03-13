@@ -173,7 +173,7 @@ export const RtsForm = ({ id }) => {
               title='Limit osiągnięty'
               message={`Możesz dodać jedynie ${isToMuch.data}% żeby nie przekroczyć miesięcznej maksymalnej wartości 200%`}
               yesButtonLabel='Dodaj'
-              noButtonLabel='Usuń'
+              noButtonLabel='Wstecz'
               isNoButtonPresent={true}
               yesAction={() => {
                 if ( theCheck === 'add' ) {
@@ -184,8 +184,8 @@ export const RtsForm = ({ id }) => {
                 onClose()
               }}
               noAction={() => {
-                setEvaluation(null)
-                setEvalDescription(null)
+                // setEvaluation(null)
+                // setEvalDescription(null)
                 setEwEvalPercent(ewEvalPercent => 0)
                 onClose()
               }}
