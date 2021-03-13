@@ -605,7 +605,7 @@ export const RtsForm = ({ id }) => {
               { isEvalEdit &&
                 <Button onClickAction={(e) => handleEvaluationEditSubmit(e)}>Zmień</Button>
                 ||
-                <Button onClickAction={(e) => handleEvaluationSubmit(e)}>Zatwierdź</Button>
+                <Button onClickAction={(e) => handleEvaluationSubmit(e)}>Dodaj</Button>
               }
             </>
             }
