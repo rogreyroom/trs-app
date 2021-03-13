@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useContext, useState, useEffect} from 'react';
-import { SubPagesContext } from '@/contexts/SubPagesContext';
-import { DashboardContext } from '@/contexts/DashboardContext'
-import { TextButton } from '@/common/Buttons';
+import {useContext, useState, useEffect} from 'react';
+import {SubPagesContext} from '@/contexts/SubPagesContext';
+import {DashboardContext} from '@/contexts/DashboardContext';
+import {TextButton} from '@/common/Buttons';
 import {
   getCurrentMonthData,
   getHolidayLeaveDaysForCurrentMonth,
@@ -14,7 +14,7 @@ import {
   getCurrentMonthWorkedHours,
   getCurrentMonthOvertimeHours,
   getCurrentMonthWeekendsHours,
-} from '@/lib/utils'
+} from '@/lib/utils';
 
 const EmployeeDetailsSection = styled.section`
   grid-area: details;
@@ -40,100 +40,125 @@ const EmployeeDetailsSection = styled.section`
     margin-right: 64px;
     justify-self: end;
   }
-`
+`;
 const EmployeeDetailsSectionContent = styled.section`
+  grid-area: ${(props) => props.area};
+  display: grid;
+  grid-template-columns: 226px 96px;
+  grid-auto-rows: minmax(32px, min-content);
+  margin: 0 0 var(--xl) 0;
 
-grid-area: ${props => props.area};
-display: grid;
-grid-template-columns: 226px 96px;
-grid-auto-rows: minmax(32px, min-content);
-margin: 0 0 var(--xl) 0;
+  & h4 {
+    grid-column: 1 / 2;
+    grid-row: 1;
+    margin: 0;
+  }
 
-& h4 {
-  grid-column: 1 / 2;
-  grid-row: 1;
-  margin: 0;
-}
+  & p {
+    grid-column: 1 / 2;
+    margin: 0;
+  }
 
-& p {
-  grid-column: 1 / 2;
-  margin: 0;
-}
+  & span {
+    grid-column: 2 / 3;
+    margin: 0;
+    color: var(--c-accent);
+    justify-self: center;
+  }
+`;
 
-& span {
-  grid-column: 2 / 3;
-  margin: 0;
-  color: var(--c-accent);
-  justify-self: center;
-}
-`
-
-
-export const DetailsSection = ({ employeeId, calendar, leaveDays }) => {
-  const [page, setPage] = useContext(SubPagesContext).page
-  const [employee, setEmployee] = useContext(DashboardContext).employee
+export const DetailsSection = ({employeeId, calendar, leaveDays}) => {
+  const [page, setPage] = useContext(SubPagesContext).page;
+  const [employee, setEmployee] = useContext(DashboardContext).employee;
   // const [employeeCalendar, setEmployeeCalendar] = useState(calendar)
   // const [assignedLeaveDays, setAssignedLeaveDays] = useState(leaveDays)
 
-  const [employeeChange, setEmployeeChange] = useState(null)
-  const [employeeData, setEmployeeData] = useState({ id :employeeId, calendar: calendar, leaveDays: leaveDays })
+  const [employeeChange, setEmployeeChange] = useState(null);
+  const [employeeData, setEmployeeData] = useState({
+    id: employeeId,
+    calendar: calendar,
+    leaveDays: leaveDays,
+  });
 
   useEffect(() => {
     if (employeeChange !== employeeId) {
-      setEmployeeChange(employeeChange => employeeId)
+      setEmployeeChange((employeeChange) => employeeId);
     }
     // setEmployeeData(employeeData => employeeData = { id: employee._id, calendar: employee.calendar, leaveDays: {overdue: employee.overdue_leave_amount, assigned: employee.assigned_leave_amount} })
-    setEmployeeData(employeeData => employeeData = { id :employeeId, calendar: calendar, leaveDays: leaveDays })
-  }, [employeeId, calendar])
-
+    setEmployeeData(
+      (employeeData) =>
+        (employeeData = {
+          id: employeeId,
+          calendar: calendar,
+          leaveDays: leaveDays,
+        }),
+    );
+  }, [employeeId, calendar]);
 
   console.log('DetailsSection employeeData', employeeData, employee);
 
-  const overdue = employeeData.leaveDays.overdue
-  const assigned = employeeData.leaveDays.assigned
-  const leaveDaysAmount = overdue + assigned
-  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeData.calendar)  // NaN
-  const sickDaysAmount = getUsedSickDays(employeeData.calendar)
-  const otherLeaveDaysAmount = getUsedLeaveDays(employeeData.calendar)
-  const currentMonthData = getCurrentMonthData(employeeData.calendar)[0]
-  const workedHours = getCurrentMonthWorkedHours(currentMonthData)
-  const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
-  const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
-  const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
-  const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData)
-  const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData)
-
+  const overdue = employeeData.leaveDays.overdue;
+  const assigned = employeeData.leaveDays.assigned;
+  const leaveDaysAmount = overdue + assigned;
+  const leaveDaysAmountLeft =
+    leaveDaysAmount - getUsedHolidayDays(employeeData.calendar); // NaN
+  const sickDaysAmount = getUsedSickDays(employeeData.calendar);
+  const otherLeaveDaysAmount = getUsedLeaveDays(employeeData.calendar);
+  const currentMonthData = getCurrentMonthData(employeeData.calendar)[0];
+  const workedHours = getCurrentMonthWorkedHours(currentMonthData);
+  const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData);
+  const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData);
+  const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
+  const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData);
+  const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData);
 
   const handleSubPageClick = (pageName) => {
-    setPage(page => pageName)
-  }
+    setPage((page) => pageName);
+  };
 
   return (
     <EmployeeDetailsSection>
-      <div className='first-link'>
-        <TextButton isUnderlined isActive={page === 'responsibilities' ? true : false} onClickAction={() => handleSubPageClick('responsibilities')}>
+      <div className="first-link">
+        <TextButton
+          isUnderlined
+          isActive={page === 'responsibilities' ? true : false}
+          onClickAction={() => handleSubPageClick('responsibilities')}
+        >
           Zakres obowiązków
         </TextButton>
       </div>
-      <EmployeeDetailsSectionContent area='content1'>
+      <EmployeeDetailsSectionContent area="content1">
         <h4>Stan:</h4>
-        <p>Urlop zaległy za rok poprzedni</p><span>{ overdue }</span>
-        <p>Urlop przydzielony</p><span>{ assigned }</span>
-        <p>Urlop do wykorzystania</p><span>{ leaveDaysAmount }</span>
-        <p>Urlop pozostały</p><span>{ leaveDaysAmountLeft }</span>
-        <p>Chorobowe</p><span>{ sickDaysAmount }</span>
-        <p>Inne wolne</p><span>{ otherLeaveDaysAmount }</span>
+        <p>Urlop zaległy za rok poprzedni</p>
+        <span>{overdue}</span>
+        <p>Urlop przydzielony</p>
+        <span>{assigned}</span>
+        <p>Urlop do wykorzystania</p>
+        <span>{leaveDaysAmount}</span>
+        <p>Urlop pozostały</p>
+        <span>{leaveDaysAmountLeft}</span>
+        <p>Chorobowe</p>
+        <span>{sickDaysAmount}</span>
+        <p>Inne wolne</p>
+        <span>{otherLeaveDaysAmount}</span>
       </EmployeeDetailsSectionContent>
-      <EmployeeDetailsSectionContent area='content2'>
+      <EmployeeDetailsSectionContent area="content2">
         <h4>Aktualny miesiąc:</h4>
-        <p>Suma godzin</p><span>{ workedHours + overtimeHours + weekendsHours }</span>
-        <p>Ilość przepracowanych godzin</p><span>{ workedHours }</span>
-        <p>Ilość przepracowanych nadgodzin</p><span>{ overtimeHours }</span>
-        <p>Ilość przepracowanych w weekend</p><span>{ weekendsHours }</span>
-        <p>Urlop w miesiącu</p><span>{ holidayDays }</span>
-        <p>Chorobowe w miesiącu</p><span>{ sickDays }</span>
-        <p>Inne wolne w miesiącu</p><span>{ otherLeaveDays }</span>
+        <p>Suma godzin</p>
+        <span>{workedHours + overtimeHours + weekendsHours}</span>
+        <p>Ilość przepracowanych godzin</p>
+        <span>{workedHours}</span>
+        <p>Ilość przepracowanych nadgodzin</p>
+        <span>{overtimeHours}</span>
+        <p>Ilość przepracowanych w weekend</p>
+        <span>{weekendsHours}</span>
+        <p>Urlop w miesiącu</p>
+        <span>{holidayDays}</span>
+        <p>Chorobowe w miesiącu</p>
+        <span>{sickDays}</span>
+        <p>Inne wolne w miesiącu</p>
+        <span>{otherLeaveDays}</span>
       </EmployeeDetailsSectionContent>
     </EmployeeDetailsSection>
-  )
-}
+  );
+};

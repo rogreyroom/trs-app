@@ -1,27 +1,27 @@
-import { useState, useContext, useEffect } from 'react'
-import useSWR, { mutate } from 'swr'
-import { axios } from '@/lib/axios-config'
-import { Title } from "@/common/Title"
-import { useForm } from 'react-hook-form'
-import { Button } from '@/common/Buttons'
-import { Textarea } from '@/common/Inputs'
+import {useState, useContext, useEffect} from 'react';
+import useSWR, {mutate} from 'swr';
+import {axios} from '@/lib/axios-config';
+import {Title} from '@/common/Title';
+import {useForm} from 'react-hook-form';
+import {Button} from '@/common/Buttons';
+import {Textarea} from '@/common/Inputs';
 // import { joiResolver } from '@hookform/resolvers/joi';
 // import { employeesFormSchema } from '@/lib/db/schemas'
-import { DashboardContext } from '@/contexts/DashboardContext'
-import { SubPagesContext } from '@/contexts/SubPagesContext'
-import { StyledFormControlsWrapper } from '@/common/CommonWrappers'
-import styled  from 'styled-components';
+import {DashboardContext} from '@/contexts/DashboardContext';
+import {SubPagesContext} from '@/contexts/SubPagesContext';
+import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
+import styled from 'styled-components';
 
 export const StyledResponsibilitiesForm = styled.form`
-    --max-width: ${props => props.edit ? `100%` : `80%` };
-    display: grid;
-    grid-template-areas: 'inputs' 'controls';
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 40px;
-    grid-gap: var(--xl);
-    min-height: 100%;
-    min-width: 100%;
-`
+  --max-width: ${(props) => (props.edit ? `100%` : `80%`)};
+  display: grid;
+  grid-template-areas: 'inputs' 'controls';
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 40px;
+  grid-gap: var(--xl);
+  min-height: 100%;
+  min-width: 100%;
+`;
 
 export const StyledResponsibilitiesPage = styled.div`
   display: grid;
@@ -45,14 +45,14 @@ export const StyledResponsibilitiesPage = styled.div`
     padding: var(--s) var(--l);
   }
 
-  & > section{
+  & > section {
     grid-area: content;
   }
 
   & > :last-child {
     grid-area: form;
   }
-`
+`;
 
 export const ResponsibilitiesDataSection = styled.section`
   font-size: var(--fs-text);
@@ -61,124 +61,151 @@ export const ResponsibilitiesDataSection = styled.section`
   width: 100%;
   height: 100%;
   margin: 0 auto;
-`
+`;
 
 export const ResponsibilitiesFormSection = styled.section`
   margin: 0;
   width: 100%;
   height: 100%;
-`
+`;
 
 // const fetcher = (url) => axios.get(url).then(res => res.data)
 
-const ResponsibilitiesFormAdd = ({ id }) => {
-  const [employee, setEmployee] = useContext(DashboardContext).employee
-  const [page, setPage] = useContext(SubPagesContext).page
-  const formDefaultValues = { text: '' }
-  const {register, errors, handleSubmit, reset  } = useForm({
+const ResponsibilitiesFormAdd = ({id}) => {
+  const [employee, setEmployee] = useContext(DashboardContext).employee;
+  const [page, setPage] = useContext(SubPagesContext).page;
+  const formDefaultValues = {text: ''};
+  const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
     // resolver: joiResolver(employeesFormSchema),
-    defaultValues: formDefaultValues
-  })
+    defaultValues: formDefaultValues,
+  });
 
-  const getEmployeeData = (id, data) => data.filter(employee => employee._id === id)[0]
+  const getEmployeeData = (id, data) =>
+    data.filter((employee) => employee._id === id)[0];
 
   const onSubmit = async (data) => {
     const newResponsibilitiesData = {
       doc: 'responsibilities',
       employee: id,
-      text: data.text
-    }
+      text: data.text,
+    };
 
-    await axios.post(`/api/responsibilities/${id}`, { ...newResponsibilitiesData })
-    setPage(page => 'responsibilities')
-  }
+    await axios.post(`/api/responsibilities/${id}`, {
+      ...newResponsibilitiesData,
+    });
+    setPage((page) => 'responsibilities');
+  };
 
   const handleReset = (e) => {
-    e.preventDefault()
-    reset()
-    setPage(page => 'responsibilities')
-  }
+    e.preventDefault();
+    reset();
+    setPage((page) => 'responsibilities');
+  };
 
   return (
     <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
-      <Textarea name='text' error={!!errors.name} errorMessage={errors?.name && [errorMessages.notEmpty, errorMessages.alphaString] } ref={register} />
+      <Textarea
+        name="text"
+        error={!!errors.name}
+        errorMessage={
+          errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]
+        }
+        ref={register}
+      />
       <StyledFormControlsWrapper>
-        <Button type='button' onClickAction={(e) => handleReset(e)}>Anuluj</Button>
-        <Button type='submit'>Dodaj</Button>
+        <Button type="button" onClickAction={(e) => handleReset(e)}>
+          Anuluj
+        </Button>
+        <Button type="submit">Dodaj</Button>
       </StyledFormControlsWrapper>
     </StyledResponsibilitiesForm>
-  )
-}
+  );
+};
 
 // ===============================================================================================
 
-const ResponsibilitiesFormEdit = ({ id, text }) => {
-  const [page, setPage] = useContext(SubPagesContext).page
-  const { register, errors, handleSubmit, reset  } = useForm({
+const ResponsibilitiesFormEdit = ({id, text}) => {
+  const [page, setPage] = useContext(SubPagesContext).page;
+  const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
     // resolver: joiResolver(employeesFormSchema),
-    defaultValues: text
-  })
+    defaultValues: text,
+  });
 
   const onSubmit = async (data) => {
     const newResponsibilitiesData = {
-      text: data.text
-    }
+      text: data.text,
+    };
 
-    await axios.put(`/api/responsibilities/${id}`, { ...newResponsibilitiesData })
-    setPage(page => 'responsibilities')
-  }
+    await axios.put(`/api/responsibilities/${id}`, {
+      ...newResponsibilitiesData,
+    });
+    setPage((page) => 'responsibilities');
+  };
 
   const handleReset = (e) => {
-    e.preventDefault()
-    reset()
-    setPage(page => 'responsibilities')
-  }
+    e.preventDefault();
+    reset();
+    setPage((page) => 'responsibilities');
+  };
 
   return (
     <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
-      <Textarea name='text' error={!!errors.name} errorMessage={errors?.name && [errorMessages.notEmpty, errorMessages.alphaString] } ref={register} />
+      <Textarea
+        name="text"
+        error={!!errors.name}
+        errorMessage={
+          errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]
+        }
+        ref={register}
+      />
       <StyledFormControlsWrapper>
-        <Button type='button' onClickAction={(e) => handleReset(e)}>Anuluj</Button>
-        <Button type='submit'>Zmień</Button>
+        <Button type="button" onClickAction={(e) => handleReset(e)}>
+          Anuluj
+        </Button>
+        <Button type="submit">Zmień</Button>
       </StyledFormControlsWrapper>
     </StyledResponsibilitiesForm>
-  )
-}
+  );
+};
 
 // ===============================================================================================
 
-const ResponsibilitiesPage = ({ employeeId }) => {
-  const [showForm, setShowForm] = useState(false)
-  const { data, error } = useSWR(`/api/responsibilities/${employeeId}`)
+const ResponsibilitiesPage = ({employeeId}) => {
+  const [showForm, setShowForm] = useState(false);
+  const {data, error} = useSWR(`/api/responsibilities/${employeeId}`);
 
-  if (error) return <h1>Something went wrong on the server!</h1>
+  if (error) return <h1>Something went wrong on the server!</h1>;
 
   useEffect(() => {
-    const hideForm = () => { setShowForm(showForm => false)}
-    ( data && showForm ) && hideForm()
+    const hideForm = () => {
+      setShowForm((showForm) => false);
+    };
+    data && showForm && hideForm();
     return () => {
-      hideForm()
-    }
-  }, [data])
+      hideForm();
+    };
+  }, [data]);
 
   return (
     <StyledResponsibilitiesPage>
       <Title isWhite>Zakres obowiązków</Title>
-      <Button onClickAction={() => setShowForm(showForm => true)}>{ data && ( 'Edytuj' ) || ( 'Dodaj' )}</Button>
+      <Button onClickAction={() => setShowForm((showForm) => true)}>
+        {(data && 'Edytuj') || 'Dodaj'}
+      </Button>
       <ResponsibilitiesDataSection>
-        <p>{ data && data.text }</p>
+        <p>{data && data.text}</p>
       </ResponsibilitiesDataSection>
       <ResponsibilitiesFormSection>
-        {
-          data && showForm  ? (
-            <ResponsibilitiesFormEdit id={employeeId} text={data} /> )
-            : showForm ? ( <ResponsibilitiesFormAdd id={employeeId} /> ) : null
-        }
+        {data && showForm ? (
+          <ResponsibilitiesFormEdit id={employeeId} text={data} />
+        ) : showForm ? (
+          <ResponsibilitiesFormAdd id={employeeId} />
+        ) : null}
       </ResponsibilitiesFormSection>
     </StyledResponsibilitiesPage>
-  )
-}
+  );
+};
 
-export default ResponsibilitiesPage
+export default ResponsibilitiesPage;

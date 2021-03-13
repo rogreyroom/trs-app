@@ -4,55 +4,54 @@ export const StyledRtsFormContainer = styled.section`
   width: 100%;
   height: 100%;
   margin: 0;
-
-`
+`;
 
 export const StyledRtsForm = styled.form`
-    display: grid;
-    grid-template-areas: 'calendar inputs' 'calendar buttons' 'calendar evaluation' 'data data' 'controls controls';
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto) 1fr 40px;
-    grid-gap: var(--xs);
-    min-height: 100%;
-  `
+  display: grid;
+  grid-template-areas: 'calendar inputs' 'calendar buttons' 'calendar evaluation' 'data data' 'controls controls';
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto) 1fr 40px;
+  grid-gap: var(--xs);
+  min-height: 100%;
+`;
 
-  export const StyledRtsCalendarWrapper = styled.section`
+export const StyledRtsCalendarWrapper = styled.section`
+  grid-area: calendar;
+  display: grid;
+  grid-template-areas: 'title' 'error' 'calendar';
+  grid-template-columns: 1fr;
+  grid-template-rows: var(--xl) var(--m) 1fr;
+  justify-items: center;
+  align-items: start;
+  grid-gap: var(--xs);
+  margin: 0;
+
+  & > h4 {
+    grid-area: title;
+    justify-self: start;
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-normal);
+    color: var(--c-white);
+  }
+
+  & > span {
+    grid-area: error;
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    align-content: center;
+  }
+
+  & > div {
     grid-area: calendar;
-    display: grid;
-    grid-template-areas: 'title' 'error' 'calendar';
-    grid-template-columns: 1fr;
-    grid-template-rows: var(--xl) var(--m) 1fr;
-    justify-items: center;
-    align-items: start;
-    grid-gap: var(--xs);
-    margin: 0;
+    justify-self: center;
+    align-self: center;
+  }
+`;
 
-    & > h4 {
-      grid-area: title;
-      justify-self: start;
-      font-size: var(--fs-h4);
-      font-weight: var(--fw-normal);
-      color: var(--c-white);
-    }
-
-    & > span {
-      grid-area: error;
-      position: relative;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      top: 0;
-      align-content: center;
-    }
-
-    & > div {
-      grid-area: calendar;
-      justify-self: center;
-      align-self: center;
-    }
-  `
-
-  export const StyledRtsInputsWrapper = styled.section`
+export const StyledRtsInputsWrapper = styled.section`
   grid-area: inputs;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -78,7 +77,7 @@ export const StyledRtsForm = styled.form`
       --size: 50px;
     }
   }
-`
+`;
 
 export const StyledRtsEvalControlsWrapper = styled.section`
   grid-area: buttons;
@@ -98,7 +97,7 @@ export const StyledRtsEvalControlsWrapper = styled.section`
     font-weight: var(--fw-normal);
     color: var(--c-white);
   }
-`
+`;
 
 export const StyledRtsEvalInputsWrapper = styled.section`
   grid-area: evaluation;
@@ -129,18 +128,18 @@ export const StyledRtsEvalInputsWrapper = styled.section`
     min-width: 0;
     padding: var(--s) var(--m);
   }
-`
+`;
 
 export const StyledRtsEvalOutputWrapper = styled.section`
   grid-area: data;
   margin: 0;
-`
+`;
 
 export const StyledEvalList = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
-`
+`;
 
 export const StyledEvalListItem = styled.li`
   margin: 0;
@@ -154,4 +153,4 @@ export const StyledEvalListItem = styled.li`
     font-weight: var(--fw-light);
     color: var(--c-white);
   }
-`
+`;

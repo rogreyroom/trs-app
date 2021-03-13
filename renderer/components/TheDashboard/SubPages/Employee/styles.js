@@ -1,17 +1,17 @@
-import styled  from 'styled-components';
+import styled from 'styled-components';
 
 export const StyledEmployeeForm = styled.form`
-    --max-width: ${props => props.edit ? `100%` : `80%` };
-    display: grid;
-    grid-template-areas: 'inputs' 'controls';
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 40px;
-    grid-gap: var(--xs);
-    min-height: 100%;
-    margin: 0 auto;
-    min-width: var(--max-width);
-    max-width: var(--max-width);
-`
+  --max-width: ${(props) => (props.edit ? `100%` : `80%`)};
+  display: grid;
+  grid-template-areas: 'inputs' 'controls';
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 40px;
+  grid-gap: var(--xs);
+  min-height: 100%;
+  margin: 0 auto;
+  min-width: var(--max-width);
+  max-width: var(--max-width);
+`;
 
 export const StyledAddEmployeeInputsWrapper = styled.section`
   grid-area: inputs;
@@ -20,7 +20,7 @@ export const StyledAddEmployeeInputsWrapper = styled.section`
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(9, 1fr);
   grid-auto-flow: column;
-`
+`;
 
 export const StyledEditEmployeeInputsWrapper = styled.section`
   grid-area: inputs;
@@ -29,7 +29,7 @@ export const StyledEditEmployeeInputsWrapper = styled.section`
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, auto);
   grid-auto-flow: column;
-`
+`;
 
 export const StyledEditFieldsWrap = styled.section`
   margin: 0;
@@ -43,8 +43,9 @@ export const StyledEditFieldsWrap = styled.section`
     align-self: center;
     font-weight: var(--fw-normal);
 
-    & + div, & + div + div  {
+    & + div,
+    & + div + div {
       align-self: start;
     }
   }
-`
+`;

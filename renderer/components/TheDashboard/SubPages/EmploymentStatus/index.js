@@ -1,13 +1,13 @@
-import { Title } from "@/common/Title"
-import  { EmploymentStatusForm } from "./Form"
+import {Title} from '@/common/Title';
+import {EmploymentStatusForm} from './Form';
 
-const EmploymentStatusPage = ({ employeeId }) => {
+const EmploymentStatusPage = ({employeeId}) => {
   return (
     <>
       <Title isWhite>Wprowadź datę zwolnienia pracownika</Title>
       <EmploymentStatusForm id={employeeId} />
     </>
-  )
-}
+  );
+};
 
-export default EmploymentStatusPage
+export default EmploymentStatusPage;

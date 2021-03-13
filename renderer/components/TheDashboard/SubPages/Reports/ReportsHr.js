@@ -1,13 +1,12 @@
-import styled from 'styled-components'
-import { useState } from 'react'
-import { Title } from '@/common/Title'
-import { TextButton } from '@/common/Buttons'
-import { Select } from '@/common/Inputs'
-import { getEmployeeYears } from '@/lib/utils'
-import useSWR from 'swr'
-import HrEmployeesBonuses from './HrEmployeesBonuses'
-import HrEmployeesRts from './HrEmployeesRts'
-
+import styled from 'styled-components';
+import {useState} from 'react';
+import {Title} from '@/common/Title';
+import {TextButton} from '@/common/Buttons';
+import {Select} from '@/common/Inputs';
+import {getEmployeeYears} from '@/lib/utils';
+import useSWR from 'swr';
+import HrEmployeesBonuses from './HrEmployeesBonuses';
+import HrEmployeesRts from './HrEmployeesRts';
 
 const StyledHrReportsPages = styled.section`
   grid-area: content;
@@ -18,7 +17,7 @@ const StyledHrReportsPages = styled.section`
   grid-template-areas: 'aside' 'content';
   grid-template-columns: max-content auto;
   grid-template-rows: 1fr;
-`
+`;
 
 // const StyledHrReportsAside = styled.div`
 //   grid-area: aside
@@ -57,76 +56,76 @@ const StyledReportLinks = styled.section`
   & button:last-of-type {
     grid-area: button2;
   }
-`
+`;
 const StyledReportPrintArea = styled.section`
   margin: 0;
   width: 100%;
-`
+`;
 
 const getEmployeesYearsArray = (employees) => {
-  console.log('getEmployeesYearsArray employees', employees)
+  console.log('getEmployeesYearsArray employees', employees);
   const employeesYears = employees.reduce((resArr, currEmployee) => {
-    const { calendar } = currEmployee
-    const years = getEmployeeYears(calendar)
+    const {calendar} = currEmployee;
+    const years = getEmployeeYears(calendar);
     years.map((year) => {
-      !resArr.includes(year) && resArr.push(year)
-    })
-    return resArr
-  }, [])
+      !resArr.includes(year) && resArr.push(year);
+    });
+    return resArr;
+  }, []);
 
-  return employeesYears.map((year) => ({ label: year, value: year }))
-}
+  return employeesYears.map((year) => ({label: year, value: year}));
+};
 
 const getEmployeeMonthsArray = () => [
-  { label: 'Styczeń', value: 1 },
-  { label: 'Luty', value: 2 },
-  { label: 'Marzec', value: 3 },
-  { label: 'Kwiecień', value: 4 },
-  { label: 'Maj', value: 5 },
-  { label: 'Czerwiec', value: 6 },
-  { label: 'Lipiec', value: 7 },
-  { label: 'Sierpień', value: 8 },
-  { label: 'Wrzesień', value: 9 },
-  { label: 'Październik', value: 10 },
-  { label: 'Listopad', value: 11 },
-  { label: 'Grudzień', value: 12 },
-]
+  {label: 'Styczeń', value: 1},
+  {label: 'Luty', value: 2},
+  {label: 'Marzec', value: 3},
+  {label: 'Kwiecień', value: 4},
+  {label: 'Maj', value: 5},
+  {label: 'Czerwiec', value: 6},
+  {label: 'Lipiec', value: 7},
+  {label: 'Sierpień', value: 8},
+  {label: 'Wrzesień', value: 9},
+  {label: 'Październik', value: 10},
+  {label: 'Listopad', value: 11},
+  {label: 'Grudzień', value: 12},
+];
 
 export const ReportsHr = () => {
-  const { data, error } = useSWR('/api/employees')
+  const {data, error} = useSWR('/api/employees');
 
-  if (error) return <h1>Something went wrong on the server!</h1>
-  if (!data) return <h1>Loading data from server...</h1>
+  if (error) return <h1>Something went wrong on the server!</h1>;
+  if (!data) return <h1>Loading data from server...</h1>;
 
-  const employees = data
+  const employees = data;
 
   if (employees !== null) {
-    const [reportPage, setReportPage] = useState(null)
-    const defaultYear = new Date().getFullYear()
-    const defaultMonth = new Date().getMonth() + 1
-    const [year, setYear] = useState(defaultYear)
-    const [month, setMonth] = useState(defaultMonth)
-    const [yearsOptions, setYearsOptions] = useState(null)
-    const [monthsOptions, setMonthsOptions] = useState(null)
+    const [reportPage, setReportPage] = useState(null);
+    const defaultYear = new Date().getFullYear();
+    const defaultMonth = new Date().getMonth() + 1;
+    const [year, setYear] = useState(defaultYear);
+    const [month, setMonth] = useState(defaultMonth);
+    const [yearsOptions, setYearsOptions] = useState(null);
+    const [monthsOptions, setMonthsOptions] = useState(null);
 
     yearsOptions === null &&
-      setYearsOptions((yearsOptions) => getEmployeesYearsArray(employees))
+      setYearsOptions((yearsOptions) => getEmployeesYearsArray(employees));
     monthsOptions === null &&
-      setMonthsOptions((monthsOptions) => getEmployeeMonthsArray())
+      setMonthsOptions((monthsOptions) => getEmployeeMonthsArray());
 
     const handleYearChange = (e) => {
-      const { value } = e.target
-      setYear((year) => parseInt(value))
-    }
+      const {value} = e.target;
+      setYear((year) => parseInt(value));
+    };
 
     const handleMonthChange = (e) => {
-      const { value } = e.target
-      setMonth((month) => parseInt(value))
-    }
+      const {value} = e.target;
+      setMonth((month) => parseInt(value));
+    };
 
     const handleReportPageClick = (pageName) => {
-      setReportPage((reportPage) => pageName)
-    }
+      setReportPage((reportPage) => pageName);
+    };
 
     return (
       <>
@@ -173,11 +172,15 @@ export const ReportsHr = () => {
             ) : null}
 
             {reportPage === 'hrEmployeesRts222' ? (
-              <HrEmployeesRts222 year={year} month={month} employees={employees} />
+              <HrEmployeesRts222
+                year={year}
+                month={month}
+                employees={employees}
+              />
             ) : null}
           </StyledReportPrintArea>
         </StyledHrReportsPages>
       </>
-    )
+    );
   }
-}
+};

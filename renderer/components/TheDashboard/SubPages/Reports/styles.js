@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 // A4 595px x 842px -> resolution 72DPI
 export const StyledTable = styled.table`
@@ -7,11 +7,11 @@ export const StyledTable = styled.table`
   border-collapse: collapse;
   align-self: start;
   justify-self: center;
-`
+`;
 
 export const StyledThead = styled.thead`
   border: 1px solid var(--c-black);
-`
+`;
 
 export const StyledTh = styled.th`
   color: var(--c-white);
@@ -24,7 +24,7 @@ export const StyledTh = styled.th`
   &:last-child {
     text-align: left;
   }
-`
+`;
 
 export const StyledTbody = styled.tbody`
   &::before {
@@ -33,11 +33,11 @@ export const StyledTbody = styled.tbody`
     height: var(--normal);
     width: 100%;
   }
-`
+`;
 
 export const StyledTr = styled.tr`
   border-bottom: 1px solid var(--c-blue-01);
-`
+`;
 
 export const StyledTd = styled.td`
   color: var(--c-white);
@@ -54,4 +54,4 @@ export const StyledTd = styled.td`
   &:last-child {
     text-align: left;
   }
-`
+`;

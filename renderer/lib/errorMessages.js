@@ -4,5 +4,5 @@ export const errorMessages = {
   numericValue: 'Pole musi być liczbą!',
   alphaString: 'Pole musi być ciągiem znaków',
   alphaNumericString: 'Pole musi być ciągiem liczb i znaków',
-  dateRange: 'Nie wybrano daty lub zakresu dat!'
-}
+  dateRange: 'Nie wybrano daty lub zakresu dat!',
+};

@@ -1,9 +1,10 @@
 module.exports = {
   // pageExtensions: ['page.js'],
   // basePath: '/renderer',
-  webpack: (config) => Object.assign(config, {
-    target: 'electron-renderer',
-  }),
+  webpack: (config) =>
+    Object.assign(config, {
+      target: 'electron-renderer',
+    }),
   // trailingSlash: true,
   // exportPathMap: async function (
   //   defaultPathMap,

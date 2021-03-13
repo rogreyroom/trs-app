@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Title } from '@/common/Title'
-import { Button } from '@/common/Buttons'
+import {Title} from '@/common/Title';
+import {Button} from '@/common/Buttons';
 
-import { StyledFormControlsWrapper } from '@/common/CommonWrappers'
+import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
 
 const StyledAlertForm = styled.div`
   display: grid;
@@ -23,18 +23,27 @@ const StyledAlertForm = styled.div`
     font-size: var(--fs-text);
     color: var(--c-white);
   }
-`
+`;
 
-export const EvalAlert = ({title, message, yesButtonLabel, noButtonLabel, isNoButtonPresent, yesAction, noAction}) => {
-
+export const EvalAlert = ({
+  title,
+  message,
+  yesButtonLabel,
+  noButtonLabel,
+  isNoButtonPresent,
+  yesAction,
+  noAction,
+}) => {
   return (
     <StyledAlertForm>
-      <Title isWhite>{ title }</Title>
-      <p>{ message }</p>
+      <Title isWhite>{title}</Title>
+      <p>{message}</p>
       <StyledFormControlsWrapper>
-        <Button onClickAction={yesAction}>{ yesButtonLabel }</Button>
-        { isNoButtonPresent && <Button onClickAction={noAction}>{ noButtonLabel }</Button> }
+        <Button onClickAction={yesAction}>{yesButtonLabel}</Button>
+        {isNoButtonPresent && (
+          <Button onClickAction={noAction}>{noButtonLabel}</Button>
+        )}
       </StyledFormControlsWrapper>
     </StyledAlertForm>
-  )
-}
+  );
+};

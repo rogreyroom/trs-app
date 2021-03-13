@@ -16,12 +16,8 @@ const StyledError = styled.span`
   left: 50%;
   transform: translateX(-50%);
   top: 20%;
-`
+`;
 
-export const ServerError = ({ children }) => {
-  return (
-    <StyledError>
-      { children }
-    </StyledError>
-  )
-}
+export const ServerError = ({children}) => {
+  return <StyledError>{children}</StyledError>;
+};

@@ -1,13 +1,13 @@
-import { app } from 'electron';
+import {app} from 'electron';
 import serve from 'electron-serve';
-import { createWindow } from './helpers';
+import {createWindow} from './helpers';
 
-const server = require('./server')
+const server = require('./server');
 
 const isProd = process.env.NODE_ENV === 'production';
 
 if (isProd) {
-  serve({ directory: 'app' });
+  serve({directory: 'app'});
 } else {
   app.setPath('userData', `${app.getPath('userData')} (development)`);
 }

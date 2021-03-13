@@ -1,13 +1,10 @@
-import {
-  screen,
-  BrowserWindow,
-} from 'electron';
+import {screen, BrowserWindow} from 'electron';
 import * as Store from 'electron-store';
 
 export default function createWindow(windowName, options) {
   const key = 'window-state';
   const name = `window-state-${windowName}`;
-  const store = new Store({ name });
+  const store = new Store({name});
   const defaultSize = {
     width: options.width,
     height: options.height,
@@ -41,13 +38,13 @@ export default function createWindow(windowName, options) {
     const bounds = screen.getPrimaryDisplay().bounds;
     return Object.assign({}, defaultSize, {
       x: (bounds.width - defaultSize.width) / 2,
-      y: (bounds.height - defaultSize.height) / 2
+      y: (bounds.height - defaultSize.height) / 2,
     });
   };
 
   const ensureVisibleOnSomeDisplay = (windowState) => {
-    const visible = screen.getAllDisplays().some(display => {
-      return windowWithinBounds(windowState, display.bounds)
+    const visible = screen.getAllDisplays().some((display) => {
+      return windowWithinBounds(windowState, display.bounds);
     });
     if (!visible) {
       // Window is partially or fully not visible now.
@@ -76,10 +73,10 @@ export default function createWindow(windowName, options) {
   });
 
   // 08-03-2021, remove menubar, center window
-  win.removeMenu()
-  win.center()
+  win.removeMenu();
+  win.center();
 
   win.on('close', saveState);
 
   return win;
-};
+}

@@ -1,7 +1,8 @@
-import styled, { css }  from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const StyledForm = styled.form`
-  --formPadding: ${props => props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
+  --formPadding: ${(props) =>
+    props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
 
   display: flex;
   flex-direction: column;
@@ -11,10 +12,11 @@ export const StyledForm = styled.form`
   width: 100%;
   min-height: 100%;
   padding: var(--formPadding);
-`
+`;
 
 export const StyledEesFormContainer = styled.section`
-  --formTopMargin: ${props => props.topMargin ? `var(--${props.topMargin})` : 'var(--normal)'};
+  --formTopMargin: ${(props) =>
+    props.topMargin ? `var(--${props.topMargin})` : 'var(--normal)'};
   display: grid;
   grid-template-areas: '. . . .' '. symbol percent .' '. type count_type .' '. description description .' '. . . .';
   grid-template-columns: auto repeat(2, 380px) auto;
@@ -40,10 +42,11 @@ export const StyledEesFormContainer = styled.section`
   & > div:last-child {
     grid-area: description;
   }
-`
+`;
 
 export const StyledEesForm = styled.form`
-  --formPadding: ${props => props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
+  --formPadding: ${(props) =>
+    props.formPadding ? `var(--${props.formPadding})` : 'var(--normal)'};
 
   display: grid;
   grid-template-areas: 'calendar' 'controls';
@@ -52,7 +55,7 @@ export const StyledEesForm = styled.form`
   height: 100%;
   width: 100%;
   margin: 0;
-`
+`;
 
 export const StyledCalendarForm = styled.form`
   display: grid;
@@ -62,7 +65,7 @@ export const StyledCalendarForm = styled.form`
   height: 100%;
   width: 100%;
   margin: 0;
-`
+`;
 
 export const StyledFieldWrapper = styled.div`
   position: relative;
@@ -83,7 +86,7 @@ export const StyledFieldWrapper = styled.div`
   div {
     margin: 0;
   }
-`
+`;
 
 export const StyledSelectWrapper = styled.div`
   display: grid;
@@ -93,7 +96,7 @@ export const StyledSelectWrapper = styled.div`
   margin: 0;
 
   &::after {
-    content: "";
+    content: '';
     grid-column: 2 / 3;
     grid-row: 1;
     align-self: center;
@@ -105,18 +108,24 @@ export const StyledSelectWrapper = styled.div`
     pointer-events: none;
     z-index: 3;
   }
-`
+`;
 
 export const StyledCalendarLeaveWrapper = styled.section.attrs({
-  gridTemplate: props => props.employmentStatus ? `'. . .' '. title .' '. calendar .' '. . .'` :  `'title' 'error' 'calendar'`,
-  gridColumns: props => props.employmentStatus ? 'repeat(3, 1fr)' :  '1fr',
-  gridRows: props => props.employmentStatus ? `calc(1fr / 2) var(--xl) 1fr calc(1fr / 2)` :  `var(--xl) var(--m) 1fr`,
+  gridTemplate: (props) =>
+    props.employmentStatus
+      ? `'. . .' '. title .' '. calendar .' '. . .'`
+      : `'title' 'error' 'calendar'`,
+  gridColumns: (props) => (props.employmentStatus ? 'repeat(3, 1fr)' : '1fr'),
+  gridRows: (props) =>
+    props.employmentStatus
+      ? `calc(1fr / 2) var(--xl) 1fr calc(1fr / 2)`
+      : `var(--xl) var(--m) 1fr`,
 })`
-  --grid-template: ${props => props.gridTemplate};
-  --grid-columns:  ${props => props.gridColumns};
-  --grid-rows:  ${props => props.gridRows};
+  --grid-template: ${(props) => props.gridTemplate};
+  --grid-columns: ${(props) => props.gridColumns};
+  --grid-rows: ${(props) => props.gridRows};
 
-grid-area: calendar;
+  grid-area: calendar;
   display: grid;
   grid-template-areas: var(--grid-template);
   grid-template-columns: var(--grid-columns);
@@ -134,12 +143,15 @@ grid-area: calendar;
     font-weight: var(--fw-normal);
     color: var(--c-white);
 
-    ${props => props.employmentStatus && css`
-      justify-self: start;
-      align-self: end;
-    ` || css`
-      justify-self: center;
-    `}
+    ${(props) =>
+      (props.employmentStatus &&
+        css`
+          justify-self: start;
+          align-self: end;
+        `) ||
+      css`
+        justify-self: center;
+      `}
   }
 
   & > span {
@@ -154,15 +166,18 @@ grid-area: calendar;
 
   & > div {
     grid-area: calendar;
-    ${props => props.employmentStatus && css`
-      justify-self: center;
-      align-self: start;
-    ` || css`
-      justify-self: center;
-      align-self: center;
-    `}
+    ${(props) =>
+      (props.employmentStatus &&
+        css`
+          justify-self: center;
+          align-self: start;
+        `) ||
+      css`
+        justify-self: center;
+        align-self: center;
+      `}
   }
-`
+`;
 
 export const StyledFormControlsWrapper = styled.div`
   grid-area: controls;
@@ -174,4 +189,4 @@ export const StyledFormControlsWrapper = styled.div`
   & > :last-child {
     margin-left: var(--l);
   }
-`
+`;

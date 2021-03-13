@@ -1,9 +1,8 @@
-import { forwardRef } from 'react'
-import styled from 'styled-components'
-import { CommonInputStyles, StyledFieldWrapper } from './_commonStyles'
-import { Label } from '@/common/Labels'
-import { Error } from '@/common/Errors'
-
+import {forwardRef} from 'react';
+import styled from 'styled-components';
+import {CommonInputStyles, StyledFieldWrapper} from './_commonStyles';
+import {Label} from '@/common/Labels';
+import {Error} from '@/common/Errors';
 
 const StyledSelectWrapper = styled.div`
   display: grid;
@@ -13,7 +12,7 @@ const StyledSelectWrapper = styled.div`
   margin: 0;
 
   &::after {
-    content: "";
+    content: '';
     grid-column: 2 / 3;
     grid-row: 1;
     align-self: center;
@@ -25,7 +24,7 @@ const StyledSelectWrapper = styled.div`
     pointer-events: none;
     z-index: 3;
   }
-`
+`;
 
 const StyledSelect = styled.select`
   ${CommonInputStyles}
@@ -41,22 +40,33 @@ const StyledSelect = styled.select`
     padding: 0.25em 0.5em;
     line-height: 1;
   }
-`
+`;
 
-export const Select = forwardRef(({name, label, optionsArray, error, errorMessage, onChange, selected}, ref) => {
-  return (
-    <StyledFieldWrapper>
-      <Label name={name} label={label} />
-      <StyledSelectWrapper>
-        <StyledSelect name={name} ref={ref} error={error} defaultValue={selected} onChange={onChange} >
-            {
-              optionsArray.map(({label, value}) => (
-              <option value={value} key={value}>{label}</option>
-              ))
-            }
-        </StyledSelect>
-      </StyledSelectWrapper>
-      <Error error={error} errorMessage={errorMessage} />
-    </StyledFieldWrapper>
-  )
-})
+export const Select = forwardRef(
+  (
+    {name, label, optionsArray, error, errorMessage, onChange, selected},
+    ref,
+  ) => {
+    return (
+      <StyledFieldWrapper>
+        <Label name={name} label={label} />
+        <StyledSelectWrapper>
+          <StyledSelect
+            name={name}
+            ref={ref}
+            error={error}
+            defaultValue={selected}
+            onChange={onChange}
+          >
+            {optionsArray.map(({label, value}) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))}
+          </StyledSelect>
+        </StyledSelectWrapper>
+        <Error error={error} errorMessage={errorMessage} />
+      </StyledFieldWrapper>
+    );
+  },
+);

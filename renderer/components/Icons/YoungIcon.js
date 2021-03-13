@@ -11,4 +11,4 @@ export const SvgYoung = (props) => {
       />
     </svg>
   );
-}
+};

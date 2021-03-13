@@ -9,7 +9,7 @@ const StyledModalWindow = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-`
+`;
 
 const StyledModalCard = styled.section`
   display: grid;
@@ -18,19 +18,19 @@ const StyledModalCard = styled.section`
   grid-auto-columns: auto min-content;
   margin: 0;
   padding: var(--normal);
-`
+`;
 
 const StyledModalTitle = styled.h4`
   grid-area: title;
   font-size: var(--fs-h4);
   color: var(--c-accent);
   margin: 0;
-`
+`;
 
-const StyledModalClose = styled.button.attrs(props => ({
-  size: props.size && `--${props.size}` || '--normal'
+const StyledModalClose = styled.button.attrs((props) => ({
+  size: (props.size && `--${props.size}`) || '--normal',
 }))`
-  --size: var(${props => props.size});
+  --size: var(${(props) => props.size});
 
   grid-area: close;
   display: flex;
@@ -56,11 +56,11 @@ const StyledModalClose = styled.button.attrs(props => ({
     height: var(--size);
   }
 
-  &:hover > svg   {
+  &:hover > svg {
     filter: var(--s-glow);
     color: var(--c-accent);
   }
-`
+`;
 
 export const StyledButton = styled.button`
   -webkit-appearance: none;
@@ -97,53 +97,44 @@ export const StyledButton = styled.button`
     outline: 3px solid transparent;
     box-shadow: 0 0 1px 2px var(--c-blue-outline);
   }
-`
+`;
 
 const StyledModalBody = styled.div`
   grid-area: body;
   font-size: var(--normal);
   color: var(--c-white);
   margin: 0;
-`
-
+`;
 
 const StyledModalActions = styled.div`
   grid-area: action;
   margin: 0;
   padding: var(--xs) var(--normal);
-`
+`;
 
 const ModalClose = (props) => {
-  return (
-    <StyledModalClose>
-      X
-    </StyledModalClose>
-  )
-}
+  return <StyledModalClose>X</StyledModalClose>;
+};
 
-export const Modal = ({ children, title }) => {
+export const Modal = ({children, title}) => {
   const handleReset = () => {
-    reset
-    router.back()
-  }
+    reset;
+    router.back();
+  };
 
   return (
-
     <StyledModalWindow>
       <StyledModalCard>
-        <StyledModalTitle>
-          { title }
-        </StyledModalTitle>
+        <StyledModalTitle>{title}</StyledModalTitle>
         <ModalClose />
-        <StyledModalBody>
-          { children }
-        </StyledModalBody>
+        <StyledModalBody>{children}</StyledModalBody>
         <StyledModalActions>
-          <StyledButton type='button' onClick={handleReset}>Anuluj</StyledButton>
-          <StyledButton type='submit'>OK</StyledButton>
+          <StyledButton type="button" onClick={handleReset}>
+            Anuluj
+          </StyledButton>
+          <StyledButton type="submit">OK</StyledButton>
         </StyledModalActions>
       </StyledModalCard>
     </StyledModalWindow>
-
-  )
-}
+  );
+};

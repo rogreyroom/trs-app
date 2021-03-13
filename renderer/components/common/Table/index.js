@@ -7,11 +7,11 @@ export const StyledTable = styled.table`
   margin-top: var(--xxl);
   align-self: start;
   justify-self: center;
-`
+`;
 
 export const StyledThead = styled.thead`
   border-bottom: 1px solid var(--c-blue-03);
-`
+`;
 
 export const StyledTh = styled.th`
   color: var(--c-white);
@@ -24,7 +24,7 @@ export const StyledTh = styled.th`
   &:last-child {
     text-align: left;
   }
-`
+`;
 
 export const StyledTBody = styled.tbody`
   &::before {
@@ -33,11 +33,11 @@ export const StyledTBody = styled.tbody`
     height: var(--normal);
     width: 100%;
   }
-`
+`;
 
 export const StyledTr = styled.tr`
   border-bottom: 1px solid var(--c-blue-01);
-`
+`;
 
 export const StyledTd = styled.td`
   color: var(--c-white);
@@ -54,6 +54,6 @@ export const StyledTd = styled.td`
   &:last-child {
     text-align: left;
   }
-`
+`;
 
-export const StyledTFooter = styled.tfoot``
+export const StyledTFooter = styled.tfoot``;

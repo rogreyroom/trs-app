@@ -1,3 +1,3 @@
 export const validateDataAgainstSchema = (data, schema) => {
-	return schema.validate(data, { abortEarly: true });
+  return schema.validate(data, {abortEarly: true});
 };

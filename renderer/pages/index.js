@@ -1,7 +1,7 @@
-import React from 'react'
-import Head from 'next/head'
-import { getLayout } from '@/layouts/LoginLayout'
-import { Login } from '@/components/TheLogin'
+import React from 'react';
+import Head from 'next/head';
+import {getLayout} from '@/layouts/LoginLayout';
+import {Login} from '@/components/TheLogin';
 import styled from 'styled-components';
 
 const Panel = styled.section`
@@ -17,7 +17,7 @@ const Panel = styled.section`
     color: var(--c-accent);
     margin: 0;
   }
-`
+`;
 
 const HomePage = () => {
   return (
@@ -31,8 +31,8 @@ const HomePage = () => {
         <Login />
       </Panel>
     </>
-  )
-}
+  );
+};
 
-HomePage.getLayout = getLayout
-export default HomePage
+HomePage.getLayout = getLayout;
+export default HomePage;

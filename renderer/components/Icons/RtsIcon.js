@@ -7,4 +7,4 @@ export const SvgRts = (props) => {
       />
     </svg>
   );
-}
+};

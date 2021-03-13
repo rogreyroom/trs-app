@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import {css} from 'styled-components';
 
 export const CommonButtonStyles = css`
   --size: var(--fs-text);
@@ -21,4 +21,4 @@ export const CommonButtonStyles = css`
   transition: all 250ms ease-in-out;
   justify-content: center;
   align-items: center;
-`
+`;

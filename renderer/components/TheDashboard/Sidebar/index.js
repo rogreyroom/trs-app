@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Navbar } from './Navbar'
-import { EmployeeList } from './EmployeeList'
+import styled from 'styled-components';
+import {Navbar} from './Navbar';
+import {EmployeeList} from './EmployeeList';
 
 const StyledAsideContainer = styled.aside`
   grid-area: aside;
@@ -11,7 +11,7 @@ const StyledAsideContainer = styled.aside`
   padding: var(--xl) var(--normal) var(--normal) var(--xl);
   width: 100%;
   height: 100%;
-`
+`;
 
 export const Aside = () => {
   return (
@@ -19,5 +19,5 @@ export const Aside = () => {
       <Navbar />
       <EmployeeList />
     </StyledAsideContainer>
-  )
-}
+  );
+};

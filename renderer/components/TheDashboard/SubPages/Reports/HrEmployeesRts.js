@@ -1,16 +1,25 @@
-import { useRef, useState, useEffect } from 'react'
-import format from 'date-fns/format'
-import { getMonthName, getGivenMonthData, getCurrentMonthWorkedHours, getCurrentMonthOvertimeHours, getCurrentMonthWeekendsHours, getHolidayLeaveDaysForCurrentMonth, getSickLeaveDaysForCurrentMonth, getOtherLeaveDaysForCurrentMonth } from '@/lib/utils'
-import { useReactToPrint } from 'react-to-print'
-import { IconButton } from '@/common/Buttons'
-import { SvgPrint, SvgRemove } from '@/icons'
+import {useRef, useState, useEffect} from 'react';
+import format from 'date-fns/format';
+import {
+  getMonthName,
+  getGivenMonthData,
+  getCurrentMonthWorkedHours,
+  getCurrentMonthOvertimeHours,
+  getCurrentMonthWeekendsHours,
+  getHolidayLeaveDaysForCurrentMonth,
+  getSickLeaveDaysForCurrentMonth,
+  getOtherLeaveDaysForCurrentMonth,
+} from '@/lib/utils';
+import {useReactToPrint} from 'react-to-print';
+import {IconButton} from '@/common/Buttons';
+import {SvgPrint, SvgRemove} from '@/icons';
 import styled from 'styled-components';
 
 const StyledHrRtsReport = styled.section`
   & button {
     margin-left: var(--xxl);
   }
-`
+`;
 
 const StyledPrintArea = styled.div`
   margin: 0;
@@ -21,14 +30,15 @@ const StyledPrintArea = styled.div`
   grid-gap: var(--xl);
   align-items: baseline;
 
-  table, th, td {
+  table,
+  th,
+  td {
     border: 1px solid var(--c-white);
 
     @media print {
       color: var(--c-print-black);
     }
   }
-
 
   & table {
     grid-area: table;
@@ -44,8 +54,6 @@ const StyledPrintArea = styled.div`
 
   & tr {
     height: 45px;
-
-
   }
 
   & th {
@@ -64,7 +72,6 @@ const StyledPrintArea = styled.div`
       }
     }
   }
-
 
   & td {
     font-size: var(--fs-text);
@@ -94,80 +101,92 @@ const StyledPrintArea = styled.div`
       font-style: italic;
     }
   }
-
-`
+`;
 
 const StyledPrintAreaHeader = styled.header`
   grid-area: header;
   display: flex;
   flex-direction: column;
 
-    & > h2 {
-      font-size: var(--fs-h1);
-      font-weight: var(--fw-light);
-      color: var(--c-white);
+  & > h2 {
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-light);
+    color: var(--c-white);
 
-      @media print {
-        color: var(--c-print-black);
-      }
+    @media print {
+      color: var(--c-print-black);
     }
+  }
 
-     & > p {
-       font-size: var(--fs-h4);
-      font-weight: var(--fw-light);
-      color: var(--c-white);
+  & > p {
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-light);
+    color: var(--c-white);
 
-      @media print {
-        color: var(--c-print-black);
-      }
-     }
-`
+    @media print {
+      color: var(--c-print-black);
+    }
+  }
+`;
 
-const HrRcp = ({ year, month, employees }) => {
-  const tableRef = useRef()
+const HrRcp = ({year, month, employees}) => {
+  const tableRef = useRef();
 
-  const [employeesData, setEmployeesData] = useState(employees)
-  const [updatedEmployees, setUpdatedEmployees] = useState(employeesData)
+  const [employeesData, setEmployeesData] = useState(employees);
+  const [updatedEmployees, setUpdatedEmployees] = useState(employeesData);
 
   useEffect(() => {
-    setEmployeesData(employeesData => employeesData)
-  }, [employeesData])
+    setEmployeesData((employeesData) => employeesData);
+  }, [employeesData]);
 
   const handlePrint = useReactToPrint({
     content: () => tableRef.current,
-  })
+  });
 
   const getEmployeeData = (currentMonthData) => {
-    const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier
-    const workedHours = getCurrentMonthWorkedHours(currentMonthData)
-    const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier
-    const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier
-    const sumOfHours = workedHours + overtimeHours + weekendsHours
+    const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier;
+    const workedHours = getCurrentMonthWorkedHours(currentMonthData);
+    const overtimeHours =
+      getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier;
+    const weekendsHours =
+      getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier;
+    const sumOfHours = workedHours + overtimeHours + weekendsHours;
 
-    const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData)
-    const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData)
-    const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData)
+    const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
+    const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData);
+    const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData);
 
-    return { employeeHoursSum: sumOfHours, employeeHolidaysSum: holidayDays, employeeSickSum: sickDays, employeeOtherLeaveSum: otherLeaveDays }
-  }
+    return {
+      employeeHoursSum: sumOfHours,
+      employeeHolidaysSum: holidayDays,
+      employeeSickSum: sickDays,
+      employeeOtherLeaveSum: otherLeaveDays,
+    };
+  };
 
   console.log(employeesData);
 
   const handleRemoveFromViewClick = (idx) => {
-    setUpdatedEmployees(updatedEmployees => updatedEmployees = employeesData.splice(idx,1))
-    setEmployeesData(employeesData => employeesData)
-  }
+    setUpdatedEmployees(
+      (updatedEmployees) => (updatedEmployees = employeesData.splice(idx, 1)),
+    );
+    setEmployeesData((employeesData) => employeesData);
+  };
 
   return (
     <StyledHrRtsReport>
-      <IconButton size='xl' isActive={false} onClickAction={handlePrint}>
+      <IconButton size="xl" isActive={false} onClickAction={handlePrint}>
         <SvgPrint />
       </IconButton>
-      <StyledPrintArea  ref={tableRef}>
+      <StyledPrintArea ref={tableRef}>
         <StyledPrintAreaHeader>
           <h2>Narzędziownia</h2>
-          <p>Miesiąc: <strong>{getMonthName(month)}</strong></p>
-          <p>Data raportu: <span>{format(new Date(), 'yyyy-MM-dd')}</span></p>
+          <p>
+            Miesiąc: <strong>{getMonthName(month)}</strong>
+          </p>
+          <p>
+            Data raportu: <span>{format(new Date(), 'yyyy-MM-dd')}</span>
+          </p>
         </StyledPrintAreaHeader>
         <table>
           <thead>
@@ -182,33 +201,50 @@ const HrRcp = ({ year, month, employees }) => {
           </thead>
           <tbody>
             {employeesData.map((employee, idx) => {
-              const fullName = `${employee.name} ${employee.surname}`
-              const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0]
-              const employeeData = getEmployeeData(currentMonthData)
-              const { employeeHoursSum, employeeHolidaysSum, employeeSickSum, employeeOtherLeaveSum } = employeeData
-
+              const fullName = `${employee.name} ${employee.surname}`;
+              const currentMonthData = getGivenMonthData(
+                employee.calendar,
+                year,
+                month,
+              )[0];
+              const employeeData = getEmployeeData(currentMonthData);
+              const {
+                employeeHoursSum,
+                employeeHolidaysSum,
+                employeeSickSum,
+                employeeOtherLeaveSum,
+              } = employeeData;
 
               return (
                 // !isHidden &&
                 <tr key={idx}>
                   <td>
-                    <IconButton size='normal' isActive={false} onClickAction={() => handleRemoveFromViewClick(idx)} >
+                    <IconButton
+                      size="normal"
+                      isActive={false}
+                      onClickAction={() => handleRemoveFromViewClick(idx)}
+                    >
                       <SvgRemove />
                     </IconButton>
                   </td>
-                  <td>{ fullName } { employee.juvenile_worker && <span>pracownik młodociany</span> }</td>
-                  <td>{ employeeHoursSum }</td>
-                  <td>{ employeeHolidaysSum }</td>
-                  <td>{ employeeSickSum }</td>
-                  <td>{ employeeOtherLeaveSum }</td>
+                  <td>
+                    {fullName}{' '}
+                    {employee.juvenile_worker && (
+                      <span>pracownik młodociany</span>
+                    )}
+                  </td>
+                  <td>{employeeHoursSum}</td>
+                  <td>{employeeHolidaysSum}</td>
+                  <td>{employeeSickSum}</td>
+                  <td>{employeeOtherLeaveSum}</td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       </StyledPrintArea>
     </StyledHrRtsReport>
-  )
-}
+  );
+};
 
-export default HrRcp
+export default HrRcp;

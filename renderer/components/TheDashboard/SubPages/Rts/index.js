@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Title } from "@/common/Title"
-import { RtsForm } from "./Form"
+import styled from 'styled-components';
+import {Title} from '@/common/Title';
+import {RtsForm} from './Form';
 
 const StyledRtsPage = styled.section`
   margin: 0;
@@ -10,17 +10,16 @@ const StyledRtsPage = styled.section`
   grid-gap: var(--xs);
   align-items: center;
   min-height: 100%;
-`
+`;
 
-const RtsPage = ({ employeeId }) => {
-
+const RtsPage = ({employeeId}) => {
   // console.log('RTSPAGE id', employeeId);
   return (
     <StyledRtsPage>
       <Title isWhite>Wprowadź dane RCP</Title>
-      <RtsForm id={ employeeId } />
+      <RtsForm id={employeeId} />
     </StyledRtsPage>
-  )
-}
+  );
+};
 
-export default RtsPage
+export default RtsPage;

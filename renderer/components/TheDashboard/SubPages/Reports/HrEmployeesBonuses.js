@@ -1,23 +1,22 @@
-import styled from 'styled-components'
-import { useRef } from 'react'
-import format from 'date-fns/format'
+import styled from 'styled-components';
+import {useRef} from 'react';
+import format from 'date-fns/format';
 import {
   getCurrentMonthBonusRate,
   getMonthName,
   getGivenMonthData,
   getCurrentMonthOvertimeHours,
-  getCurrentMonthWeekendsHours
-} from '@/lib/utils'
-import { useReactToPrint } from 'react-to-print'
-import { IconButton } from '@/common/Buttons'
-import { SvgPrint } from '@/icons'
-
+  getCurrentMonthWeekendsHours,
+} from '@/lib/utils';
+import {useReactToPrint} from 'react-to-print';
+import {IconButton} from '@/common/Buttons';
+import {SvgPrint} from '@/icons';
 
 const StyledHrRtsReport = styled.section`
   & button {
     margin-left: var(--xxl);
   }
-`
+`;
 
 const StyledPrintArea = styled.div`
   margin: 0;
@@ -81,7 +80,7 @@ const StyledPrintArea = styled.div`
       font-style: italic;
     }
   }
-`
+`;
 
 const StyledPrintAreaHeader = styled.header`
   grid-area: header;
@@ -107,57 +106,57 @@ const StyledPrintAreaHeader = styled.header`
       color: var(--c-print-black);
     }
   }
-`
+`;
 
-const HrEmployeesBonus = ({ year, month, employees }) => {
-  const tableRef = useRef()
+const HrEmployeesBonus = ({year, month, employees}) => {
+  const tableRef = useRef();
 
   const handlePrint = useReactToPrint({
     content: () => tableRef.current,
-  })
+  });
 
   const getEmployeeData = (currentMonthData) => {
-    const employeeBonusRate = getCurrentMonthBonusRate(currentMonthData)
-    const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData)
-    const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData)
+    const employeeBonusRate = getCurrentMonthBonusRate(currentMonthData);
+    const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData);
+    const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData);
 
     const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
       if (curr.evaluation.length > 0) {
-        res.push(...curr.evaluation)
+        res.push(...curr.evaluation);
       }
-      return res
-    }, [])
+      return res;
+    }, []);
 
-    let autoWeekendBonus = 0
+    let autoWeekendBonus = 0;
     if (weekendsHours >= 24) {
-      autoWeekendBonus = employeeBonusRate * 0.5
+      autoWeekendBonus = employeeBonusRate * 0.5;
     } else if (weekendsHours >= 12) {
-      autoWeekendBonus = employeeBonusRate * 0.25
+      autoWeekendBonus = employeeBonusRate * 0.25;
     }
 
-    let autoWeekdayBonus = 0
+    let autoWeekdayBonus = 0;
     if (overtimeHours >= 40) {
-      autoWeekdayBonus = employeeBonusRate
+      autoWeekdayBonus = employeeBonusRate;
     } else if (overtimeHours >= 20) {
-      autoWeekdayBonus = employeeBonusRate * 0.5
+      autoWeekdayBonus = employeeBonusRate * 0.5;
     }
 
-    let manualBonus = 0
+    let manualBonus = 0;
     if (evaluationArray.length > 0) {
       const percentsArray = evaluationArray.reduce((res, curr) => {
-        res.push(curr.percent)
-        return res
-      }, [])
+        res.push(curr.percent);
+        return res;
+      }, []);
 
       manualBonus = percentsArray.reduce((res, curr) => {
-        const bonusAmount = employeeBonusRate * (parseInt(curr) / 100)
-        return res + bonusAmount
-      }, 0)
+        const bonusAmount = employeeBonusRate * (parseInt(curr) / 100);
+        return res + bonusAmount;
+      }, 0);
     }
 
-    const amountBonus = autoWeekendBonus + autoWeekdayBonus + manualBonus
-    return { employeeBonusAmount: amountBonus }
-  }
+    const amountBonus = autoWeekendBonus + autoWeekdayBonus + manualBonus;
+    return {employeeBonusAmount: amountBonus};
+  };
 
   return (
     <StyledHrRtsReport>
@@ -187,15 +186,15 @@ const HrEmployeesBonus = ({ year, month, employees }) => {
           </thead>
           <tbody>
             {employees.map((employee, idx) => {
-              const fullName = `${employee.name} ${employee.surname}`
+              const fullName = `${employee.name} ${employee.surname}`;
               const currentMonthData = getGivenMonthData(
                 employee.calendar,
                 year,
                 month,
-              )[0]
-              const employeeData = getEmployeeData(currentMonthData)
-              const { employeeBonusAmount } = employeeData
-                console.log('employeeBonusAmount', employeeBonusAmount);
+              )[0];
+              const employeeData = getEmployeeData(currentMonthData);
+              const {employeeBonusAmount} = employeeData;
+              console.log('employeeBonusAmount', employeeBonusAmount);
               return employeeBonusAmount > 0 ? (
                 <tr key={idx}>
                   <td>{fullName}</td>
@@ -203,13 +202,13 @@ const HrEmployeesBonus = ({ year, month, employees }) => {
                   <td>{fullName}</td>
                   <td></td>
                 </tr>
-              ) : null
+              ) : null;
             })}
           </tbody>
         </table>
       </StyledPrintArea>
     </StyledHrRtsReport>
-  )
-}
+  );
+};
 
-export default HrEmployeesBonus
+export default HrEmployeesBonus;

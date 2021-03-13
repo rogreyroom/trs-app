@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const StyledLeavePages = styled.section`
   margin: 0;
@@ -25,4 +25,4 @@ export const StyledLeavePages = styled.section`
     grid-area: form;
     margin: 0;
   }
-`
+`;

@@ -7,4 +7,4 @@ export const SvgHoliday = (props) => {
       />
     </svg>
   );
-}
+};

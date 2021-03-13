@@ -1,4 +1,4 @@
-export * from './Error'
+export * from './Error';
 
 // ???
-export * from './ServerError'
+export * from './ServerError';

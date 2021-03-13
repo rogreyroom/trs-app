@@ -1,7 +1,7 @@
-import { forwardRef } from 'react'
-import styled, { css } from 'styled-components';
-import { CommonInputStyles } from './_commonStyles'
-import { Error } from '@/common/Errors'
+import {forwardRef} from 'react';
+import styled, {css} from 'styled-components';
+import {CommonInputStyles} from './_commonStyles';
+import {Error} from '@/common/Errors';
 
 const StyledTextareaWrapper = styled.div`
   display: flex;
@@ -12,18 +12,20 @@ const StyledTextareaWrapper = styled.div`
   margin: 0;
   position: relative;
 
-  ${props => props.isEvalTextarea && css`
-    grid-row: 2 / 2;
-    grid-column: 1 / 4;
-  ` || css`
-    grid-row: 1 / 1;
-  `}
+  ${(props) =>
+    (props.isEvalTextarea &&
+      css`
+        grid-row: 2 / 2;
+        grid-column: 1 / 4;
+      `) ||
+    css`
+      grid-row: 1 / 1;
+    `}
 
   & textarea {
     height: 130px;
   }
-
-`
+`;
 
 const StyledTextarea = styled.textarea`
   ${CommonInputStyles}
@@ -32,28 +34,44 @@ const StyledTextarea = styled.textarea`
   width: 100%;
   padding: var(--s);
 
-  ${props => props.isEval && css`
-    grid-row: 3;
-  `}
-`
+  ${(props) =>
+    props.isEval &&
+    css`
+      grid-row: 3;
+    `}
+`;
 
+export const Textarea = forwardRef(
+  ({name, error, errorMessage, onChange, value}, ref) => {
+    return (
+      <StyledTextareaWrapper>
+        <StyledTextarea
+          name={name}
+          ref={ref}
+          error={error}
+          value={value}
+          onChange={onChange}
+        />
+        <Error error={error} errorMessage={errorMessage} />
+      </StyledTextareaWrapper>
+    );
+  },
+);
 
-export const Textarea = forwardRef(({ name, error, errorMessage, onChange,  value }, ref) => {
-  return (
-    <StyledTextareaWrapper>
-      <StyledTextarea  name={name} ref={ref} error={error} value={value} onChange={onChange} />
-      <Error error={error} errorMessage={errorMessage} />
-    </StyledTextareaWrapper>
-  )
-})
-
-export const EvaluationTextarea = forwardRef(({ name, error, errorMessage, onChange,  value }, ref) => {
-  return (
-    <StyledTextareaWrapper isEvalTextarea>
-      <StyledTextarea isEval name={name} ref={ref} error={error} value={value} onChange={onChange} />
-      <Error error={error} errorMessage={errorMessage} />
-    </StyledTextareaWrapper>
-  )
-})
-
-
+export const EvaluationTextarea = forwardRef(
+  ({name, error, errorMessage, onChange, value}, ref) => {
+    return (
+      <StyledTextareaWrapper isEvalTextarea>
+        <StyledTextarea
+          isEval
+          name={name}
+          ref={ref}
+          error={error}
+          value={value}
+          onChange={onChange}
+        />
+        <Error error={error} errorMessage={errorMessage} />
+      </StyledTextareaWrapper>
+    );
+  },
+);

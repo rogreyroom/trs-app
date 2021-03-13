@@ -7,4 +7,4 @@ export const SvgEes = (props) => {
       />
     </svg>
   );
-}
+};

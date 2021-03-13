@@ -1,13 +1,9 @@
-import { AppContainer } from './AppContainer'
+import {AppContainer} from './AppContainer';
 
-const LoginLayout = ({ children }) => {
-  return (
-    <AppContainer login>
-        { children }
-    </AppContainer>
-  )
-}
+const LoginLayout = ({children}) => {
+  return <AppContainer login>{children}</AppContainer>;
+};
 
-export const getLayout = page => <LoginLayout>{page}</LoginLayout>
+export const getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
 
-export default LoginLayout
+export default LoginLayout;

@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const CommonInputStyles = css`
-  --input-border-size: ${ props => props.error ? '1px' : '2px'};
-  --input-border-color: ${ props => props.error ? 'var(--c-error)' : 'transparent'};
+  --input-border-size: ${(props) => (props.error ? '1px' : '2px')};
+  --input-border-color: ${(props) =>
+    props.error ? 'var(--c-error)' : 'transparent'};
 
   background-color: var(--c-blue-03);
   font-family: inherit;
@@ -45,7 +46,7 @@ export const CommonInputStyles = css`
     color: var(--c-blue-03);
     cursor: not-allowed;
   }
-`
+`;
 
 export const StyledInput = styled.input`
   ${CommonInputStyles}
@@ -62,7 +63,7 @@ export const StyledInput = styled.input`
       margin: 0;
     }
   }
-`
+`;
 
 export const StyledFieldWrapper = styled.div`
   position: relative;
@@ -83,4 +84,4 @@ export const StyledFieldWrapper = styled.div`
   div {
     margin: 0;
   }
-`
+`;

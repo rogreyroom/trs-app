@@ -1,7 +1,7 @@
-import styled  from 'styled-components';
+import styled from 'styled-components';
 
 const StyledError = styled.span`
-  ${props => props.error ? `display: block` : `display: none`};
+  ${(props) => (props.error ? `display: block` : `display: none`)};
   margin: 0;
   position: absolute;
   bottom: 60px;
@@ -13,13 +13,13 @@ const StyledError = styled.span`
   color: var(--c-error);
   padding: var(--xxs);
   border-radius: var(--xxs);
-  transition: all .4s ease;
+  transition: all 0.4s ease;
   z-index: 2;
 
   &:before {
     --arrow-size: var(--xs);
     position: absolute;
-    content:'';
+    content: '';
     left: 50%;
     transform: translateY(-50%);
     bottom: -12px;
@@ -30,15 +30,19 @@ const StyledError = styled.span`
     border-left: var(--arrow-size) solid transparent;
     border-right: var(--arrow-size) solid transparent;
   }
-`
+`;
 
 export const Error = ({error, errorMessage}) => {
-  const createError = errorMsg => {
-    const errString = errorMsg.reduce((res, e) => { return `${res} ${e}`},'')
-    return errString
-  }
+  const createError = (errorMsg) => {
+    const errString = errorMsg.reduce((res, e) => {
+      return `${res} ${e}`;
+    }, '');
+    return errString;
+  };
 
   return (
-    <StyledError error={error}>{errorMessage && createError(errorMessage)}</StyledError>
-  )
-}
+    <StyledError error={error}>
+      {errorMessage && createError(errorMessage)}
+    </StyledError>
+  );
+};

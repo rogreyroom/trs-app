@@ -1,18 +1,18 @@
 export const plLocale = {
   // months list by order
   months: [
-  'Styczeń',
-  'Luty',
-  'Marzec',
-  'Kwiecień',
-  'Maj',
-  'Czerwiec',
-  'Lipiec',
-  'Sierpień',
-  'Wrzesień',
-  'Październik',
-  'Listopad',
-  'Grudzień',
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień',
   ],
 
   // week days by order
@@ -85,7 +85,6 @@ export const plLocale = {
   from: 'od',
   to: 'do',
 
-
   // used for input value when multi dates are selected
   digitSeparator: ',',
 
@@ -94,4 +93,4 @@ export const plLocale = {
 
   // is your language rtl or ltr?
   isRtl: false,
-}
+};

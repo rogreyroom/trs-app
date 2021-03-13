@@ -7,4 +7,4 @@ export const SvgPdf = (props) => {
       />
     </svg>
   );
-}
+};

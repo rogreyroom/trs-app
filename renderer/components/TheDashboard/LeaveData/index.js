@@ -1,10 +1,10 @@
-import styled from 'styled-components'
-import { axios } from '@/lib/axios-config'
-import { format } from 'date-fns'
-import { useContext } from 'react'
-import { DashboardContext } from '@/contexts/DashboardContext'
-import { SvgRemove } from '@/icons'
-import { IconButton } from '@/common/Buttons'
+import styled from 'styled-components';
+import {axios} from '@/lib/axios-config';
+import {format} from 'date-fns';
+import {useContext} from 'react';
+import {DashboardContext} from '@/contexts/DashboardContext';
+import {SvgRemove} from '@/icons';
+import {IconButton} from '@/common/Buttons';
 
 const StyledLeaveData = styled.section`
   margin: 0;
@@ -31,7 +31,7 @@ const StyledLeaveData = styled.section`
       margin: 0;
     }
   }
-`
+`;
 
 const StyledLeaveItem = styled.div`
   margin: 0;
@@ -45,95 +45,122 @@ const StyledLeaveItem = styled.div`
     font-weight: var(--fw-light);
     color: var(--c-white);
   }
-`
-
+`;
 
 const getTitle = (type, year) => {
   switch (type) {
     case 'holiday':
-      return `Wykorzystany urlop w roku ${year}`
+      return `Wykorzystany urlop w roku ${year}`;
       break;
     case 'sick':
-      return `Wykorzystane chorobowe w roku ${year}`
+      return `Wykorzystane chorobowe w roku ${year}`;
       break;
     case 'other':
-      return `Wykorzystane wolne w roku ${year}`
+      return `Wykorzystane wolne w roku ${year}`;
       break;
-    default: null
+    default:
+      null;
       break;
   }
-}
+};
 
 const getLeaveDays = (arrayData, type) => {
   const resultArray = arrayData.reduce((accArr, month) => {
     switch (type) {
       case 'holiday':
-        month.holiday_leave.length > 0 && accArr.push(...month.holiday_leave.map(el => el))
+        month.holiday_leave.length > 0 &&
+          accArr.push(...month.holiday_leave.map((el) => el));
         break;
       case 'sick':
-        month.sick_leave.length > 0 && accArr.push(...month.sick_leave.map(el => el))
+        month.sick_leave.length > 0 &&
+          accArr.push(...month.sick_leave.map((el) => el));
         break;
       case 'other':
-        month.other_leave.length > 0 && accArr.push(...month.other_leave.map(el => el))
+        month.other_leave.length > 0 &&
+          accArr.push(...month.other_leave.map((el) => el));
         break;
-      default: null
+      default:
+        null;
         break;
     }
-    return accArr
-  },[])
-  return resultArray
-}
+    return accArr;
+  }, []);
+  return resultArray;
+};
 
-
-export const LeaveData = ({ leaveType, id }) => {
-  const [employee, setEmployee] = useContext(DashboardContext).employee
-  const currentYearIs = new Date().getFullYear()
-  const title = getTitle(leaveType, currentYearIs)
-  const employeeMonthsData = employee.calendar.find(year => year.year === currentYearIs).months
-  const leaveDays = getLeaveDays(employeeMonthsData, leaveType)
-
-
+export const LeaveData = ({leaveType, id}) => {
+  const [employee, setEmployee] = useContext(DashboardContext).employee;
+  const currentYearIs = new Date().getFullYear();
+  const title = getTitle(leaveType, currentYearIs);
+  const employeeMonthsData = employee.calendar.find(
+    (year) => year.year === currentYearIs,
+  ).months;
+  const leaveDays = getLeaveDays(employeeMonthsData, leaveType);
 
   const handleSingleLeaveDelete = async (e, leave) => {
-    e.preventDefault()
-    const yearIs = leave.from.year
-    const monthIs = leave.from.month
-    const valueIs = leave
+    e.preventDefault();
+    const yearIs = leave.from.year;
+    const monthIs = leave.from.month;
+    const valueIs = leave;
 
-      switch (leaveType) {
-        case 'holiday':
-          await axios.put(`/api/employees/${id}`, { field: 'deleteHoliday', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs } })
-          break;
-        case 'sick':
-          await axios.put(`/api/employees/${id}`, { field: 'deleteSick', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }})
-          break;
-        case 'other':
-          await axios.put(`/api/employees/${id}`, { field: 'deleteOther', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }})
-          break;
-        default: null
-          break;
-      }
-  }
+    switch (leaveType) {
+      case 'holiday':
+        await axios.put(`/api/employees/${id}`, {
+          field: 'deleteHoliday',
+          queryFields: {year: yearIs, month: monthIs},
+          value: {...valueIs},
+        });
+        break;
+      case 'sick':
+        await axios.put(`/api/employees/${id}`, {
+          field: 'deleteSick',
+          queryFields: {year: yearIs, month: monthIs},
+          value: {...valueIs},
+        });
+        break;
+      case 'other':
+        await axios.put(`/api/employees/${id}`, {
+          field: 'deleteOther',
+          queryFields: {year: yearIs, month: monthIs},
+          value: {...valueIs},
+        });
+        break;
+      default:
+        null;
+        break;
+    }
+  };
 
   return (
     <StyledLeaveData>
       <h4>{title}</h4>
       <div>
-        {
-          leaveDays.map((leave, idx) => {
-            const dateFrom = format(new Date(leave.from.year, leave.from.month - 1, leave.from.day), "yyyy.MM.dd")
-            const dateTo = format(new Date(leave.to.year, leave.to.month - 1, leave.to.day), "yyyy.MM.dd")
-            return (
-              <StyledLeaveItem  key={idx}>
-                <IconButton size='m' isActive={false} onClickAction={(e) => handleSingleLeaveDelete(e, leave)} >
-                  <SvgRemove />
-                </IconButton>
-                <span>od: {dateFrom}<span> - </span>do: {dateTo}</span>
-              </StyledLeaveItem>
-            )
-          })
-        }
+        {leaveDays.map((leave, idx) => {
+          const dateFrom = format(
+            new Date(leave.from.year, leave.from.month - 1, leave.from.day),
+            'yyyy.MM.dd',
+          );
+          const dateTo = format(
+            new Date(leave.to.year, leave.to.month - 1, leave.to.day),
+            'yyyy.MM.dd',
+          );
+          return (
+            <StyledLeaveItem key={idx}>
+              <IconButton
+                size="m"
+                isActive={false}
+                onClickAction={(e) => handleSingleLeaveDelete(e, leave)}
+              >
+                <SvgRemove />
+              </IconButton>
+              <span>
+                od: {dateFrom}
+                <span> - </span>do: {dateTo}
+              </span>
+            </StyledLeaveItem>
+          );
+        })}
       </div>
     </StyledLeaveData>
-  )
-}
+  );
+};
