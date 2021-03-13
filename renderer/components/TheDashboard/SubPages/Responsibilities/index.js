@@ -166,7 +166,7 @@ const ResponsibilitiesPage = ({ employeeId }) => {
   return (
     <StyledResponsibilitiesPage>
       <Title isWhite>Zakres obowiązków</Title>
-      <Button onClickAction={() => setShowForm(showForm => true)}>{ data && ( 'Edit' ) || ( 'Add' )}</Button>
+      <Button onClickAction={() => setShowForm(showForm => true)}>{ data && ( 'Edytuj' ) || ( 'Dodaj' )}</Button>
       <ResponsibilitiesDataSection>
         <p>{ data && data.text }</p>
       </ResponsibilitiesDataSection>
