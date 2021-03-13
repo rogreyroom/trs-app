@@ -132,6 +132,10 @@ const StyledPrintArea = styled.div`
   & div {
     grid-area: summary;
     margin: 0;
+
+    & span {
+      font-weight: var(--fw-normal);
+    }
   }
 
 `
@@ -326,9 +330,9 @@ const EmployeeRcpDetails = ({year, month}) => {
         </table>
 
         <div>
-          <p>Całkowita kwota: <span>{ (amountSumOfHours + amountSumOfLeave).toFixed(2) }</span> <span>pln</span></p>
-          <p>Kwota do wypłaty: <span>{ amountToBePaid.toFixed(2) }</span> <span>pln</span></p>
-          <p>Kwota do wypłaty z premią: <span>{ totalAmountToPay.toFixed(2) }</span> <span>pln</span></p>
+          <p>Całkowita kwota: <span>{ (amountSumOfHours + amountSumOfLeave).toFixed(0) }</span> <span>pln</span></p>
+          <p>Kwota do wypłaty: <span>{ amountToBePaid.toFixed(0) }</span> <span>pln</span></p>
+          <p>Kwota do wypłaty z premią: <span>{ totalAmountToPay.toFixed() }</span> <span>pln</span></p>
         </div>
       </StyledPrintArea>
     </StyledEmployeeDetails>
