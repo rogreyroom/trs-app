@@ -117,7 +117,7 @@ const StyledPrintArea = styled.div`
 
     &:last-child {
       white-space: nowrap;
-      min-width: 100px;
+      min-width: 125px;
     }
 
     @media print {
@@ -260,7 +260,7 @@ const EmployeeRcpDetails = ({year, month}) => {
 
             <tr className='tableSumRow'>
               <td>SUMA</td>
-              <td>{ sumOfHours } <span>godz</span></td>
+              <td>{ sumOfHours.toFixed(0) } <span>godz</span></td>
               <td>{ amountSumOfHours } <span>pln</span></td>
             </tr>
 
