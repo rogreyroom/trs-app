@@ -24,6 +24,7 @@ jspm_packages/
 
 # Next.js Distribution
 build/
+app
 
 # Electron Distribution
 dist
