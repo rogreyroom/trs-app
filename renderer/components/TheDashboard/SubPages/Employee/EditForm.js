@@ -12,25 +12,21 @@ import {Button} from '@/common/Buttons';
 import {Input, InputDatePicker, Select} from '@/common/Inputs';
 
 // TO be fixed
-import {
-  StyledEmployeeForm,
-  StyledEditEmployeeInputsWrapper,
-  StyledEditFieldsWrap,
-} from './styles';
 import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
+import {StyledEmployeeForm, StyledEditEmployeeInputsWrapper, StyledEditFieldsWrap} from './styles';
 
 // Edit schema
 const employeeEditFormSchema = Joi.object().keys({
   year: Joi.required(),
   month: Joi.required(),
   name: Joi.string()
-    .pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/)
+    .pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\$/)
     .required(),
   surname: Joi.string()
-    .pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\-$/)
+    .pattern(/^[a-zA-ZążźćńółęśĄŻŹĆŃÓŁĘŚ]|\$/)
     .required(),
   position: Joi.string()
-    .pattern(/^[a-zA-Z]|[0-9]\-+$/)
+    .pattern(/^[a-zA-Z]|[0-9]+$/)
     .required(),
   overdue_leave_amount: Joi.number().required(),
   assigned_leave_amount: Joi.number().required(),
@@ -57,41 +53,33 @@ const getEmployeeYearsArray = (employeeData) => {
   return years;
 };
 
-const getEmployeeMonthsArray = () => {
-  return [
-    {label: 'Styczeń', value: 1},
-    {label: 'Luty', value: 2},
-    {label: 'Marzec', value: 3},
-    {label: 'Kwiecień', value: 4},
-    {label: 'Maj', value: 5},
-    {label: 'Czerwiec', value: 6},
-    {label: 'Lipiec', value: 7},
-    {label: 'Sierpień', value: 8},
-    {label: 'Wrzesień', value: 9},
-    {label: 'Październik', value: 10},
-    {label: 'Listopad', value: 11},
-    {label: 'Grudzień', value: 12},
-  ];
-};
+const getEmployeeMonthsArray = () => [
+  {label: 'Styczeń', value: 1},
+  {label: 'Luty', value: 2},
+  {label: 'Marzec', value: 3},
+  {label: 'Kwiecień', value: 4},
+  {label: 'Maj', value: 5},
+  {label: 'Czerwiec', value: 6},
+  {label: 'Lipiec', value: 7},
+  {label: 'Sierpień', value: 8},
+  {label: 'Wrzesień', value: 9},
+  {label: 'Październik', value: 10},
+  {label: 'Listopad', value: 11},
+  {label: 'Grudzień', value: 12},
+];
 
 const defaultSelectValues = (employeeYears) => {
   const currentYearIs = new Date().getFullYear();
   const currentMonthIs = new Date().getMonth() + 1;
   const sortedEmployeeYears = employeeYears.reverse();
-  const year = sortedEmployeeYears.includes(currentYearIs)
-    ? currentYearIs
-    : sortedEmployeeYears[0];
+  const year = sortedEmployeeYears.includes(currentYearIs) ? currentYearIs : sortedEmployeeYears[0];
 
   return {defaultYear: year, defaultMonth: currentMonthIs};
 };
 
 const getYearMonthData = (employeeData, theYear, theMonth) => {
-  const yearData = employeeData.calendar.filter(
-    ({year}) => year === theYear,
-  )[0];
-  const monthData = yearData?.months?.filter(
-    ({month}) => month === theMonth,
-  )[0];
+  const yearData = employeeData.calendar.filter(({year}) => year === theYear)[0];
+  const monthData = yearData?.months?.filter(({month}) => month === theMonth)[0];
 
   return {year: theYear, ...monthData};
 };
@@ -123,27 +111,18 @@ const getDefaultValues = (employeeData, theYear, theMonth) => {
 
 export const EditEmployeeForm = ({id}) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee;
+  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
   const years = getEmployeeYearsArray(employee).sort();
   const {defaultYear, defaultMonth} = defaultSelectValues(years);
   const preloadedValues = getDefaultValues(employee, defaultYear, defaultMonth);
-  const {
-    control,
-    register,
-    errors,
-    handleSubmit,
-    reset,
-    getValues,
-    setValue,
-    onChange,
-  } = useForm({
+  const {control, register, errors, handleSubmit, reset, getValues, setValue, onChange} = useForm({
     mode: 'onBlur',
     resolver: joiResolver(employeeEditFormSchema),
     defaultValues: preloadedValues,
   });
 
-  const getEmployeeData = (id, data) =>
-    data.filter((employee) => employee._id === id)[0];
+  const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
   const yearsSelectOptionsArray = years.reduce((resultArray, year) => {
     const newYearOption = {label: year, value: year};
@@ -156,9 +135,9 @@ export const EditEmployeeForm = ({id}) => {
     const {year, month} = values;
     const selectedOptionsValue = getDefaultValues(
       employee,
-      parseInt(year),
-      parseInt(month),
-      1,
+      parseInt(year, 10),
+      parseInt(month, 10),
+      1
     );
     setValue('hourly_rate', selectedOptionsValue.hourly_rate);
     setValue('holiday_rate', selectedOptionsValue.holiday_rate);
@@ -168,14 +147,8 @@ export const EditEmployeeForm = ({id}) => {
     setValue('retainment_rate', selectedOptionsValue.retainment_rate);
     setValue('to_account_rate', selectedOptionsValue.to_account_rate);
     setValue('bonus_rate', selectedOptionsValue.bonus_rate);
-    setValue(
-      'overtime_rate_multiplier',
-      selectedOptionsValue.overtime_rate_multiplier,
-    );
-    setValue(
-      'overtime_hours_multiplier',
-      selectedOptionsValue.overtime_hours_multiplier,
-    );
+    setValue('overtime_rate_multiplier', selectedOptionsValue.overtime_rate_multiplier);
+    setValue('overtime_hours_multiplier', selectedOptionsValue.overtime_hours_multiplier);
   };
 
   const onSubmit = async (data) => {
@@ -183,26 +156,24 @@ export const EditEmployeeForm = ({id}) => {
 
     const employeeYearMonthValues = getYearMonthData(
       employee,
-      parseInt(data.year),
-      parseInt(data.month),
+      parseInt(data.year, 10),
+      parseInt(data.month, 10)
     );
 
     const employeeBasicInfoData = {
       name: data.name,
       surname: data.surname,
       position: data.position,
-      overdue_leave_amount: parseInt(data.overdue_leave_amount),
-      assigned_leave_amount: parseInt(data.assigned_leave_amount),
+      overdue_leave_amount: parseInt(data.overdue_leave_amount, 10),
+      assigned_leave_amount: parseInt(data.assigned_leave_amount, 10),
       employment_start_date: data.employment_start_date,
     };
 
     const employeeCalendarInfoData = {
-      year: parseInt(data.year),
-      month: parseInt(data.month),
+      year: parseInt(data.year, 10),
+      month: parseInt(data.month, 10),
       hourly_rate: parseFloat(data.hourly_rate),
-      overtime_rate:
-        parseFloat(data.hourly_rate) *
-        parseFloat(data.overtime_rate_multiplier),
+      overtime_rate: parseFloat(data.hourly_rate) * parseFloat(data.overtime_rate_multiplier),
       holiday_rate: parseFloat(data.holiday_rate),
       sick_leave_rate: parseFloat(data.sick_leave_rate),
       other_leave_rate: parseFloat(data.other_leave_rate),
@@ -228,8 +199,7 @@ export const EditEmployeeForm = ({id}) => {
       month: employeeYearMonthValues.month,
       hourly_rate: employeeYearMonthValues.hourly_rate,
       overtime_rate:
-        employeeYearMonthValues.hourly_rate *
-        employeeYearMonthValues.overtime_rate_multiplier,
+        employeeYearMonthValues.hourly_rate * employeeYearMonthValues.overtime_rate_multiplier,
       holiday_rate: employeeYearMonthValues.holiday_rate,
       sick_leave_rate: employeeYearMonthValues.sick_leave_rate,
       other_leave_rate: employeeYearMonthValues.other_leave_rate,
@@ -237,22 +207,14 @@ export const EditEmployeeForm = ({id}) => {
       retainment_rate: employeeYearMonthValues.retainment_rate,
       to_account_rate: employeeYearMonthValues.to_account_rate,
       bonus_rate: employeeYearMonthValues.bonus_rate,
-      overtime_rate_multiplier:
-        employeeYearMonthValues.overtime_rate_multiplier,
-      overtime_hours_multiplier:
-        employeeYearMonthValues.overtime_hours_multiplier,
+      overtime_rate_multiplier: employeeYearMonthValues.overtime_rate_multiplier,
+      overtime_hours_multiplier: employeeYearMonthValues.overtime_hours_multiplier,
     };
 
     const employeeBasicInfo =
-      JSON.stringify(employeeBasicInfoData) ===
-      JSON.stringify(employeeBasicInfoPreloadedValues)
-        ? true
-        : false;
+      JSON.stringify(employeeBasicInfoData) === JSON.stringify(employeeBasicInfoPreloadedValues);
     const employeeCalendarInfo =
-      JSON.stringify(employeeCalendarInfoData) ===
-      JSON.stringify(employeeCalendarYearMonthValues)
-        ? true
-        : false;
+      JSON.stringify(employeeCalendarInfoData) === JSON.stringify(employeeCalendarYearMonthValues);
 
     // if ( !employeeBasicInfo ) {
     //   if ( employeeBasicInfoData.employment_start_date !== null ) employeeBasicInfoData.employment_status = false
@@ -279,7 +241,7 @@ export const EditEmployeeForm = ({id}) => {
       'employeeBasicInfo',
       employeeBasicInfo,
       'employeeCalendarInfo',
-      employeeCalendarInfo,
+      employeeCalendarInfo
     );
     setPage((page) => 'rts');
   };
@@ -325,9 +287,7 @@ export const EditEmployeeForm = ({id}) => {
             step="1"
             label="Urlop zaległy"
             error={!!errors.overdue_leave_amount}
-            errorMessage={
-              errors?.overdue_leave_amount && [errorMessages.notEmpty]
-            }
+            errorMessage={errors?.overdue_leave_amount && [errorMessages.notEmpty]}
             ref={register}
           />
           <Input
@@ -338,18 +298,14 @@ export const EditEmployeeForm = ({id}) => {
             step="1"
             label="Urlop przysługujący"
             error={!!errors.assigned_leave_amount}
-            errorMessage={
-              errors?.assigned_leave_amount && [errorMessages.notEmpty]
-            }
+            errorMessage={errors?.assigned_leave_amount && [errorMessages.notEmpty]}
             ref={register}
           />
           <InputDatePicker
             name="employment_start_date"
             label="Data zatrudnienia"
             error={!!errors.employment_start_date}
-            errorMessage={
-              errors?.employment_start_date && [errorMessages.notEmpty]
-            }
+            errorMessage={errors?.employment_start_date && [errorMessages.notEmpty]}
             control={control}
           />
         </StyledEditFieldsWrap>
@@ -360,9 +316,7 @@ export const EditEmployeeForm = ({id}) => {
             label="Rok"
             optionsArray={yearsSelectOptionsArray}
             error={!!errors.year}
-            onChange={() =>
-              handleSelectChange(getValues(['year', 'month']), setValue)
-            }
+            onChange={() => handleSelectChange(getValues(['year', 'month']), setValue)}
             selected={defaultYear}
             errorMessage={errors?.year && [errorMessages.notEmpty]}
             ref={register}
@@ -372,9 +326,7 @@ export const EditEmployeeForm = ({id}) => {
             label="Miesiąc"
             optionsArray={monthsSelectOptionsArray}
             error={!!errors.month}
-            onChange={() =>
-              handleSelectChange(getValues(['year', 'month']), setValue)
-            }
+            onChange={() => handleSelectChange(getValues(['year', 'month']), setValue)}
             selected={defaultMonth}
             errorMessage={errors?.month && [errorMessages.notEmpty]}
             ref={register}
@@ -430,10 +382,7 @@ export const EditEmployeeForm = ({id}) => {
             label="Stawka okolicznościowa"
             error={!!errors.other_leave_rate}
             errorMessage={
-              errors?.other_leave_rate && [
-                errorMessages.notEmpty,
-                errorMessages.numericValue,
-              ]
+              errors?.other_leave_rate && [errorMessages.notEmpty, errorMessages.numericValue]
             }
             ref={register}
           />
@@ -465,10 +414,7 @@ export const EditEmployeeForm = ({id}) => {
             label="Podstawa ROR"
             error={!!errors.to_account_rate}
             errorMessage={
-              errors?.to_account_rate && [
-                errorMessages.notEmpty,
-                errorMessages.numericValue,
-              ]
+              errors?.to_account_rate && [errorMessages.notEmpty, errorMessages.numericValue]
             }
             ref={register}
           />
@@ -479,9 +425,7 @@ export const EditEmployeeForm = ({id}) => {
             step="0.01"
             label="Mnożnik stawki nadgodzin"
             error={!!errors.overtime_rate_multiplier}
-            errorMessage={
-              errors?.overtime_rate_multiplier && [errorMessages.notEmpty]
-            }
+            errorMessage={errors?.overtime_rate_multiplier && [errorMessages.notEmpty]}
             ref={register}
           />
           <Input
@@ -491,9 +435,7 @@ export const EditEmployeeForm = ({id}) => {
             step="0.01"
             label="Mnożnik ilości nadgodzin"
             error={!!errors.overtime_hours_multiplier}
-            errorMessage={
-              errors?.overtime_hours_multiplier && [errorMessages.notEmpty]
-            }
+            errorMessage={errors?.overtime_hours_multiplier && [errorMessages.notEmpty]}
             ref={register}
           />
         </StyledEditFieldsWrap>

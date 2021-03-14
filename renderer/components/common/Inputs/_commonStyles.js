@@ -2,8 +2,7 @@ import styled, {css} from 'styled-components';
 
 export const CommonInputStyles = css`
   --input-border-size: ${(props) => (props.error ? '1px' : '2px')};
-  --input-border-color: ${(props) =>
-    props.error ? 'var(--c-error)' : 'transparent'};
+  --input-border-color: ${(props) => (props.error ? 'var(--c-error)' : 'transparent')};
 
   background-color: var(--c-blue-03);
   font-family: inherit;

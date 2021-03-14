@@ -149,7 +149,7 @@ const HrEmployeesBonus = ({year, month, employees}) => {
       }, []);
 
       manualBonus = percentsArray.reduce((res, curr) => {
-        const bonusAmount = employeeBonusRate * (parseInt(curr) / 100);
+        const bonusAmount = employeeBonusRate * (parseInt(curr, 10) / 100);
         return res + bonusAmount;
       }, 0);
     }
@@ -187,20 +187,16 @@ const HrEmployeesBonus = ({year, month, employees}) => {
           <tbody>
             {employees.map((employee, idx) => {
               const fullName = `${employee.name} ${employee.surname}`;
-              const currentMonthData = getGivenMonthData(
-                employee.calendar,
-                year,
-                month,
-              )[0];
+              const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0];
               const employeeData = getEmployeeData(currentMonthData);
               const {employeeBonusAmount} = employeeData;
               console.log('employeeBonusAmount', employeeBonusAmount);
               return employeeBonusAmount > 0 ? (
-                <tr key={idx}>
+                <tr key={`${idx}${fullName}`}>
                   <td>{fullName}</td>
                   <td>{employeeBonusAmount}</td>
                   <td>{fullName}</td>
-                  <td></td>
+                  <td />
                 </tr>
               ) : null;
             })}

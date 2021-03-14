@@ -2,6 +2,7 @@ import {app} from 'electron';
 import serve from 'electron-serve';
 import {createWindow} from './helpers';
 
+// eslint-disable-next-line no-unused-vars
 const server = require('./server');
 
 const isProd = process.env.NODE_ENV === 'production';

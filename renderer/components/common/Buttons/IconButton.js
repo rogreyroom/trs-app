@@ -35,10 +35,8 @@ const StyledIconButton = styled.button.attrs((props) => ({
   }
 `;
 
-export const IconButton = ({children, size, isActive, onClickAction}) => {
-  return (
-    <StyledIconButton size={size} isActive={isActive} onClick={onClickAction}>
-      {children}
-    </StyledIconButton>
-  );
-};
+export const IconButton = ({children, size, isActive, onClickAction}) => (
+  <StyledIconButton size={size} isActive={isActive} onClick={onClickAction}>
+    {children}
+  </StyledIconButton>
+);

@@ -67,6 +67,7 @@ const getEmployeesYearsArray = (employees) => {
   const employeesYears = employees.reduce((resArr, currEmployee) => {
     const {calendar} = currEmployee;
     const years = getEmployeeYears(calendar);
+    // eslint-disable-next-line array-callback-return
     years.map((year) => {
       !resArr.includes(year) && resArr.push(year);
     });
@@ -92,6 +93,13 @@ const getEmployeeMonthsArray = () => [
 ];
 
 export const ReportsHr = () => {
+  const [reportPage, setReportPage] = useState(null);
+  const defaultYear = new Date().getFullYear();
+  const defaultMonth = new Date().getMonth() + 1;
+  const [year, setYear] = useState(defaultYear);
+  const [month, setMonth] = useState(defaultMonth);
+  const [yearsOptions, setYearsOptions] = useState(null);
+  const [monthsOptions, setMonthsOptions] = useState(null);
   const {data, error} = useSWR('/api/employees');
 
   if (error) return <h1>Something went wrong on the server!</h1>;
@@ -100,27 +108,17 @@ export const ReportsHr = () => {
   const employees = data;
 
   if (employees !== null) {
-    const [reportPage, setReportPage] = useState(null);
-    const defaultYear = new Date().getFullYear();
-    const defaultMonth = new Date().getMonth() + 1;
-    const [year, setYear] = useState(defaultYear);
-    const [month, setMonth] = useState(defaultMonth);
-    const [yearsOptions, setYearsOptions] = useState(null);
-    const [monthsOptions, setMonthsOptions] = useState(null);
-
-    yearsOptions === null &&
-      setYearsOptions((yearsOptions) => getEmployeesYearsArray(employees));
-    monthsOptions === null &&
-      setMonthsOptions((monthsOptions) => getEmployeeMonthsArray());
+    yearsOptions === null && setYearsOptions((yearsOptions) => getEmployeesYearsArray(employees));
+    monthsOptions === null && setMonthsOptions((monthsOptions) => getEmployeeMonthsArray());
 
     const handleYearChange = (e) => {
       const {value} = e.target;
-      setYear((year) => parseInt(value));
+      setYear((year) => parseInt(value, 10));
     };
 
     const handleMonthChange = (e) => {
       const {value} = e.target;
-      setMonth((month) => parseInt(value));
+      setMonth((month) => parseInt(value, 10));
     };
 
     const handleReportPageClick = (pageName) => {
@@ -161,23 +159,19 @@ export const ReportsHr = () => {
           </StyledReportLinks>
           <StyledReportPrintArea>
             {reportPage === 'hrEmployeesBonuses' ? (
-              <HrEmployeesBonuses
-                year={year}
-                month={month}
-                employees={employees}
-              />
+              <HrEmployeesBonuses year={year} month={month} employees={employees} />
             ) : null}
             {reportPage === 'hrEmployeesRts' ? (
               <HrEmployeesRts year={year} month={month} employees={employees} />
             ) : null}
 
-            {reportPage === 'hrEmployeesRts222' ? (
+            {/* {reportPage === 'hrEmployeesRts222' ? (
               <HrEmployeesRts222
                 year={year}
                 month={month}
                 employees={employees}
               />
-            ) : null}
+            ) : null} */}
           </StyledReportPrintArea>
         </StyledHrReportsPages>
       </>

@@ -26,31 +26,29 @@ const StyledListItem = styled.li`
   justify-content: flex-end;
 `;
 
-const StyledInfo = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
+// const StyledInfo = styled.div`
+//   display: flex;
+//   width: 100%;
+//   height: 100%;
+//   justify-content: center;
+//   align-items: center;
 
-  h1 {
-    color: var(--c-white);
-    font-family: inherit;
-    font-size: var(--fs-text);
-  }
+//   h1 {
+//     color: var(--c-white);
+//     font-family: inherit;
+//     font-size: var(--fs-text);
+//   }
 
-  /* maybe add some spinner + styles when loading */
-`;
+//   /* maybe add some spinner + styles when loading */
+// `;
 
 export const EmployeeList = () => {
   const [employees, setEmployees] = useContext(DashboardContext).data;
-  const [employeesFilter, setEmployeesFilter] = useContext(
-    DashboardContext,
-  ).filter;
+  // eslint-disable-next-line no-unused-vars
+  const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter;
   const [employee, setEmployee] = useContext(DashboardContext).employee;
-  const [addEmployeePage, setAddEmployeePage] = useContext(
-    DashboardContext,
-  ).add;
+  // eslint-disable-next-line no-unused-vars
+  const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add;
   const [isActive, setIsActive] = useState('');
   const {data} = useSWR(`/api/employees`, {initialData: employees});
 
@@ -63,10 +61,9 @@ export const EmployeeList = () => {
     // return () => {
     //   setEmployees(employees => employees)
     // }
-  }, [data, employee]);
+  }, [data, employee, setEmployees]);
 
-  const getEmployeeData = (id) =>
-    data.filter((employee) => employee._id === id)[0];
+  const getEmployeeData = (id) => data.filter((employee) => employee._id === id)[0];
 
   const handleEmployeeClick = (e, id) => {
     e.preventDefault();
@@ -82,18 +79,18 @@ export const EmployeeList = () => {
   return (
     <StyledList>
       {employees &&
-        employees.map(({_id, name, surname, employment_status}) => {
-          return employment_status === employeesFilter ? (
+        employees.map(({_id, name, surname, employment_status}) =>
+          employment_status === employeesFilter ? (
             <StyledListItem key={`${_id}${name}${surname}`}>
               <TextButton
-                isActive={isActive === _id ? true : false}
+                isActive={isActive === _id}
                 onClickAction={(e) => handleEmployeeClick(e, _id)}
               >
                 {surname} {name}
               </TextButton>
             </StyledListItem>
-          ) : null;
-        })}
+          ) : null
+        )}
     </StyledList>
   );
 };

@@ -15,13 +15,11 @@ export const StyledContentSection = styled.section`
   align-content: start;
 `;
 
-const EditEmployeePage = ({employeeId}) => {
-  return (
-    <StyledContentSection>
-      <Title isWhite>Edycja danych pracownika</Title>
-      <EditEmployeeForm id={employeeId} />
-    </StyledContentSection>
-  );
-};
+const EditEmployeePage = ({employeeId}) => (
+  <StyledContentSection>
+    <Title isWhite>Edycja danych pracownika</Title>
+    <EditEmployeeForm id={employeeId} />
+  </StyledContentSection>
+);
 
 export default EditEmployeePage;

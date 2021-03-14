@@ -5,14 +5,7 @@ import {getLayout} from '@/layouts/TopBarOnlyLayout';
 import {Title} from '@/common/Title';
 import {IconButton} from '@/common/Buttons';
 import {SvgEdit} from '@/icons';
-import {
-  StyledTable,
-  StyledThead,
-  StyledTBody,
-  StyledTr,
-  StyledTh,
-  StyledTd,
-} from '@/common/Table';
+import {StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd} from '@/common/Table';
 
 const Ees = () => {
   const router = useRouter();
@@ -26,8 +19,16 @@ const Ees = () => {
   const dataCheck = Object.values(data).join('');
 
   if (eesDataCheck !== dataCheck) {
+    // if (data) {
+    // console.log('eesDataCheck !== dataCheck');
     setEesData((eesData) => data);
   }
+
+  // useEffect(() => {
+  //   setEesData((eesData) => data);
+  // }, [data]);
+
+  // console.log(eesDataCheck, dataCheck);
 
   return (
     <>
@@ -53,7 +54,9 @@ const Ees = () => {
                     onClickAction={() =>
                       router.push({
                         pathname: `/ees-edit/`,
-                        query: {pid: encodeURIComponent(_id)},
+                        query: {
+                          pid: encodeURIComponent(_id),
+                        },
                       })
                     }
                   >

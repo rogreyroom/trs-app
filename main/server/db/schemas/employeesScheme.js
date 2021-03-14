@@ -1,17 +1,11 @@
 import Joi from 'joi';
 
 export const employeesSchema = Joi.object().keys({
-  name: Joi.string()
-    .required()
-    .error(new Error(`Name is required and should be a string!`)),
+  name: Joi.string().required().error(new Error(`Name is required and should be a string!`)),
   surname: Joi.string().required().error(new Error(`Błąd surname`)),
   position: Joi.string().required().error(new Error(`Błąd position`)),
-  juvenile_worker: Joi.boolean()
-    .required()
-    .error(new Error(`Błąd juvenile_worker`)),
-  employment_status: Joi.boolean()
-    .required()
-    .error(new Error(`Błąd employment_status`)),
+  juvenile_worker: Joi.boolean().required().error(new Error(`Błąd juvenile_worker`)),
+  employment_status: Joi.boolean().required().error(new Error(`Błąd employment_status`)),
   employment_start_date: Joi.object({
     year: Joi.number().empty(null),
     month: Joi.number().empty(null),
@@ -24,12 +18,8 @@ export const employeesSchema = Joi.object().keys({
     month: Joi.number().empty(null),
     day: Joi.number().empty(null),
   }).error(new Error(`Błąd `)),
-  overdue_leave_amount: Joi.number()
-    .required()
-    .error(new Error(`Błąd overdue_leave_amount`)),
-  assigned_leave_amount: Joi.number()
-    .required()
-    .error(new Error(`Błąd assigned_leave_amount`)),
+  overdue_leave_amount: Joi.number().required().error(new Error(`Błąd overdue_leave_amount`)),
+  assigned_leave_amount: Joi.number().required().error(new Error(`Błąd assigned_leave_amount`)),
 
   calendar: Joi.array().items(
     Joi.object({
@@ -49,9 +39,9 @@ export const employeesSchema = Joi.object().keys({
           // sick_leave: [],
           // other_leave: [],
           // rts: []
-        }),
+        })
       ),
-    }),
+    })
   ),
 });
 
@@ -64,13 +54,13 @@ export const employeeAddFormSchema = Joi.object().keys({
   }).required(),
   juvenile_worker: Joi.boolean().required(),
   name: Joi.string()
-    .pattern(/^[a-zA-Z]|\-$/)
+    .pattern(/^[a-zA-Z]|$/)
     .required(),
   surname: Joi.string()
-    .pattern(/^[a-zA-Z]|\-$/)
+    .pattern(/^[a-zA-Z]|$/)
     .required(),
   position: Joi.string()
-    .pattern(/^[a-zA-Z]|[0-9]\-+$/)
+    .pattern(/^[a-zA-Z]|[0-9]+$/)
     .required(),
   overdue_leave_amount: Joi.number().required(),
   assigned_leave_amount: Joi.number().required(),
@@ -96,13 +86,13 @@ export const employeeEditFormSchema = Joi.object().keys({
   year: Joi.required(),
   month: Joi.required(),
   name: Joi.string()
-    .pattern(/^[a-zA-Z]|\-$/)
+    .pattern(/^[a-zA-Z]|$/)
     .required(),
   surname: Joi.string()
-    .pattern(/^[a-zA-Z]|\-$/)
+    .pattern(/^[a-zA-Z]|$/)
     .required(),
   position: Joi.string()
-    .pattern(/^[a-zA-Z]|[0-9]\-+$/)
+    .pattern(/^[a-zA-Z]|[0-9]+$/)
     .required(),
   overdue_leave_amount: Joi.number().required(),
   assigned_leave_amount: Joi.number().required(),

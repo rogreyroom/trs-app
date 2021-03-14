@@ -157,37 +157,38 @@ export const EmployeeCalendar = forwardRef(({employeeData}, ref) => {
   const monthName = format(theStartOfMonth, 'LLLL', {locale: pl});
 
   const getIsLeaveDay = (leaveArray, dayObject) => {
-    const isLeaveDay = leaveArray.some(({from, to}) => {
-      return isWithinInterval(
-        new Date(dayObject.year, dayObject.month, dayObject.day),
-        {
-          start: new Date(from.year, from.month, from.day),
-          end: new Date(to.year, to.month, to.day),
-        },
-      );
-    });
+    const isLeaveDay = leaveArray.some(({from, to}) =>
+      isWithinInterval(new Date(dayObject.year, dayObject.month, dayObject.day), {
+        start: new Date(from.year, from.month, from.day),
+        end: new Date(to.year, to.month, to.day),
+      })
+    );
     return isLeaveDay;
   };
 
   const getLeaveDays = (dayDate, data) => {
     if (getIsLeaveDay(data.holiday_leave, dayDate)) {
       return {leave: 'UW'};
-    } else if (getIsLeaveDay(data.sick_leave, dayDate)) {
-      return {leave: 'L4'};
-    } else if (getIsLeaveDay(data.other_leave, dayDate)) {
-      return {leave: 'UO'};
-    } else {
-      return false;
     }
+    if (getIsLeaveDay(data.sick_leave, dayDate)) {
+      return {leave: 'L4'};
+    }
+    if (getIsLeaveDay(data.other_leave, dayDate)) {
+      return {leave: 'UO'};
+    }
+    return false;
   };
 
   const getWorkingDay = (day, dayObject, data) => {
     const hoursData = data.rts.filter(
-      ({due_date}) => JSON.stringify(due_date) === JSON.stringify(dayObject),
+      ({due_date}) => JSON.stringify(due_date) === JSON.stringify(dayObject)
     )[0];
     const returnData =
       isSaturday(day) || isSunday(day)
-        ? (hoursData && {hours: hoursData.weekend_hours, overtime: 0}) || {
+        ? (hoursData && {
+            hours: hoursData.weekend_hours,
+            overtime: 0,
+          }) || {
             hours: 0,
             overtime: 0,
           }
@@ -201,7 +202,11 @@ export const EmployeeCalendar = forwardRef(({employeeData}, ref) => {
   const displayData = daysArray.reduce((res, day) => {
     const dayNumber = format(day, 'dd', {locale: pl});
     const dayName = format(day, 'EEEEE', {locale: pl}).toLocaleUpperCase();
-    const dayDate = {day: parseInt(format(day, 'd')), month: month, year: year};
+    const dayDate = {
+      day: parseInt(format(day, 'd'), 10),
+      month,
+      year,
+    };
     const isLeaveDay = getLeaveDays(dayDate, data);
     const workingDayData = !isLeaveDay && getWorkingDay(day, dayDate, data);
     res.push({day, dayName, dayNumber, isLeaveDay, workingDayData});
@@ -254,24 +259,21 @@ export const EmployeeCalendar = forwardRef(({employeeData}, ref) => {
           </tr>
         </thead>
         <tbody>
-          {displayData.map(
-            ({day, dayName, dayNumber, isLeaveDay, workingDayData}) => {
-              const isWeekend =
-                isSaturday(day) || isSunday(day) ? 'weekend' : '';
-              return (
-                <tr key={dayNumber + dayName} className={isWeekend}>
-                  <td className="day">
-                    <StyledDay>
-                      <span>{dayNumber}</span> <span>{dayName}</span>
-                    </StyledDay>
-                  </td>
-                  <td>{workingDayData && workingDayData.hours}</td>
-                  <td>{workingDayData && workingDayData.overtime}</td>
-                  <td>{isLeaveDay && isLeaveDay.leave}</td>
-                </tr>
-              );
-            },
-          )}
+          {displayData.map(({day, dayName, dayNumber, isLeaveDay, workingDayData}) => {
+            const isWeekend = isSaturday(day) || isSunday(day) ? 'weekend' : '';
+            return (
+              <tr key={dayNumber + dayName} className={isWeekend}>
+                <td className="day">
+                  <StyledDay>
+                    <span>{dayNumber}</span> <span>{dayName}</span>
+                  </StyledDay>
+                </td>
+                <td>{workingDayData && workingDayData.hours}</td>
+                <td>{workingDayData && workingDayData.overtime}</td>
+                <td>{isLeaveDay && isLeaveDay.leave}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </PrintArea>

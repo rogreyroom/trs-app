@@ -1,5 +1,5 @@
 import {getLayout} from '@/layouts/DashboardLayout';
-import {useContext, useEffect, useState} from 'react';
+import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
 import {SubPagesProvider} from '@/contexts/SubPagesContext';
 import {Aside} from '@/dashboard/Sidebar';
@@ -10,23 +10,14 @@ import {DetailsSection} from '@/dashboard/DetailsSection';
 import {ContentSection} from '@/dashboard/ContentSection';
 
 const Dashboard = () => {
-  const [employee, setEmployee] = useContext(DashboardContext).employee;
+  // const [employee, setEmployee] = useContext(DashboardContext).employee
+  const [employee] = useContext(DashboardContext).employee;
   // const [employeeData, setEmployeeData] = useState(employee)
 
   // console.log('Dashboard employee', employee);
 
   // useEffect(() => {
-  const {
-    _id,
-    name,
-    surname,
-    position,
-    juvenile_worker,
-    employment_status,
-    overdue_leave_amount,
-    assigned_leave_amount,
-    calendar,
-  } = employee || {};
+  const {_id, overdue_leave_amount, assigned_leave_amount, calendar} = employee || {};
 
   // employee && setEmployeeData(employeeData => employee)
 

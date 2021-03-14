@@ -133,6 +133,8 @@ const HrRcp = ({year, month, employees}) => {
   const tableRef = useRef();
 
   const [employeesData, setEmployeesData] = useState(employees);
+  // const [updatedEmployees, setUpdatedEmployees] = useState(employeesData)
+  // eslint-disable-next-line no-unused-vars
   const [updatedEmployees, setUpdatedEmployees] = useState(employeesData);
 
   useEffect(() => {
@@ -146,10 +148,8 @@ const HrRcp = ({year, month, employees}) => {
   const getEmployeeData = (currentMonthData) => {
     const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier;
     const workedHours = getCurrentMonthWorkedHours(currentMonthData);
-    const overtimeHours =
-      getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier;
-    const weekendsHours =
-      getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier;
+    const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier;
+    const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier;
     const sumOfHours = workedHours + overtimeHours + weekendsHours;
 
     const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
@@ -167,9 +167,10 @@ const HrRcp = ({year, month, employees}) => {
   console.log(employeesData);
 
   const handleRemoveFromViewClick = (idx) => {
-    setUpdatedEmployees(
-      (updatedEmployees) => (updatedEmployees = employeesData.splice(idx, 1)),
-    );
+    // setUpdatedEmployees((updatedEmployees) => {
+    //   updatedEmployees = employeesData.splice(idx, 1);
+    // });
+    setUpdatedEmployees((updatedEmployees) => employeesData.splice(idx, 1));
     setEmployeesData((employeesData) => employeesData);
   };
 
@@ -202,11 +203,7 @@ const HrRcp = ({year, month, employees}) => {
           <tbody>
             {employeesData.map((employee, idx) => {
               const fullName = `${employee.name} ${employee.surname}`;
-              const currentMonthData = getGivenMonthData(
-                employee.calendar,
-                year,
-                month,
-              )[0];
+              const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0];
               const employeeData = getEmployeeData(currentMonthData);
               const {
                 employeeHoursSum,
@@ -217,7 +214,7 @@ const HrRcp = ({year, month, employees}) => {
 
               return (
                 // !isHidden &&
-                <tr key={idx}>
+                <tr key={`${idx}${fullName}`}>
                   <td>
                     <IconButton
                       size="normal"
@@ -228,10 +225,7 @@ const HrRcp = ({year, month, employees}) => {
                     </IconButton>
                   </td>
                   <td>
-                    {fullName}{' '}
-                    {employee.juvenile_worker && (
-                      <span>pracownik młodociany</span>
-                    )}
+                    {fullName} {employee.juvenile_worker && <span>pracownik młodociany</span>}
                   </td>
                   <td>{employeeHoursSum}</td>
                   <td>{employeeHolidaysSum}</td>

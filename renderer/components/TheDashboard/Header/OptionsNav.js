@@ -17,15 +17,17 @@ const EmployeeOptionsNav = styled.nav`
 `;
 
 export const OptionsNav = ({id}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const [page, setPage] = useContext(SubPagesContext).page;
-  const [juvenileStatus, setJuvenileStatus] = useState(
-    employee.juvenile_worker,
-  );
+  const [juvenileStatus, setJuvenileStatus] = useState(employee.juvenile_worker);
   const [employeeChange, setEmployeeChange] = useState(null);
   const [employeeData, setEmployeeData] = useState(
-    {id: employee._id, juvenile: employee.juvenile, status: employee.status} ||
-      {},
+    {
+      id: employee._id,
+      juvenile: employee.juvenile,
+      status: employee.status,
+    } || {}
   );
 
   console.log('OptionsNav1 ', employee.juvenile_worker);
@@ -34,18 +36,16 @@ export const OptionsNav = ({id}) => {
     if (employeeChange !== id) {
       setEmployeeChange((employeeChange) => id);
     }
-    setEmployeeData(
-      (employeeData) =>
-        (employeeData = {
-          id: employee._id,
-          juvenile: employee.juvenile_worker,
-          status: employee.status,
-        }),
-    );
+    setEmployeeData((employeeData) => ({
+      id: employee._id,
+      juvenile: employee.juvenile_worker,
+      status: employee.status,
+    }));
     setJuvenileStatus((juvenileStatus) => employee.juvenile_worker);
-  }, [id, employee]);
+  }, [id, employee, employeeChange]);
 
   const handleSubPageClick = (pageName) => {
+    console.log('handleSubPageClick');
     setPage((page) => pageName);
   };
 
@@ -70,7 +70,7 @@ export const OptionsNav = ({id}) => {
     <EmployeeOptionsNav>
       <IconButton
         size="xl"
-        isActive={page === 'edit' ? true : false}
+        isActive={page === 'edit'}
         onClickAction={() => handleSubPageClick('edit')}
       >
         <SvgEdit />
@@ -82,11 +82,7 @@ export const OptionsNav = ({id}) => {
       >
         {(employeeData.status && <SvgOnSwitch />) || <SvgOffSwitch />}
       </IconButton>
-      <IconButton
-        size="xl"
-        isActive={juvenileStatus}
-        onClickAction={handleYoungSwitch}
-      >
+      <IconButton size="xl" isActive={juvenileStatus} onClickAction={handleYoungSwitch}>
         <SvgYoung />
       </IconButton>
     </EmployeeOptionsNav>

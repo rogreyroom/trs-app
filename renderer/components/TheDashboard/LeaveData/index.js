@@ -51,16 +51,12 @@ const getTitle = (type, year) => {
   switch (type) {
     case 'holiday':
       return `Wykorzystany urlop w roku ${year}`;
-      break;
     case 'sick':
       return `Wykorzystane chorobowe w roku ${year}`;
-      break;
     case 'other':
       return `Wykorzystane wolne w roku ${year}`;
-      break;
     default:
-      null;
-      break;
+      return null;
   }
 };
 
@@ -68,20 +64,16 @@ const getLeaveDays = (arrayData, type) => {
   const resultArray = arrayData.reduce((accArr, month) => {
     switch (type) {
       case 'holiday':
-        month.holiday_leave.length > 0 &&
-          accArr.push(...month.holiday_leave.map((el) => el));
+        month.holiday_leave.length > 0 && accArr.push(...month.holiday_leave.map((el) => el));
         break;
       case 'sick':
-        month.sick_leave.length > 0 &&
-          accArr.push(...month.sick_leave.map((el) => el));
+        month.sick_leave.length > 0 && accArr.push(...month.sick_leave.map((el) => el));
         break;
       case 'other':
-        month.other_leave.length > 0 &&
-          accArr.push(...month.other_leave.map((el) => el));
+        month.other_leave.length > 0 && accArr.push(...month.other_leave.map((el) => el));
         break;
       default:
-        null;
-        break;
+        return null;
     }
     return accArr;
   }, []);
@@ -89,12 +81,11 @@ const getLeaveDays = (arrayData, type) => {
 };
 
 export const LeaveData = ({leaveType, id}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const currentYearIs = new Date().getFullYear();
   const title = getTitle(leaveType, currentYearIs);
-  const employeeMonthsData = employee.calendar.find(
-    (year) => year.year === currentYearIs,
-  ).months;
+  const employeeMonthsData = employee.calendar.find((year) => year.year === currentYearIs).months;
   const leaveDays = getLeaveDays(employeeMonthsData, leaveType);
 
   const handleSingleLeaveDelete = async (e, leave) => {
@@ -126,8 +117,7 @@ export const LeaveData = ({leaveType, id}) => {
         });
         break;
       default:
-        null;
-        break;
+        return null;
     }
   };
 
@@ -138,11 +128,11 @@ export const LeaveData = ({leaveType, id}) => {
         {leaveDays.map((leave, idx) => {
           const dateFrom = format(
             new Date(leave.from.year, leave.from.month - 1, leave.from.day),
-            'yyyy.MM.dd',
+            'yyyy.MM.dd'
           );
           const dateTo = format(
             new Date(leave.to.year, leave.to.month - 1, leave.to.day),
-            'yyyy.MM.dd',
+            'yyyy.MM.dd'
           );
           return (
             <StyledLeaveItem key={idx}>

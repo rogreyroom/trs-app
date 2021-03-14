@@ -13,12 +13,8 @@ const StyledNav = styled.nav`
 `;
 
 export const Navbar = () => {
-  const [employeesFilter, setEmployeesFilter] = useContext(
-    DashboardContext,
-  ).filter;
-  const [addEmployeePage, setAddEmployeePage] = useContext(
-    DashboardContext,
-  ).add;
+  const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter;
+  const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add;
   const router = useRouter();
 
   const handleFilter = () => {
@@ -32,18 +28,10 @@ export const Navbar = () => {
 
   return (
     <StyledNav>
-      <IconButton
-        size="xl"
-        isActive={addEmployeePage}
-        onClickAction={handleAddEmployeeClick}
-      >
+      <IconButton size="xl" isActive={addEmployeePage} onClickAction={handleAddEmployeeClick}>
         <SvgPeople />
       </IconButton>
-      <IconButton
-        size="xl"
-        isActive={employeesFilter}
-        onClickAction={handleFilter}
-      >
+      <IconButton size="xl" isActive={employeesFilter} onClickAction={handleFilter}>
         {(employeesFilter && <SvgOnSwitch />) || <SvgOffSwitch />}
       </IconButton>
     </StyledNav>

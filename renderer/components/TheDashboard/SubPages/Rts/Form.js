@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useForm, Controller} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
@@ -37,7 +38,7 @@ const schema = Joi.object().keys({
 });
 
 export const RtsForm = ({id}) => {
-  const [employees, setEmployees] = useContext(DashboardContext).data;
+  // const [employees, setEmployees] = useContext(DashboardContext).data
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const [isEvalEdit, setIsEvalEdit] = useState(false);
   const [editedEvalIndex, setEditedEvalIndex] = useState(null);
@@ -87,10 +88,9 @@ export const RtsForm = ({id}) => {
   const [isRtsEdit, setIsRtsEdit] = useState(false);
   // Get ees data
   const {data: eesData} = useSWR(`api/ees/`);
-  const {data: employeesData} = useSWR('/api/employees');
+  // const { data: employeesData } = useSWR('/api/employees')
 
-  const getEmployeeData = (id, data) =>
-    data.filter((employee) => employee._id === id)[0];
+  const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
   const handleHours = (getValuesFunction) => {
     const newValue = getValuesFunction('working_hours');
@@ -107,10 +107,10 @@ export const RtsForm = ({id}) => {
     setWeekendHours((weekendHours) => newValue);
   };
 
-  const handleEwEvalCalendar = (e) => {
-    const newValue = e.target.value;
-    setEwEvalCalendarDate((ewEvalCalendarDate) => newValue);
-  };
+  // const handleEwEvalCalendar = e => {
+  //   const newValue = e.target.value
+  //   setEwEvalCalendarDate(ewEvalCalendarDate => newValue)
+  // }
 
   const handleEwEvalPercent = (e) => {
     const newValue = e.target.value;
@@ -132,9 +132,7 @@ export const RtsForm = ({id}) => {
     setIsEvalEdit((isEvalEdit) => true);
     setEditedEvalIndex((editedEvalIndex) => evalArrayIndex);
     setEvaluation((evaluation) => evalArray[evalArrayIndex].name);
-    setEvalDescription(
-      (evalDescription) => evalArray[evalArrayIndex].description,
-    );
+    setEvalDescription((evalDescription) => evalArray[evalArrayIndex].description);
     evalArray[evalArrayIndex].name === 'EW' &&
       setEwEvalPercent((ewEvalPercent) => evalArray[evalArrayIndex].percent);
   };
@@ -146,166 +144,17 @@ export const RtsForm = ({id}) => {
     setEvalArray((evalArray) => newEvalArray);
   };
 
-  const handleEvaluationSubmit = (e) => {
-    e.preventDefault();
-    if (watchCalendarChange === null) {
-      confirmAlert({
-        customUI: ({onClose}) => {
-          return (
-            <EvalAlert
-              title="Uwaga"
-              message={`Nie wybrano daty! Ocena zostanie usunięta.`}
-              yesButtonLabel="OK"
-              isNoButtonPresent={false}
-              yesAction={() => {
-                setEvaluation(null);
-                setEvalDescription(null);
-                setEwEvalPercent((ewEvalPercent) => 0);
-                onClose();
-              }}
-            />
-          );
-        },
-      });
-      return;
-    }
-
-    evaluation !== 'EW' ? makeAdd(null) : evaluationPercentAmountCheck('add');
-  };
-
-  const handleEvaluationEditSubmit = (e) => {
-    e.preventDefault();
-    evaluationPercentAmountCheck('edit');
-  };
-
-  const evaluationPercentAmountCheck = (theCheck) => {
-    const isToMuch = checkEWEvalPercentageMaximumValue(theCheck);
-    if (isToMuch.res && isToMuch.data > 0) {
-      confirmAlert({
-        customUI: ({onClose}) => {
-          return (
-            <EvalAlert
-              title="Limit osiągnięty"
-              message={`Możesz dodać jedynie ${isToMuch.data}% żeby nie przekroczyć miesięcznej maksymalnej wartości 200%`}
-              yesButtonLabel="Dodaj"
-              noButtonLabel="Wstecz"
-              isNoButtonPresent={true}
-              yesAction={() => {
-                if (theCheck === 'add') {
-                  makeAdd(isToMuch.data);
-                } else if (theCheck === 'edit') {
-                  makeEdit(isToMuch.data);
-                }
-                onClose();
-              }}
-              noAction={() => {
-                // setEvaluation(null)
-                // setEvalDescription(null)
-                setEwEvalPercent((ewEvalPercent) => 0);
-                onClose();
-              }}
-            />
-          );
-        },
-      });
-    } else if (isToMuch.res && isToMuch.data === 0) {
-      // console.log('isToMuch.res && isToMuch.data === 0')
-
-      confirmAlert({
-        customUI: ({onClose}) => {
-          return (
-            <EvalAlert
-              title="Limit osiągnięty"
-              message={`Limit oceny EW w tym miesiącu został osiągnięty!`}
-              yesButtonLabel="Rozumię"
-              isNoButtonPresent={false}
-              yesAction={() => {
-                setEvaluation(null);
-                setEvalDescription(null);
-                setEwEvalPercent((ewEvalPercent) => 0);
-                onClose();
-              }}
-            />
-          );
-        },
-      });
-    } else if (!isToMuch.res) {
-      // console.log('!isToMuch.res')
-
-      if (theCheck === 'add') {
-        makeAdd(isToMuch.data);
-      } else if (theCheck === 'edit') {
-        makeEdit(isToMuch.data);
-      }
-    }
-  };
-
-  const checkEWEvalPercentageMaximumValue = (isEdit) => {
-    const {year, month} = ewEvalCalendarDate;
-    const currentMonthData = getGivenMonthData(
-      employee.calendar,
-      year,
-      month,
-    )[0];
-
-    const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
-      if (curr.evaluation.length > 0) {
-        const ewEvals = curr.evaluation.reduce((ewRes, ewCurr) => {
-          if (ewCurr.name === 'EW') {
-            ewRes.push(ewCurr);
-          }
-          return ewRes;
-        }, []);
-
-        if (ewEvals.length > 0) {
-          res.push(...ewEvals);
-        }
-      }
-      return res;
-    }, []);
-
-    if (isEdit === 'edit' && evalArray.length > 0) {
-      console.log('isEdit');
-      const evalArrayObj = evalArray[editedEvalIndex];
-      const evaluationArrayIndex = evaluationArray.findIndex(
-        (obj) => JSON.stringify(obj) === JSON.stringify(evalArrayObj),
-      );
-      evaluationArray.splice(evaluationArrayIndex, 1);
-    }
-
-    if (evaluationArray.length > 0) {
-      const ewEvalValue = evaluationArray.reduce((res, curr) => {
-        return res + parseInt(curr.percent);
-      }, 0);
-
-      if (ewEvalValue === 200) {
-        return {res: true, data: 0};
-      } else if (ewEvalValue < 200) {
-        if (ewEvalValue + parseInt(ewEvalPercent) > 200) {
-          const newPercent = ewEvalValue + parseInt(ewEvalPercent) - 200;
-          const maxToAddIs = parseInt(ewEvalPercent) - newPercent;
-          return {res: true, data: maxToAddIs};
-        }
-        return {res: false, data: parseInt(ewEvalPercent)};
-      }
-    }
-    console.log('ewEvalValue', evaluationArray, ewEvalPercent);
-    // if new entry should be checked if the entry is equal or not 200
-    if (parseInt(ewEvalPercent) > 200) {
-      const newPercent = parseInt(ewEvalPercent) - 200;
-      const maxToAddIs = parseInt(ewEvalPercent) - newPercent;
-      return {res: true, data: maxToAddIs};
-    }
-    return {res: false, data: parseInt(ewEvalPercent)};
-  };
-
   const makeAdd = (newPercent) => {
     const percentIs = ['SP', 'MP', 'LP'].includes(evaluation)
       ? eesData.filter(({symbol}) => symbol === evaluation)[0].percent
       : newPercent;
     setEvalArray((evalArray) => [
       ...evalArray,
-      {name: evaluation, description: evalDescription, percent: percentIs},
+      {
+        name: evaluation,
+        description: evalDescription,
+        percent: percentIs,
+      },
     ]);
     setEvalDescription((evalDescription) => '');
     if (evaluation === 'EW') setEwEvalPercent((ewEvalPercent) => 0);
@@ -330,6 +179,151 @@ export const RtsForm = ({id}) => {
     setEvalDescription((evalDescription) => '');
     setEwEvalPercent((ewEvalPercent) => 0);
     setEvaluation(null);
+  };
+
+  const checkEWEvalPercentageMaximumValue = (isEdit) => {
+    const {year, month} = ewEvalCalendarDate;
+    const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0];
+
+    const evaluationArray = currentMonthData.rts.reduce((res, curr) => {
+      if (curr.evaluation.length > 0) {
+        const ewEvals = curr.evaluation.reduce((ewRes, ewCurr) => {
+          if (ewCurr.name === 'EW') {
+            ewRes.push(ewCurr);
+          }
+          return ewRes;
+        }, []);
+
+        if (ewEvals.length > 0) {
+          res.push(...ewEvals);
+        }
+      }
+      return res;
+    }, []);
+
+    if (isEdit === 'edit' && evalArray.length > 0) {
+      console.log('isEdit');
+      const evalArrayObj = evalArray[editedEvalIndex];
+      const evaluationArrayIndex = evaluationArray.findIndex(
+        (obj) => JSON.stringify(obj) === JSON.stringify(evalArrayObj)
+      );
+      evaluationArray.splice(evaluationArrayIndex, 1);
+    }
+
+    if (evaluationArray.length > 0) {
+      const ewEvalValue = evaluationArray.reduce(
+        (res, curr) => res + parseInt(curr.percent, 10),
+        0
+      );
+
+      if (ewEvalValue === 200) {
+        return {res: true, data: 0};
+      }
+      if (ewEvalValue < 200) {
+        if (ewEvalValue + parseInt(ewEvalPercent, 10) > 200) {
+          const newPercent = ewEvalValue + parseInt(ewEvalPercent, 10) - 200;
+          const maxToAddIs = parseInt(ewEvalPercent, 10) - newPercent;
+          return {res: true, data: maxToAddIs};
+        }
+        return {res: false, data: parseInt(ewEvalPercent, 10)};
+      }
+    }
+    console.log('ewEvalValue', evaluationArray, ewEvalPercent);
+    // if new entry should be checked if the entry is equal or not 200
+    if (parseInt(ewEvalPercent, 10) > 200) {
+      const newPercent = parseInt(ewEvalPercent, 10) - 200;
+      const maxToAddIs = parseInt(ewEvalPercent, 10) - newPercent;
+      return {res: true, data: maxToAddIs};
+    }
+    return {res: false, data: parseInt(ewEvalPercent, 10)};
+  };
+
+  const evaluationPercentAmountCheck = (theCheck) => {
+    const isToMuch = checkEWEvalPercentageMaximumValue(theCheck);
+    if (isToMuch.res && isToMuch.data > 0) {
+      confirmAlert({
+        customUI: ({onClose}) => (
+          <EvalAlert
+            title="Limit osiągnięty"
+            message={`Możesz dodać jedynie ${isToMuch.data}% żeby nie przekroczyć miesięcznej maksymalnej wartości 200%`}
+            yesButtonLabel="Dodaj"
+            noButtonLabel="Wstecz"
+            isNoButtonPresent
+            yesAction={() => {
+              if (theCheck === 'add') {
+                makeAdd(isToMuch.data);
+              } else if (theCheck === 'edit') {
+                makeEdit(isToMuch.data);
+              }
+              onClose();
+            }}
+            noAction={() => {
+              // setEvaluation(null)
+              // setEvalDescription(null)
+              setEwEvalPercent((ewEvalPercent) => 0);
+              onClose();
+            }}
+          />
+        ),
+      });
+    } else if (isToMuch.res && isToMuch.data === 0) {
+      // console.log('isToMuch.res && isToMuch.data === 0')
+
+      confirmAlert({
+        customUI: ({onClose}) => (
+          <EvalAlert
+            title="Limit osiągnięty"
+            message="Limit oceny EW w tym miesiącu został osiągnięty!"
+            yesButtonLabel="Rozumię"
+            isNoButtonPresent={false}
+            yesAction={() => {
+              setEvaluation(null);
+              setEvalDescription(null);
+              setEwEvalPercent((ewEvalPercent) => 0);
+              onClose();
+            }}
+          />
+        ),
+      });
+    } else if (!isToMuch.res) {
+      // console.log('!isToMuch.res')
+
+      if (theCheck === 'add') {
+        makeAdd(isToMuch.data);
+      } else if (theCheck === 'edit') {
+        makeEdit(isToMuch.data);
+      }
+    }
+  };
+
+  const handleEvaluationSubmit = (e) => {
+    e.preventDefault();
+    if (watchCalendarChange === null) {
+      confirmAlert({
+        customUI: ({onClose}) => (
+          <EvalAlert
+            title="Uwaga"
+            message="Nie wybrano daty! Ocena zostanie usunięta."
+            yesButtonLabel="OK"
+            isNoButtonPresent={false}
+            yesAction={() => {
+              setEvaluation(null);
+              setEvalDescription(null);
+              setEwEvalPercent((ewEvalPercent) => 0);
+              onClose();
+            }}
+          />
+        ),
+      });
+      return;
+    }
+
+    evaluation !== 'EW' ? makeAdd(null) : evaluationPercentAmountCheck('add');
+  };
+
+  const handleEvaluationEditSubmit = (e) => {
+    e.preventDefault();
+    evaluationPercentAmountCheck('edit');
   };
 
   const onSubmit = async (data) => {
@@ -425,24 +419,16 @@ export const RtsForm = ({id}) => {
   const isEqual = (...objects) =>
     objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
 
-  const getCurrentMonthData = (
-    employeeCalendar,
-    givenYear,
-    givenMonth,
-    givenDate,
-  ) => {
+  const getCurrentMonthData = (employeeCalendar, givenYear, givenMonth, givenDate) => {
     // console.log('getCurrentMonthData')
-    const givenYearMonths = employeeCalendar.filter(
-      ({year}) => parseInt(year) === givenYear,
-    )[0]?.months;
+    const givenYearMonths = employeeCalendar.filter(({year}) => parseInt(year, 10) === givenYear)[0]
+      ?.months;
     const givenMonthRts = givenYearMonths?.filter(
-      ({month}) => parseInt(month) == givenMonth,
+      ({month}) => parseInt(month, 10) === givenMonth
     )[0]?.rts;
 
     // console.log('getCurrentMonthData givenMonthRts', givenMonthRts)
-    return givenMonthRts?.filter(({due_date}) =>
-      isEqual(due_date, givenDate),
-    )[0];
+    return givenMonthRts?.filter(({due_date}) => isEqual(due_date, givenDate))[0];
   };
   // ------end utils
 
@@ -456,11 +442,7 @@ export const RtsForm = ({id}) => {
     if (watchCalendarChange !== null) {
       if (
         isWeekend(
-          new Date(
-            watchCalendarChange.year,
-            watchCalendarChange.month - 1,
-            watchCalendarChange.day,
-          ),
+          new Date(watchCalendarChange.year, watchCalendarChange.month - 1, watchCalendarChange.day)
         )
       ) {
         setIsDateWeekend((isDateWeekend) => false);
@@ -510,7 +492,7 @@ export const RtsForm = ({id}) => {
         employee.calendar,
         watchCalendarChange.year,
         watchCalendarChange.month,
-        watchCalendarChange,
+        watchCalendarChange
       );
 
       // console.log('RES', res);
@@ -552,10 +534,7 @@ export const RtsForm = ({id}) => {
       <StyledRtsForm onSubmit={handleSubmit(onSubmit)}>
         <StyledRtsCalendarWrapper>
           <h4>Wybierz datę</h4>
-          <Error
-            error={!!errors?.due_date}
-            errorMessage={[errorMessages.dateRange]}
-          />
+          <Error error={!!errors?.due_date} errorMessage={[errorMessages.dateRange]} />
           <Controller
             control={control}
             name="due_date"
@@ -589,10 +568,7 @@ export const RtsForm = ({id}) => {
             error={!!errors.working_hours}
             ee={errors}
             errorMessage={
-              errors?.working_hours && [
-                errorMessages.notEmpty,
-                errorMessages.numericValue,
-              ]
+              errors?.working_hours && [errorMessages.notEmpty, errorMessages.numericValue]
             }
             ref={register}
           />
@@ -609,10 +585,7 @@ export const RtsForm = ({id}) => {
             onChange={() => handleOvertime(getValues)}
             error={!!errors.overtime_hours}
             errorMessage={
-              errors?.overtime_hours && [
-                errorMessages.notEmpty,
-                errorMessages.numericValue,
-              ]
+              errors?.overtime_hours && [errorMessages.notEmpty, errorMessages.numericValue]
             }
             ref={register}
           />
@@ -629,10 +602,7 @@ export const RtsForm = ({id}) => {
             onChange={() => handleWeekend(getValues)}
             error={!!errors.weekend_hours}
             errorMessage={
-              errors?.weekend_hours && [
-                errorMessages.notEmpty,
-                errorMessages.numericValue,
-              ]
+              errors?.weekend_hours && [errorMessages.notEmpty, errorMessages.numericValue]
             }
             ref={register}
           />
@@ -640,28 +610,16 @@ export const RtsForm = ({id}) => {
 
         <StyledRtsEvalControlsWrapper>
           <h4>Ocena pracownika</h4>
-          <ButtonSmall
-            type="button"
-            onClickAction={(e) => handleEvaluationSet(e, 'SP')}
-          >
+          <ButtonSmall type="button" onClickAction={(e) => handleEvaluationSet(e, 'SP')}>
             SP
           </ButtonSmall>
-          <ButtonSmall
-            type="button"
-            onClickAction={(e) => handleEvaluationSet(e, 'MP')}
-          >
+          <ButtonSmall type="button" onClickAction={(e) => handleEvaluationSet(e, 'MP')}>
             MP
           </ButtonSmall>
-          <ButtonSmall
-            type="button"
-            onClickAction={(e) => handleEvaluationSet(e, 'LP')}
-          >
+          <ButtonSmall type="button" onClickAction={(e) => handleEvaluationSet(e, 'LP')}>
             LP
           </ButtonSmall>
-          <ButtonSmall
-            type="button"
-            onClickAction={(e) => handleEvaluationSet(e, 'EW')}
-          >
+          <ButtonSmall type="button" onClickAction={(e) => handleEvaluationSet(e, 'EW')}>
             EW
           </ButtonSmall>
         </StyledRtsEvalControlsWrapper>
@@ -697,50 +655,40 @@ export const RtsForm = ({id}) => {
                 value={evalDescription}
                 onChange={(e) => handleEvalDescription(e)}
                 error={!!errors.evaluation_description}
-                errorMessage={
-                  errors?.evaluation_description && [errorMessages.notEmpty]
-                }
+                errorMessage={errors?.evaluation_description && [errorMessages.notEmpty]}
                 ref={evalDescriptionRef}
               />
 
               {(isEvalEdit && (
-                <Button onClickAction={(e) => handleEvaluationEditSubmit(e)}>
-                  Zmień
-                </Button>
-              )) || (
-                <Button onClickAction={(e) => handleEvaluationSubmit(e)}>
-                  Dodaj
-                </Button>
-              )}
+                <Button onClickAction={(e) => handleEvaluationEditSubmit(e)}>Zmień</Button>
+              )) || <Button onClickAction={(e) => handleEvaluationSubmit(e)}>Dodaj</Button>}
             </>
           )}
         </StyledRtsEvalInputsWrapper>
         <StyledRtsEvalOutputWrapper>
           {evalArray && (
             <StyledEvalList>
-              {evalArray.map(({name, percent, description}, idx) => {
-                return (
-                  <StyledEvalListItem key={idx}>
-                    <IconButton
-                      size="m"
-                      isActive={false}
-                      onClickAction={(e) => handleEvaluationEdit(idx, e)}
-                    >
-                      <SvgEdit />
-                    </IconButton>
-                    <IconButton
-                      size="m"
-                      isActive={false}
-                      onClickAction={(e) => handleEvaluationDelete(idx, e)}
-                    >
-                      <SvgRemove />
-                    </IconButton>
-                    <span>{name}</span>
-                    <span>{percent} %</span>
-                    <span>{description}</span>
-                  </StyledEvalListItem>
-                );
-              })}
+              {evalArray.map(({name, percent, description}, idx) => (
+                <StyledEvalListItem key={idx}>
+                  <IconButton
+                    size="m"
+                    isActive={false}
+                    onClickAction={(e) => handleEvaluationEdit(idx, e)}
+                  >
+                    <SvgEdit />
+                  </IconButton>
+                  <IconButton
+                    size="m"
+                    isActive={false}
+                    onClickAction={(e) => handleEvaluationDelete(idx, e)}
+                  >
+                    <SvgRemove />
+                  </IconButton>
+                  <span>{name}</span>
+                  <span>{percent} %</span>
+                  <span>{description}</span>
+                </StyledEvalListItem>
+              ))}
             </StyledEvalList>
           )}
         </StyledRtsEvalOutputWrapper>

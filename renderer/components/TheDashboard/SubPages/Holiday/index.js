@@ -1,16 +1,14 @@
-import {StyledLeavePages} from '../CommonStyles';
 import {Title} from '@/common/Title';
-import {HolidayForm} from './Form';
 import {LeaveData} from '@/dashboard/LeaveData';
+import {StyledLeavePages} from '../CommonStyles';
+import {HolidayForm} from './Form';
 
-const HolidayPage = ({employeeId}) => {
-  return (
-    <StyledLeavePages>
-      <Title isWhite>Wprowadź urlop</Title>
-      <LeaveData leaveType="holiday" id={employeeId} />
-      <HolidayForm id={employeeId} />
-    </StyledLeavePages>
-  );
-};
+const HolidayPage = ({employeeId}) => (
+  <StyledLeavePages>
+    <Title isWhite>Wprowadź urlop</Title>
+    <LeaveData leaveType="holiday" id={employeeId} />
+    <HolidayForm id={employeeId} />
+  </StyledLeavePages>
+);
 
 export default HolidayPage;

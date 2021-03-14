@@ -10,6 +10,7 @@ export default function createWindow(windowName, options) {
     height: options.height,
   };
   let state = {};
+  // eslint-disable-next-line prefer-const
   let win;
 
   const restore = () => store.get(key, defaultSize);
@@ -25,27 +26,25 @@ export default function createWindow(windowName, options) {
     };
   };
 
-  const windowWithinBounds = (windowState, bounds) => {
-    return (
-      windowState.x >= bounds.x &&
-      windowState.y >= bounds.y &&
-      windowState.x + windowState.width <= bounds.x + bounds.width &&
-      windowState.y + windowState.height <= bounds.y + bounds.height
-    );
-  };
+  const windowWithinBounds = (windowState, bounds) =>
+    windowState.x >= bounds.x &&
+    windowState.y >= bounds.y &&
+    windowState.x + windowState.width <= bounds.x + bounds.width &&
+    windowState.y + windowState.height <= bounds.y + bounds.height;
 
   const resetToDefaults = () => {
-    const bounds = screen.getPrimaryDisplay().bounds;
-    return Object.assign({}, defaultSize, {
+    const {bounds} = screen.getPrimaryDisplay();
+    return {
+      ...defaultSize,
       x: (bounds.width - defaultSize.width) / 2,
       y: (bounds.height - defaultSize.height) / 2,
-    });
+    };
   };
 
   const ensureVisibleOnSomeDisplay = (windowState) => {
-    const visible = screen.getAllDisplays().some((display) => {
-      return windowWithinBounds(windowState, display.bounds);
-    });
+    const visible = screen
+      .getAllDisplays()
+      .some((display) => windowWithinBounds(windowState, display.bounds));
     if (!visible) {
       // Window is partially or fully not visible now.
       // Reset it to safe defaults.

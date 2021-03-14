@@ -2,12 +2,8 @@ import {GET_RESPONSIBILITIES_DATA_BY_EMPLOYEE} from '../db/actions/read';
 import {ADD_RESPONSIBILITIES_DATA} from '../db/actions/add';
 import {UPDATE_RESPONSIBILITIES_DATA} from '../db/actions/update';
 
-export default async function handleResponsibilitiesByEmployeeRequest(
-  req,
-  res,
-  next,
-) {
-  const method = req.method;
+export default async function handleResponsibilitiesByEmployeeRequest(req, res, next) {
+  const {method} = req;
   const employee = req.params.id;
   const body = req.body ? req.body : null;
 

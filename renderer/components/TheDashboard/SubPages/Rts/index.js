@@ -12,14 +12,11 @@ const StyledRtsPage = styled.section`
   min-height: 100%;
 `;
 
-const RtsPage = ({employeeId}) => {
+const RtsPage = ({employeeId}) => (
   // console.log('RTSPAGE id', employeeId);
-  return (
-    <StyledRtsPage>
-      <Title isWhite>Wprowadź dane RCP</Title>
-      <RtsForm id={employeeId} />
-    </StyledRtsPage>
-  );
-};
-
+  <StyledRtsPage>
+    <Title isWhite>Wprowadź dane RCP</Title>
+    <RtsForm id={employeeId} />
+  </StyledRtsPage>
+);
 export default RtsPage;

@@ -28,19 +28,8 @@ const StyledTextButton = styled.button.attrs((props) => ({
   }
 `;
 
-export const TextButton = ({
-  children,
-  isUnderlined,
-  isActive,
-  onClickAction,
-}) => {
-  return (
-    <StyledTextButton
-      isUnderlined={isUnderlined}
-      isActive={isActive}
-      onClick={onClickAction}
-    >
-      {children}
-    </StyledTextButton>
-  );
-};
+export const TextButton = ({children, isUnderlined, isActive, onClickAction}) => (
+  <StyledTextButton isUnderlined={isUnderlined} isActive={isActive} onClick={onClickAction}>
+    {children}
+  </StyledTextButton>
+);

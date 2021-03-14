@@ -1,8 +1,8 @@
 import {forwardRef} from 'react';
 import styled from 'styled-components';
-import {CommonInputStyles, StyledFieldWrapper} from './_commonStyles';
 import {Label} from '@/common/Labels';
 import {Error} from '@/common/Errors';
+import {CommonInputStyles, StyledFieldWrapper} from './_commonStyles';
 
 const StyledSelectWrapper = styled.div`
   display: grid;
@@ -43,30 +43,25 @@ const StyledSelect = styled.select`
 `;
 
 export const Select = forwardRef(
-  (
-    {name, label, optionsArray, error, errorMessage, onChange, selected},
-    ref,
-  ) => {
-    return (
-      <StyledFieldWrapper>
-        <Label name={name} label={label} />
-        <StyledSelectWrapper>
-          <StyledSelect
-            name={name}
-            ref={ref}
-            error={error}
-            defaultValue={selected}
-            onChange={onChange}
-          >
-            {optionsArray.map(({label, value}) => (
-              <option value={value} key={value}>
-                {label}
-              </option>
-            ))}
-          </StyledSelect>
-        </StyledSelectWrapper>
-        <Error error={error} errorMessage={errorMessage} />
-      </StyledFieldWrapper>
-    );
-  },
+  ({name, label, optionsArray, error, errorMessage, onChange, selected}, ref) => (
+    <StyledFieldWrapper>
+      <Label name={name} label={label} />
+      <StyledSelectWrapper>
+        <StyledSelect
+          name={name}
+          ref={ref}
+          error={error}
+          defaultValue={selected}
+          onChange={onChange}
+        >
+          {optionsArray.map(({label, value}) => (
+            <option value={value} key={value}>
+              {label}
+            </option>
+          ))}
+        </StyledSelect>
+      </StyledSelectWrapper>
+      <Error error={error} errorMessage={errorMessage} />
+    </StyledFieldWrapper>
+  )
 );

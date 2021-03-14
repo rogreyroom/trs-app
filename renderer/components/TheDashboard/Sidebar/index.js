@@ -13,11 +13,9 @@ const StyledAsideContainer = styled.aside`
   height: 100%;
 `;
 
-export const Aside = () => {
-  return (
-    <StyledAsideContainer>
-      <Navbar />
-      <EmployeeList />
-    </StyledAsideContainer>
-  );
-};
+export const Aside = () => (
+  <StyledAsideContainer>
+    <Navbar />
+    <EmployeeList />
+  </StyledAsideContainer>
+);

@@ -22,23 +22,17 @@ export const Navbar = () => {
   return (
     <StyledNav>
       <Button
-        isActive={router.route === '/employees' ? true : false}
+        isActive={router.route === '/employees'}
         onClickAction={() => router.push('/employees')}
       >
         <SvgDashboard />
         Panel kierownika
       </Button>
-      <Button
-        isActive={router.route === '/ees' ? true : false}
-        onClickAction={() => router.push('/ees')}
-      >
+      <Button isActive={router.route === '/ees'} onClickAction={() => router.push('/ees')}>
         <SvgEes />
         SOP
       </Button>
-      <Button
-        isActive={router.route === '/reports' ? true : false}
-        onClickAction={() => router.push('/reports')}
-      >
+      <Button isActive={router.route === '/reports'} onClickAction={() => router.push('/reports')}>
         <SvgPdf />
         Raporty
       </Button>

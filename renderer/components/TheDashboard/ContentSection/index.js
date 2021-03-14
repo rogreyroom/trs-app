@@ -31,35 +31,27 @@ export const ContentSection = ({employeeId}) => {
       setEmployeeChange((employeeChange) => employeeId);
       page !== 'rts' && setPage((page) => 'rts');
     }
-  }, [employeeId]);
+  }, [employeeChange, employeeId, page, setPage]);
 
   const SwitchPage = ({value, id}) => {
     switch (value) {
       case 'edit':
         return <EditEmployee employeeId={id} />;
-        break;
       case 'status':
         return <EmploymentStatus employeeId={id} />;
-        break;
       case 'holiday':
         return <Holiday employeeId={id} />;
-        break;
       case 'sick':
         return <Sick employeeId={id} />;
-        break;
       case 'leave':
         return <Leave employeeId={id} />;
-        break;
       case 'rts':
         // console.log('RTS', id);
         return <Rts employeeId={id} />;
-        break;
       case 'reports':
         return <Reports employeeId={id} />;
-        break;
       case 'responsibilities':
         return <Responsibilities employeeId={id} />;
-        break;
       default:
         return null;
     }

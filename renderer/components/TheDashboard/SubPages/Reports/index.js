@@ -56,29 +56,26 @@ const StyledReportPrintArea = styled.section`
 
 const getEmployeeYearsArray = (calendar) => {
   const years = getEmployeeYears(calendar);
-  return years.map((year) => {
-    return {label: year, value: year};
-  });
+  return years.map((year) => ({label: year, value: year}));
 };
 
-const getEmployeeMonthsArray = () => {
-  return [
-    {label: 'Styczeń', value: 1},
-    {label: 'Luty', value: 2},
-    {label: 'Marzec', value: 3},
-    {label: 'Kwiecień', value: 4},
-    {label: 'Maj', value: 5},
-    {label: 'Czerwiec', value: 6},
-    {label: 'Lipiec', value: 7},
-    {label: 'Sierpień', value: 8},
-    {label: 'Wrzesień', value: 9},
-    {label: 'Październik', value: 10},
-    {label: 'Listopad', value: 11},
-    {label: 'Grudzień', value: 12},
-  ];
-};
+const getEmployeeMonthsArray = () => [
+  {label: 'Styczeń', value: 1},
+  {label: 'Luty', value: 2},
+  {label: 'Marzec', value: 3},
+  {label: 'Kwiecień', value: 4},
+  {label: 'Maj', value: 5},
+  {label: 'Czerwiec', value: 6},
+  {label: 'Lipiec', value: 7},
+  {label: 'Sierpień', value: 8},
+  {label: 'Wrzesień', value: 9},
+  {label: 'Październik', value: 10},
+  {label: 'Listopad', value: 11},
+  {label: 'Grudzień', value: 12},
+];
 
 const ReportsPage = ({employeeId}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const [reportPageChange, setReportPageChange] = useState(null);
   const [reportPage, setReportPage] = useState(null);
@@ -95,12 +92,12 @@ const ReportsPage = ({employeeId}) => {
 
   const handleYearChange = (e) => {
     const {value} = e.target;
-    setYear((year) => parseInt(value));
+    setYear((year) => parseInt(value, 10));
   };
 
   const handleMonthChange = (e) => {
     const {value} = e.target;
-    setMonth((month) => parseInt(value));
+    setMonth((month) => parseInt(value, 10));
   };
 
   useEffect(() => {
@@ -129,13 +126,13 @@ const ReportsPage = ({employeeId}) => {
           selected={month}
         />
         <TextButton
-          isActive={reportPage === 'employeeRcpDetails' ? true : false}
+          isActive={reportPage === 'employeeRcpDetails'}
           onClickAction={() => handleReportPageClick('employeeRcpDetails')}
         >
           Raport RCP - szczegółowy
         </TextButton>
         <TextButton
-          isActive={reportPage === 'employeeRcpCalendar' ? true : false}
+          isActive={reportPage === 'employeeRcpCalendar'}
           onClickAction={() => handleReportPageClick('employeeRcpCalendar')}
         >
           Raport RCP - kalendarz

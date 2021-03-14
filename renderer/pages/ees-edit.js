@@ -12,12 +12,14 @@ const EesEdit = () => {
   if (error) return <h1>Something went wrong on the server!</h1>;
   if (!data) return <h1>Loading data from server...</h1>;
 
+  console.log('EesEdit', pid, data);
+
   return (
     <>
       <header>
         <Title>System Oceny Pracownika - Edycja</Title>
       </header>
-      <EesForm preloadedValues={data} />
+      <EesForm id={pid} preloadedValues={data} />
     </>
   );
 };

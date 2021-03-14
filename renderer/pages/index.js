@@ -19,20 +19,18 @@ const Panel = styled.section`
   }
 `;
 
-const HomePage = () => {
-  return (
-    <>
-      <Head>
-        <title>Home - login</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Panel>
-        <h1>Login</h1>
-        <Login />
-      </Panel>
-    </>
-  );
-};
+const HomePage = () => (
+  <>
+    <Head>
+      <title>Home - login</title>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+    <Panel>
+      <h1>Login</h1>
+      <Login />
+    </Panel>
+  </>
+);
 
 HomePage.getLayout = getLayout;
 export default HomePage;

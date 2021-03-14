@@ -15,8 +15,7 @@ export const StyledForm = styled.form`
 `;
 
 export const StyledEesFormContainer = styled.section`
-  --formTopMargin: ${(props) =>
-    props.topMargin ? `var(--${props.topMargin})` : 'var(--normal)'};
+  --formTopMargin: ${(props) => (props.topMargin ? `var(--${props.topMargin})` : 'var(--normal)')};
   display: grid;
   grid-template-areas: '. . . .' '. symbol percent .' '. type count_type .' '. description description .' '. . . .';
   grid-template-columns: auto repeat(2, 380px) auto;
@@ -117,9 +116,7 @@ export const StyledCalendarLeaveWrapper = styled.section.attrs({
       : `'title' 'error' 'calendar'`,
   gridColumns: (props) => (props.employmentStatus ? 'repeat(3, 1fr)' : '1fr'),
   gridRows: (props) =>
-    props.employmentStatus
-      ? `calc(1fr / 2) var(--xl) 1fr calc(1fr / 2)`
-      : `var(--xl) var(--m) 1fr`,
+    props.employmentStatus ? `calc(1fr / 2) var(--xl) 1fr calc(1fr / 2)` : `var(--xl) var(--m) 1fr`,
 })`
   --grid-template: ${(props) => props.gridTemplate};
   --grid-columns: ${(props) => props.gridColumns};

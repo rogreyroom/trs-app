@@ -1,7 +1,7 @@
 import {forwardRef} from 'react';
 import styled, {css} from 'styled-components';
-import {CommonInputStyles} from './_commonStyles';
 import {Error} from '@/common/Errors';
+import {CommonInputStyles} from './_commonStyles';
 
 const StyledTextareaWrapper = styled.div`
   display: flex;
@@ -41,37 +41,25 @@ const StyledTextarea = styled.textarea`
     `}
 `;
 
-export const Textarea = forwardRef(
-  ({name, error, errorMessage, onChange, value}, ref) => {
-    return (
-      <StyledTextareaWrapper>
-        <StyledTextarea
-          name={name}
-          ref={ref}
-          error={error}
-          value={value}
-          onChange={onChange}
-        />
-        <Error error={error} errorMessage={errorMessage} />
-      </StyledTextareaWrapper>
-    );
-  },
-);
+export const Textarea = forwardRef(({name, error, errorMessage, onChange, value}, ref) => (
+  <StyledTextareaWrapper>
+    <StyledTextarea name={name} ref={ref} error={error} value={value} onChange={onChange} />
+    <Error error={error} errorMessage={errorMessage} />
+  </StyledTextareaWrapper>
+));
 
 export const EvaluationTextarea = forwardRef(
-  ({name, error, errorMessage, onChange, value}, ref) => {
-    return (
-      <StyledTextareaWrapper isEvalTextarea>
-        <StyledTextarea
-          isEval
-          name={name}
-          ref={ref}
-          error={error}
-          value={value}
-          onChange={onChange}
-        />
-        <Error error={error} errorMessage={errorMessage} />
-      </StyledTextareaWrapper>
-    );
-  },
+  ({name, error, errorMessage, onChange, value}, ref) => (
+    <StyledTextareaWrapper isEvalTextarea>
+      <StyledTextarea
+        isEval
+        name={name}
+        ref={ref}
+        error={error}
+        value={value}
+        onChange={onChange}
+      />
+      <Error error={error} errorMessage={errorMessage} />
+    </StyledTextareaWrapper>
+  )
 );

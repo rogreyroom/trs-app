@@ -28,35 +28,35 @@ export const MainNav = () => {
     <EmployeeMainNav>
       <IconButton
         size="xl"
-        isActive={page === 'holiday' ? true : false}
+        isActive={page === 'holiday'}
         onClickAction={() => handleSubPageClick('holiday')}
       >
         <SvgHoliday />
       </IconButton>
       <IconButton
         size="xl"
-        isActive={page === 'sick' ? true : false}
+        isActive={page === 'sick'}
         onClickAction={() => handleSubPageClick('sick')}
       >
         <SvgSick />
       </IconButton>
       <IconButton
         size="xl"
-        isActive={page === 'leave' ? true : false}
+        isActive={page === 'leave'}
         onClickAction={() => handleSubPageClick('leave')}
       >
         <SvgLeave />
       </IconButton>
       <IconButton
         size="xl"
-        isActive={page === 'rts' ? true : false}
+        isActive={page === 'rts'}
         onClickAction={() => handleSubPageClick('rts')}
       >
         <SvgRts />
       </IconButton>
       <IconButton
         size="xl"
-        isActive={page === 'reports' ? true : false}
+        isActive={page === 'reports'}
         onClickAction={() => handleSubPageClick('reports')}
       >
         <SvgPdf />

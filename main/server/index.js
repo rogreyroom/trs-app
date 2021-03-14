@@ -1,14 +1,6 @@
 // yarn add cors joi helmet morgan
 
 // importing the dependencies
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const port = 3001;
-
-// defining the Express app
-const app = express();
 // const router = express.Router
 // console.log('EXPRESS APP path', router.stack);
 
@@ -19,6 +11,16 @@ import handleEmployeesByIdRequest from './api/employeesId';
 import handleEssRequest from './api/ees';
 import handleEesByIdRequest from './api/eesId';
 import handleResponsibilitiesByEmployeeRequest from './api/responsibilities';
+
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+const port = 3001;
+
+// defining the Express app
+const app = express();
 
 // ----------------------
 

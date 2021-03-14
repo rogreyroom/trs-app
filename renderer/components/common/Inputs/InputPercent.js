@@ -1,8 +1,8 @@
 import {forwardRef} from 'react';
 import styled, {css} from 'styled-components';
-import {StyledInput} from './_commonStyles';
 import {Label} from '@/common/Labels';
 import {Error} from '@/common/Errors';
+import {StyledInput} from './_commonStyles';
 
 const StyledPercentWrapper = styled.div`
   margin: 0;
@@ -22,10 +22,7 @@ const StyledPercentWrapper = styled.div`
 `;
 
 export const PercentInput = forwardRef(
-  (
-    {name, label, error, errorMessage, min, max, step, value, onChange},
-    ref,
-  ) => {
+  ({name, label, error, errorMessage, min, max, step, value, onChange}, ref) => {
     const handleFocus = (event) => event.target.select();
 
     return (
@@ -46,5 +43,5 @@ export const PercentInput = forwardRef(
         <Error error={error} errorMessage={errorMessage} />
       </StyledPercentWrapper>
     );
-  },
+  }
 );

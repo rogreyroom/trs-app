@@ -14,8 +14,8 @@ export default async function handleEssRequest(req, res, next) {
       break;
     case 'POST':
       try {
-        await ADD_EES_DATA(req.body);
-        res.status(200).json({message: 'Data was added!'});
+        const data = await ADD_EES_DATA(req.body);
+        res.status(200).json(data);
       } catch (error) {
         res.status(500).json(`${error}`);
       }

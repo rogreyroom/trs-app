@@ -34,15 +34,9 @@ const StyledError = styled.span`
 
 export const Error = ({error, errorMessage}) => {
   const createError = (errorMsg) => {
-    const errString = errorMsg.reduce((res, e) => {
-      return `${res} ${e}`;
-    }, '');
+    const errString = errorMsg.reduce((res, e) => `${res} ${e}`, '');
     return errString;
   };
 
-  return (
-    <StyledError error={error}>
-      {errorMessage && createError(errorMessage)}
-    </StyledError>
-  );
+  return <StyledError error={error}>{errorMessage && createError(errorMessage)}</StyledError>;
 };

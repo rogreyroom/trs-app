@@ -1,8 +1,7 @@
 // Connection
 import path from 'path';
+
 const {AsyncNedb} = require('nedb-async');
-import serve from 'electron-serve';
-import {app} from 'electron';
 
 const isProd = process.env.NODE_ENV === 'production';
 let dbDirectory = '.';

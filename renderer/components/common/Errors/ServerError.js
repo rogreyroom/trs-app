@@ -18,6 +18,4 @@ const StyledError = styled.span`
   top: 20%;
 `;
 
-export const ServerError = ({children}) => {
-  return <StyledError>{children}</StyledError>;
-};
+export const ServerError = ({children}) => <StyledError>{children}</StyledError>;

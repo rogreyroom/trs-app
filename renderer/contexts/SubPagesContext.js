@@ -6,8 +6,6 @@ export const SubPagesProvider = ({children}) => {
   const [page, setPage] = useState(null);
 
   return (
-    <SubPagesContext.Provider value={{page: [page, setPage]}}>
-      {children}
-    </SubPagesContext.Provider>
+    <SubPagesContext.Provider value={{page: [page, setPage]}}>{children}</SubPagesContext.Provider>
   );
 };

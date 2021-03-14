@@ -29,7 +29,9 @@ const schema = Joi.object().keys({
 });
 
 export const HolidayForm = ({id}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
+  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
   const calendarDefaultValue = {from: null, to: null};
   const {control, errors, handleSubmit, reset} = useForm({
@@ -38,8 +40,7 @@ export const HolidayForm = ({id}) => {
     defaultValues: calendarDefaultValue,
   });
 
-  const getEmployeeData = (id, data) =>
-    data.filter((employee) => employee._id === id)[0];
+  const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
   const onSubmit = async (data) => {
     const datesRange = data.holidayRangeDates;
@@ -66,7 +67,7 @@ export const HolidayForm = ({id}) => {
       const constructDate = new Date(
         datesRange.from.year,
         datesRange.from.month - 1,
-        datesRange.from.day,
+        datesRange.from.day
       );
       const getEndOfMonth = endOfMonth(constructDate);
       const getDayTo = getDate(getEndOfMonth);
@@ -116,10 +117,7 @@ export const HolidayForm = ({id}) => {
     <StyledCalendarForm onSubmit={handleSubmit(onSubmit)}>
       <StyledCalendarLeaveWrapper>
         <h4>Podaj zakres dat</h4>
-        <Error
-          error={!!errors?.holidayRangeDates}
-          errorMessage={[errorMessages.dateRange]}
-        />
+        <Error error={!!errors?.holidayRangeDates} errorMessage={[errorMessages.dateRange]} />
         <Controller
           control={control}
           name="holidayRangeDates"

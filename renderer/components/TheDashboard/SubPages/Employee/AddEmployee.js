@@ -12,10 +12,8 @@ export const StyledContentSection = styled.section`
   width: 100%;
 `;
 
-export const AddEmployeePage = () => {
-  return (
-    <StyledContentSection>
-      <AddEmployeeForm />
-    </StyledContentSection>
-  );
-};
+export const AddEmployeePage = () => (
+  <StyledContentSection>
+    <AddEmployeeForm />
+  </StyledContentSection>
+);

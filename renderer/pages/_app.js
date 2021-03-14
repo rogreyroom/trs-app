@@ -9,10 +9,10 @@ import '../styles/globals.scss';
 // Based on https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
 class MyApp extends App {
   render() {
-    const {Component, pageProps, router} = this.props;
+    const {Component, pageProps} = this.props;
 
-    const getLayout =
-      Component.getLayout || ((page) => <LoginLayout children={page} />);
+    // eslint-disable-next-line react/no-children-prop
+    const getLayout = Component.getLayout || ((page) => <LoginLayout children={page} />);
 
     return getLayout(<Component {...pageProps} />);
   }

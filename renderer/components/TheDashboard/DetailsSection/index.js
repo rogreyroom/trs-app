@@ -69,6 +69,7 @@ const EmployeeDetailsSectionContent = styled.section`
 
 export const DetailsSection = ({employeeId, calendar, leaveDays}) => {
   const [page, setPage] = useContext(SubPagesContext).page;
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   // const [employeeCalendar, setEmployeeCalendar] = useState(calendar)
   // const [assignedLeaveDays, setAssignedLeaveDays] = useState(leaveDays)
@@ -76,8 +77,8 @@ export const DetailsSection = ({employeeId, calendar, leaveDays}) => {
   const [employeeChange, setEmployeeChange] = useState(null);
   const [employeeData, setEmployeeData] = useState({
     id: employeeId,
-    calendar: calendar,
-    leaveDays: leaveDays,
+    calendar,
+    leaveDays,
   });
 
   useEffect(() => {
@@ -85,23 +86,19 @@ export const DetailsSection = ({employeeId, calendar, leaveDays}) => {
       setEmployeeChange((employeeChange) => employeeId);
     }
     // setEmployeeData(employeeData => employeeData = { id: employee._id, calendar: employee.calendar, leaveDays: {overdue: employee.overdue_leave_amount, assigned: employee.assigned_leave_amount} })
-    setEmployeeData(
-      (employeeData) =>
-        (employeeData = {
-          id: employeeId,
-          calendar: calendar,
-          leaveDays: leaveDays,
-        }),
-    );
-  }, [employeeId, calendar]);
+    setEmployeeData((employeeData) => ({
+      id: employeeId,
+      calendar,
+      leaveDays,
+    }));
+  }, [employeeId, calendar, employeeChange, leaveDays]);
 
   console.log('DetailsSection employeeData', employeeData, employee);
 
-  const overdue = employeeData.leaveDays.overdue;
-  const assigned = employeeData.leaveDays.assigned;
+  const {overdue} = employeeData.leaveDays;
+  const {assigned} = employeeData.leaveDays;
   const leaveDaysAmount = overdue + assigned;
-  const leaveDaysAmountLeft =
-    leaveDaysAmount - getUsedHolidayDays(employeeData.calendar); // NaN
+  const leaveDaysAmountLeft = leaveDaysAmount - getUsedHolidayDays(employeeData.calendar); // NaN
   const sickDaysAmount = getUsedSickDays(employeeData.calendar);
   const otherLeaveDaysAmount = getUsedLeaveDays(employeeData.calendar);
   const currentMonthData = getCurrentMonthData(employeeData.calendar)[0];
@@ -121,7 +118,7 @@ export const DetailsSection = ({employeeId, calendar, leaveDays}) => {
       <div className="first-link">
         <TextButton
           isUnderlined
-          isActive={page === 'responsibilities' ? true : false}
+          isActive={page === 'responsibilities'}
           onClickAction={() => handleSubPageClick('responsibilities')}
         >
           Zakres obowiązków

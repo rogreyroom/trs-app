@@ -1,8 +1,6 @@
+/* eslint-disable no-case-declarations */
 import {GET_EMPLOYEE_DATA_BY_ID} from '../db/actions/read';
-import {
-  ADD_EMPLOYEE_RTS_DATA,
-  ADD_EMPLOYEE_NEW_YEAR_CALENDAR,
-} from '../db/actions/add';
+import {ADD_EMPLOYEE_RTS_DATA, ADD_EMPLOYEE_NEW_YEAR_CALENDAR} from '../db/actions/add';
 import {
   UPDATE_EMPLOYEE_JUVENILE_STATUS,
   UPDATE_EMPLOYEE_TERMINATION_DATE,
@@ -18,8 +16,8 @@ import {
 } from '../db/actions/update';
 
 export default async function handleEmployeeByIdRequest(req, res, next) {
-  const method = req.method;
-  const id = req.params.id;
+  const {method} = req;
+  const {id} = req.params;
   const field = req.body ? req.body.field : null;
   const queryFields = req.body ? req.body.queryFields : null;
   const value = req.body ? req.body.value : null;
@@ -39,78 +37,43 @@ export default async function handleEmployeeByIdRequest(req, res, next) {
       try {
         switch (field) {
           case 'juvenile':
-            const juvenileData = await UPDATE_EMPLOYEE_JUVENILE_STATUS(
-              id,
-              value,
-            );
+            const juvenileData = await UPDATE_EMPLOYEE_JUVENILE_STATUS(id, value);
             res.status(200).json(juvenileData);
             break;
           case 'termination':
-            const Data = await UPDATE_EMPLOYEE_TERMINATION_DATE(id, value);
-            res.status(200).json(Data);
+            const terminationData = await UPDATE_EMPLOYEE_TERMINATION_DATE(id, value);
+            res.status(200).json(terminationData);
             break;
           case 'holiday':
-            const holidayData = await UPDATE_EMPLOYEE_HOLIDAY_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const holidayData = await UPDATE_EMPLOYEE_HOLIDAY_DATES(id, queryFields, value);
             res.status(200).json(holidayData);
             break;
           case 'deleteHoliday':
-            const removeHolidayData = await REMOVE_EMPLOYEE_HOLIDAY_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const removeHolidayData = await REMOVE_EMPLOYEE_HOLIDAY_DATES(id, queryFields, value);
             res.status(200).json(removeHolidayData);
             break;
           case 'sick':
-            const sickData = await UPDATE_EMPLOYEE_SICK_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const sickData = await UPDATE_EMPLOYEE_SICK_DATES(id, queryFields, value);
             res.status(200).json(sickData);
             break;
           case 'deleteSick':
-            const removeSickData = await REMOVE_EMPLOYEE_SICK_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const removeSickData = await REMOVE_EMPLOYEE_SICK_DATES(id, queryFields, value);
             res.status(200).json(removeSickData);
             break;
           case 'other':
-            const otherData = await UPDATE_EMPLOYEE_OTHER_LEAVE_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const otherData = await UPDATE_EMPLOYEE_OTHER_LEAVE_DATES(id, queryFields, value);
             res.status(200).json(otherData);
             break;
           case 'deleteOther':
-            const removeOtherData = await REMOVE_EMPLOYEE_OTHER_LEAVE_DATES(
-              id,
-              queryFields,
-              value,
-            );
+            const removeOtherData = await REMOVE_EMPLOYEE_OTHER_LEAVE_DATES(id, queryFields, value);
             res.status(200).json(removeOtherData);
             break;
           case 'add_rts':
-            const addRtsData = await ADD_EMPLOYEE_RTS_DATA(
-              id,
-              queryFields,
-              value,
-            );
+            const addRtsData = await ADD_EMPLOYEE_RTS_DATA(id, queryFields, value);
             res.status(200).json(addRtsData);
             break;
           case 'update_rts':
-            const updateRtsData = await UPDATE_EMPLOYEE_RTS_DATA(
-              id,
-              queryFields,
-              value,
-            );
+            const updateRtsData = await UPDATE_EMPLOYEE_RTS_DATA(id, queryFields, value);
             res.status(200).json(updateRtsData);
             break;
           case 'calendar':

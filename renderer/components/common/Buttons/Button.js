@@ -38,18 +38,14 @@ const StyledSmallButon = styled(StyledButton)`
   min-width: 0;
 `;
 
-export const Button = ({children, isActive, onClickAction}) => {
-  return (
-    <StyledButton isActive={isActive} onClick={onClickAction}>
-      {children}
-    </StyledButton>
-  );
-};
+export const Button = ({children, isActive, onClickAction}) => (
+  <StyledButton isActive={isActive} onClick={onClickAction}>
+    {children}
+  </StyledButton>
+);
 
-export const ButtonSmall = ({children, isActive, onClickAction}) => {
-  return (
-    <StyledSmallButon isActive={isActive} onClick={onClickAction}>
-      {children}
-    </StyledSmallButon>
-  );
-};
+export const ButtonSmall = ({children, isActive, onClickAction}) => (
+  <StyledSmallButon isActive={isActive} onClick={onClickAction}>
+    {children}
+  </StyledSmallButon>
+);

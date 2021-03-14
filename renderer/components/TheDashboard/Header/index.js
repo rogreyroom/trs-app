@@ -41,6 +41,7 @@ const StyledTitle = styled.h1`
 `;
 
 export const Header = ({employeeId}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const [employeeChange, setEmployeeChange] = useState(null);
   const [employeeData, setEmployeeData] = useState(
@@ -50,24 +51,21 @@ export const Header = ({employeeId}) => {
       position: employee.position,
       juvenile: employee.juvenile,
       status: employee.status,
-    } || {},
+    } || {}
   );
 
   useEffect(() => {
     if (employeeChange !== employeeId) {
       setEmployeeChange((employeeChange) => employeeId);
     }
-    setEmployeeData(
-      (employeeData) =>
-        (employeeData = {
-          id: employee._id,
-          name: `${employee.name} ${employee.surname}`,
-          position: employee.position,
-          juvenile: employee.juvenile,
-          status: employee.status,
-        }),
-    );
-  }, [employeeId, employee]);
+    setEmployeeData((employeeData) => ({
+      id: employee._id,
+      name: `${employee.name} ${employee.surname}`,
+      position: employee.position,
+      juvenile: employee.juvenile,
+      status: employee.status,
+    }));
+  }, [employeeId, employee, employeeChange]);
 
   return (
     <EmployeeHeader>

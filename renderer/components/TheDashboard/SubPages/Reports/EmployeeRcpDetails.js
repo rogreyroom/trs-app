@@ -144,10 +144,13 @@ const StyledPrintArea = styled.div`
 `;
 
 const EmployeeRcpDetails = ({year, month}) => {
+  // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const tableRef = useRef();
 
-  const monthName = format(new Date(year, month - 1, 1), 'LLLL', {locale: pl});
+  const monthName = format(new Date(year, month - 1, 1), 'LLLL', {
+    locale: pl,
+  });
   const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0];
   const hourlyRate = currentMonthData.hourly_rate;
   const overtimeRate = currentMonthData.overtime_rate;
@@ -158,23 +161,18 @@ const EmployeeRcpDetails = ({year, month}) => {
   const insuranceRate = currentMonthData.insurance_rate;
   const retainmentRate = currentMonthData.retainment_rate;
   const bonusRate = currentMonthData.bonus_rate;
-  const overtimeRateMultiplier = currentMonthData.overtime_rate_multiplier;
+  // const overtimeRateMultiplier = currentMonthData.overtime_rate_multiplier
   const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier;
 
   const workedHours = getCurrentMonthWorkedHours(currentMonthData);
   const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData);
   const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData);
   const sumOfHours =
-    workedHours +
-    overtimeHours * overtimeHoursMultiplier +
-    weekendsHours * overtimeHoursMultiplier;
+    workedHours + overtimeHours * overtimeHoursMultiplier + weekendsHours * overtimeHoursMultiplier;
   const amountWorkedHours = workedHours * hourlyRate;
-  const amountOvertimeHours =
-    overtimeHours * overtimeHoursMultiplier * overtimeRate;
-  const amountWeekendsHours =
-    weekendsHours * overtimeHoursMultiplier * overtimeRate;
-  const amountSumOfHours =
-    amountWorkedHours + amountOvertimeHours + amountWeekendsHours;
+  const amountOvertimeHours = overtimeHours * overtimeHoursMultiplier * overtimeRate;
+  const amountWeekendsHours = weekendsHours * overtimeHoursMultiplier * overtimeRate;
+  const amountSumOfHours = amountWorkedHours + amountOvertimeHours + amountWeekendsHours;
 
   const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
   const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData);
@@ -182,8 +180,7 @@ const EmployeeRcpDetails = ({year, month}) => {
   const amountHolidayDays = holidayDays * holidayRate;
   const amountSickDays = sickDays * sickLeaveRate;
   const amountOtherLeaveDays = otherLeaveDays * otherLeaveRate;
-  const amountSumOfLeave =
-    amountHolidayDays + amountSickDays + amountOtherLeaveDays;
+  const amountSumOfLeave = amountHolidayDays + amountSickDays + amountOtherLeaveDays;
 
   let autoWeekendBonusName = '';
   let autoWeekendBonus = 0;
@@ -220,18 +217,14 @@ const EmployeeRcpDetails = ({year, month}) => {
     }, []);
 
     manualBonus = percentsArray.reduce((res, curr) => {
-      const bonusAmount = bonusRate * (parseInt(curr) / 100);
+      const bonusAmount = bonusRate * (parseInt(curr, 10) / 100);
       return res + bonusAmount;
     }, 0);
   }
 
   const amountBonus = autoWeekendBonus + autoWeekdayBonus + manualBonus;
   const amountToBePaid =
-    amountSumOfHours +
-    amountSumOfLeave -
-    toAccountRate -
-    insuranceRate -
-    retainmentRate;
+    amountSumOfHours + amountSumOfLeave - toAccountRate - insuranceRate - retainmentRate;
   const totalAmountToPay = amountToBePaid + amountBonus;
 
   const handlePrint = useReactToPrint({
@@ -322,8 +315,7 @@ const EmployeeRcpDetails = ({year, month}) => {
             <tr>
               <td>Urlop okolicznościowy</td>
               <td>
-                {otherLeaveDays}{' '}
-                <span>{otherLeaveDays === 1 ? 'dzień' : 'dni'}</span>
+                {otherLeaveDays} <span>{otherLeaveDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
                 {amountOtherLeaveDays} <span>pln</span>
@@ -334,11 +326,7 @@ const EmployeeRcpDetails = ({year, month}) => {
               <td>SUMA</td>
               <td>
                 {holidayDays + sickDays + otherLeaveDays}{' '}
-                <span>
-                  {holidayDays + sickDays + otherLeaveDays === 1
-                    ? 'dzień'
-                    : 'dni'}
-                </span>
+                <span>{holidayDays + sickDays + otherLeaveDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
                 {amountSumOfLeave} <span>pln</span>
@@ -375,13 +363,11 @@ const EmployeeRcpDetails = ({year, month}) => {
                 <div>
                   {autoWeekendBonus > 0 && <p>{autoWeekendBonusName}</p>}
                   {autoWeekdayBonus > 0 && <p>{autoWeekdayBonusName}</p>}
-                  {evaluationArray.map(({name, percent, description}, idx) => {
-                    return (
-                      <p key={idx}>
-                        {name} {percent} %, {description}
-                      </p>
-                    );
-                  })}
+                  {evaluationArray.map(({name, percent, description}, idx) => (
+                    <p key={`${idx}${name}`}>
+                      {name} {percent} %, {description}
+                    </p>
+                  ))}
                 </div>
               </td>
               <td>
@@ -393,17 +379,14 @@ const EmployeeRcpDetails = ({year, month}) => {
 
         <div>
           <p>
-            Całkowita kwota:{' '}
-            <span>{(amountSumOfHours + amountSumOfLeave).toFixed(0)}</span>{' '}
+            Całkowita kwota: <span>{(amountSumOfHours + amountSumOfLeave).toFixed(0)}</span>{' '}
             <span>pln</span>
           </p>
           <p>
-            Kwota do wypłaty: <span>{amountToBePaid.toFixed(0)}</span>{' '}
-            <span>pln</span>
+            Kwota do wypłaty: <span>{amountToBePaid.toFixed(0)}</span> <span>pln</span>
           </p>
           <p>
-            Kwota do wypłaty z premią: <span>{totalAmountToPay.toFixed()}</span>{' '}
-            <span>pln</span>
+            Kwota do wypłaty z premią: <span>{totalAmountToPay.toFixed()}</span> <span>pln</span>
           </p>
         </div>
       </StyledPrintArea>

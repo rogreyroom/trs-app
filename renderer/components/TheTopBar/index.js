@@ -12,11 +12,9 @@ const StyledHeaderContainer = styled.header`
   padding: var(--xl);
 `;
 
-export const Header = () => {
-  return (
-    <StyledHeaderContainer>
-      <Logo />
-      <Navbar />
-    </StyledHeaderContainer>
-  );
-};
+export const Header = () => (
+  <StyledHeaderContainer>
+    <Logo />
+    <Navbar />
+  </StyledHeaderContainer>
+);

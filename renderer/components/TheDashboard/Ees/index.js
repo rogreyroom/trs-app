@@ -11,11 +11,13 @@ import {
   StyledFormControlsWrapper,
 } from '@/common/CommonWrappers';
 
+import {errorMessages} from '@/lib/errorMessages';
+
 const eesFormSchema = Joi.object().keys({
   type: Joi.string().required(),
   count_type: Joi.string().valid('auto', 'manual').required(),
   symbol: Joi.string().required(),
-  percent: Joi.number().required(),
+  percent: Joi.string().required(),
   description: Joi.string().required(),
 });
 
@@ -28,24 +30,25 @@ const countTypeSelectOptions = [
   {label: 'Ręcznie', value: 'manual'},
 ];
 
-export const EesForm = ({preloadedValues}) => {
+export const EesForm = ({id, preloadedValues}) => {
   const router = useRouter();
-  const {id} = router.query;
   const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
     resolver: joiResolver(eesFormSchema),
     defaultValues: preloadedValues,
   });
 
+  console.log('EesForm ID', id);
+
   const onSubmit = async (data) => {
     console.log(data);
     await axios.put(`/api/ees/${id}`, {value: data});
-    reset;
-    router.back();
+    reset();
+    router.push('/ees');
   };
 
   const handleReset = () => {
-    reset;
+    reset();
     router.back();
   };
 
@@ -57,7 +60,7 @@ export const EesForm = ({preloadedValues}) => {
           type="text"
           label="Symbol"
           error={!!errors.symbol}
-          errorMessage={errors?.symbol && 'Symbol jest wymagany!'}
+          errorMessage={errors?.symbol && [errorMessages.notEmpty]}
           ref={register}
         />
         <Input
@@ -66,7 +69,7 @@ export const EesForm = ({preloadedValues}) => {
           label="Procent"
           error={!!errors.percent}
           errorMessage={
-            errors?.percent && 'Procent jest wymagany i musi być liczbą!'
+            errors?.percent && [errorMessages.notEmpty, errorMessages.alphaNumericString]
           }
           ref={register}
         />
@@ -75,9 +78,7 @@ export const EesForm = ({preloadedValues}) => {
           label="Rodzaj premii"
           optionsArray={typeSelectOptions}
           error={!!errors.type}
-          errorMessage={
-            errors?.count_type && 'Typ przydzielania jest wymagany!'
-          }
+          errorMessage={errors?.count_type && [errorMessages.notEmpty]}
           ref={register}
         />
         <Select
@@ -85,18 +86,16 @@ export const EesForm = ({preloadedValues}) => {
           label="Typ przydzielania"
           optionsArray={countTypeSelectOptions}
           error={!!errors.count_type}
-          errorMessage={
-            errors?.count_type && 'Typ przydzielania jest wymagany!'
-          }
+          errorMessage={errors?.count_type && [errorMessages.notEmpty]}
           ref={register}
         />
         <Textarea
           name="description"
           label="Zasada przyznania premii"
           error={!!errors.description}
-          errorMessage={errors?.description && 'Opis jest wymagany!'}
+          errorMessage={errors?.description && [errorMessages.notEmpty]}
           ref={register}
-        ></Textarea>
+        />
       </StyledEesFormContainer>
       <StyledFormControlsWrapper>
         <Button type="button" onClickAction={handleReset}>

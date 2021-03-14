@@ -24,6 +24,7 @@ export const Login = () => {
     } else {
       setWrongLogin((wrongLogin) => true);
     }
+    reset();
   };
 
   return (
@@ -36,9 +37,7 @@ export const Login = () => {
           type="text"
           label="Nazwa"
           error={!!errors.name}
-          errorMessage={
-            errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]
-          }
+          errorMessage={errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]}
           ref={register}
         />
         <Input
@@ -47,10 +46,7 @@ export const Login = () => {
           label="Hasło"
           error={!!errors.password}
           errorMessage={
-            errors?.password && [
-              errorMessages.notEmpty,
-              errorMessages.alphaNumericString,
-            ]
+            errors?.password && [errorMessages.notEmpty, errorMessages.alphaNumericString]
           }
           ref={register}
         />

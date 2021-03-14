@@ -33,17 +33,13 @@ export const EvalAlert = ({
   isNoButtonPresent,
   yesAction,
   noAction,
-}) => {
-  return (
-    <StyledAlertForm>
-      <Title isWhite>{title}</Title>
-      <p>{message}</p>
-      <StyledFormControlsWrapper>
-        <Button onClickAction={yesAction}>{yesButtonLabel}</Button>
-        {isNoButtonPresent && (
-          <Button onClickAction={noAction}>{noButtonLabel}</Button>
-        )}
-      </StyledFormControlsWrapper>
-    </StyledAlertForm>
-  );
-};
+}) => (
+  <StyledAlertForm>
+    <Title isWhite>{title}</Title>
+    <p>{message}</p>
+    <StyledFormControlsWrapper>
+      <Button onClickAction={yesAction}>{yesButtonLabel}</Button>
+      {isNoButtonPresent && <Button onClickAction={noAction}>{noButtonLabel}</Button>}
+    </StyledFormControlsWrapper>
+  </StyledAlertForm>
+);

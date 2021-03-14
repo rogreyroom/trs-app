@@ -12,10 +12,8 @@ const StyledTitle = styled.h1.attrs((props) => ({
   margin: 0;
 `;
 
-export const Title = ({children, isLogo, isWhite}) => {
-  return (
-    <StyledTitle isLogo={isLogo} isWhite={isWhite}>
-      {children}
-    </StyledTitle>
-  );
-};
+export const Title = ({children, isLogo, isWhite}) => (
+  <StyledTitle isLogo={isLogo} isWhite={isWhite}>
+    {children}
+  </StyledTitle>
+);
