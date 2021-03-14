@@ -1,176 +1,14 @@
-import {useState, useContext, useEffect} from 'react';
-import useSWR, {mutate} from 'swr';
-import {axios} from '@/lib/axios-config';
+import {useState, useEffect} from 'react';
+import useSWR from 'swr';
 import {Title} from '@/common/Title';
-import {useForm} from 'react-hook-form';
 import {Button} from '@/common/Buttons';
-import {Textarea} from '@/common/Inputs';
-// import { joiResolver } from '@hookform/resolvers/joi';
-// import { employeesFormSchema } from '@/lib/db/schemas'
-import {DashboardContext} from '@/contexts/DashboardContext';
-import {SubPagesContext} from '@/contexts/SubPagesContext';
-import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
-import styled from 'styled-components';
-
-export const StyledResponsibilitiesForm = styled.form`
-  --max-width: ${(props) => (props.edit ? `100%` : `80%`)};
-  display: grid;
-  grid-template-areas: 'inputs' 'controls';
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 40px;
-  grid-gap: var(--xl);
-  min-height: 100%;
-  min-width: 100%;
-`;
-
-export const StyledResponsibilitiesPage = styled.div`
-  display: grid;
-  grid-template-areas: 'title button' 'content content' 'form form';
-  grid-template-columns: max-content 1fr;
-  grid-template-rows: 48px 1fr 1fr;
-  grid-gap: var(--l);
-  align-items: center;
-  width: 100%;
-  height: 100%;
-
-  & > h1 {
-    grid-area: title;
-  }
-
-  & > button {
-    grid-area: button;
-    max-width: max-content;
-    max-height: 32px;
-    min-width: 0;
-    padding: var(--s) var(--l);
-  }
-
-  & > section {
-    grid-area: content;
-  }
-
-  & > :last-child {
-    grid-area: form;
-  }
-`;
-
-export const ResponsibilitiesDataSection = styled.section`
-  font-size: var(--fs-text);
-  font-weight: var(--fw-light);
-  color: var(--c-white);
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-`;
-
-export const ResponsibilitiesFormSection = styled.section`
-  margin: 0;
-  width: 100%;
-  height: 100%;
-`;
-
-// const fetcher = (url) => axios.get(url).then(res => res.data)
-
-const ResponsibilitiesFormAdd = ({id}) => {
-  const [employee, setEmployee] = useContext(DashboardContext).employee;
-  const [page, setPage] = useContext(SubPagesContext).page;
-  const formDefaultValues = {text: ''};
-  const {register, errors, handleSubmit, reset} = useForm({
-    mode: 'onBlur',
-    // resolver: joiResolver(employeesFormSchema),
-    defaultValues: formDefaultValues,
-  });
-
-  const getEmployeeData = (id, data) =>
-    data.filter((employee) => employee._id === id)[0];
-
-  const onSubmit = async (data) => {
-    const newResponsibilitiesData = {
-      doc: 'responsibilities',
-      employee: id,
-      text: data.text,
-    };
-
-    await axios.post(`/api/responsibilities/${id}`, {
-      ...newResponsibilitiesData,
-    });
-    setPage((page) => 'responsibilities');
-  };
-
-  const handleReset = (e) => {
-    e.preventDefault();
-    reset();
-    setPage((page) => 'responsibilities');
-  };
-
-  return (
-    <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
-      <Textarea
-        name="text"
-        error={!!errors.name}
-        errorMessage={
-          errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]
-        }
-        ref={register}
-      />
-      <StyledFormControlsWrapper>
-        <Button type="button" onClickAction={(e) => handleReset(e)}>
-          Anuluj
-        </Button>
-        <Button type="submit">Dodaj</Button>
-      </StyledFormControlsWrapper>
-    </StyledResponsibilitiesForm>
-  );
-};
-
-// ===============================================================================================
-
-const ResponsibilitiesFormEdit = ({id, text}) => {
-  const [page, setPage] = useContext(SubPagesContext).page;
-  const {register, errors, handleSubmit, reset} = useForm({
-    mode: 'onBlur',
-    // resolver: joiResolver(employeesFormSchema),
-    defaultValues: text,
-  });
-
-  const onSubmit = async (data) => {
-    const newResponsibilitiesData = {
-      text: data.text,
-    };
-
-    await axios.put(`/api/responsibilities/${id}`, {
-      ...newResponsibilitiesData,
-    });
-    setPage((page) => 'responsibilities');
-  };
-
-  const handleReset = (e) => {
-    e.preventDefault();
-    reset();
-    setPage((page) => 'responsibilities');
-  };
-
-  return (
-    <StyledResponsibilitiesForm onSubmit={handleSubmit(onSubmit)}>
-      <Textarea
-        name="text"
-        error={!!errors.name}
-        errorMessage={
-          errors?.name && [errorMessages.notEmpty, errorMessages.alphaString]
-        }
-        ref={register}
-      />
-      <StyledFormControlsWrapper>
-        <Button type="button" onClickAction={(e) => handleReset(e)}>
-          Anuluj
-        </Button>
-        <Button type="submit">Zmień</Button>
-      </StyledFormControlsWrapper>
-    </StyledResponsibilitiesForm>
-  );
-};
-
-// ===============================================================================================
+import {
+  StyledResponsibilitiesPage,
+  ResponsibilitiesDataSection,
+  ResponsibilitiesFormSection,
+} from './styles';
+import ResponsibilitiesFormAdd from './AddForm';
+import ResponsibilitiesFormEdit from './EditForm';
 
 const ResponsibilitiesPage = ({employeeId}) => {
   const [showForm, setShowForm] = useState(false);
@@ -178,6 +16,7 @@ const ResponsibilitiesPage = ({employeeId}) => {
 
   if (error) return <h1>Something went wrong on the server!</h1>;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const hideForm = () => {
       setShowForm((showForm) => false);
@@ -186,7 +25,10 @@ const ResponsibilitiesPage = ({employeeId}) => {
     return () => {
       hideForm();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  console.log(data, showForm);
 
   return (
     <StyledResponsibilitiesPage>
@@ -200,9 +42,9 @@ const ResponsibilitiesPage = ({employeeId}) => {
       <ResponsibilitiesFormSection>
         {data && showForm ? (
           <ResponsibilitiesFormEdit id={employeeId} text={data} />
-        ) : showForm ? (
-          <ResponsibilitiesFormAdd id={employeeId} />
-        ) : null}
+        ) : (
+          (showForm && <ResponsibilitiesFormAdd id={employeeId} />) || null
+        )}
       </ResponsibilitiesFormSection>
     </StyledResponsibilitiesPage>
   );
