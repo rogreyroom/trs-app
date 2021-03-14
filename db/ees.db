@@ -1,8 +1,0 @@
-{"type":"task-oriented","count_type":"auto","symbol":"2W","percent":25,"description":"pracownik przepracuję dwie soboty w miesiącu lub podczas dwóch weekendów osiągnie stan 12 godzin","_id":"94JL3S80mEfRsUl1"}
-{"type":"task-oriented","count_type":"auto","symbol":"4W","percent":"50","description":"pracownik przepracuję cztery soboty w miesiącu lub podczas czterech weekendów osiągnie stan 24 godzin","_id":"94JL3S80mEfRsUl2"}
-{"type":"task-oriented","count_type":"auto","symbol":"2H","percent":"50","description":"pracownik przepracuję w dni robocze 20 nadgodzin w miesiącu","_id":"94JL3S80mEfRsUl3"}
-{"type":"task-oriented","count_type":"auto","symbol":"4H","percent":"100","description":"pracownik przepracuję w dni robocze 40 nadgodzin w miesiącu","_id":"94JL3S80mEfRsUl4"}
-{"type":"discretionary","count_type":"manual","symbol":"SP","percent":"50","description":"czynny udział pracownika w tworzeniu małego projektu (prosta konstrukcja - ocenia kierownik działu)","_id":"94JL3S80mEfRsUl5"}
-{"type":"discretionary","count_type":"manual","symbol":"MP","percent":"100","description":"czynny udział pracownika w tworzeniu średniego projektu (skomplikowana konstrukcja - ocenia kierownik działu)","_id":"94JL3S80mEfRsUl6"}
-{"type":"discretionary","count_type":"manual","symbol":"LP","percent":"200","description":"czynny udział pracownika w tworzeniu dużego projektu (bardzo skomplikowana konstrukcja - ocenia kierownik działu)","_id":"94JL3S80mEfRsUl7"}
-{"type":"discretionary","count_type":"manual","symbol":"EW","percent":"0-200","description":"zaangażowanie i efektywność pracownika w wykonywanie powierzonych mu obowiązków nadprogramowyc - przyznany przez kierownika procent premii","_id":"94JL3S80mEfRsUl8"}

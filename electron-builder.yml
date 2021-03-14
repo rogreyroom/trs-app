@@ -1,0 +1,24 @@
+appId: trs-app
+productName: Time Registration System
+copyright: Copyright © 2021 Robert Adamczewski
+win:
+  target:
+    - target: portable
+      arch:
+        - x64
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+extraFiles:
+  - from: resources/db
+    filter:
+      - employees.db
+      - ees.db
+      - responsibilities.db
+    to: ../db
+publish: null
