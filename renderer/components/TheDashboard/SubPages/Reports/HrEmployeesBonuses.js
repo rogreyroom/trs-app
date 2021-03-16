@@ -194,7 +194,7 @@ const HrEmployeesBonus = ({year, month, employees}) => {
               return employeeBonusAmount > 0 ? (
                 <tr key={`${idx}${fullName}`}>
                   <td>{fullName}</td>
-                  <td>{employeeBonusAmount}</td>
+                  <td>{employeeBonusAmount.toFixed(2)}</td>
                   <td>{fullName}</td>
                   <td />
                 </tr>
