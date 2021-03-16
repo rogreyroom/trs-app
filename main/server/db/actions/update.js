@@ -2,8 +2,6 @@ import {eesDB, employeesDB, responsibilitiesDB} from '../connection';
 
 export const UPDATE_EES_DATA = async (id, data) => {
   const {type, count_type, symbol, percent, description} = data;
-
-  console.log('UPDATE_EES_DATA', id, type, count_type, symbol, percent, description);
   return eesDB.asyncUpdate(
     {_id: id},
     {
