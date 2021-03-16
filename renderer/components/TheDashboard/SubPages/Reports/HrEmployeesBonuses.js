@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {useRef} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import format from 'date-fns/format';
 import {
   getCurrentMonthBonusRate,
@@ -10,7 +10,7 @@ import {
 } from '@/lib/utils';
 import {useReactToPrint} from 'react-to-print';
 import {IconButton} from '@/common/Buttons';
-import {SvgPrint} from '@/icons';
+import {SvgPrint, SvgRemove} from '@/icons';
 
 const StyledHrRtsReport = styled.section`
   & button {
@@ -22,7 +22,7 @@ const StyledPrintArea = styled.div`
   margin: 0;
   padding: var(--xl);
   display: grid;
-  grid-template-areas: 'header' 'table';
+  grid-template-areas: 'header' 'table' 'summary';
   grid-template-columns: 1fr;
   grid-gap: var(--xl);
   align-items: baseline;
@@ -62,6 +62,12 @@ const StyledPrintArea = styled.div`
     @media print {
       color: var(--c-print-black);
     }
+
+    &:first-child {
+      @media print {
+        display: none;
+      }
+    }
   }
 
   & td {
@@ -78,6 +84,30 @@ const StyledPrintArea = styled.div`
     & span {
       font-size: var(--fs-h6);
       font-style: italic;
+    }
+
+    &:first-child {
+      @media print {
+        display: none;
+      }
+    }
+  }
+
+  & div {
+    grid-area: summary;
+    margin: 0;
+    font-size: var(--fs-text);
+    font-weight: var(--fw-light);
+    text-align: left;
+    color: var(--c-white);
+    padding: var(--xxs) var(--m);
+
+    @media print {
+      color: var(--c-print-black);
+    }
+
+    & span {
+      font-weight: var(--fw-normal);
     }
   }
 `;
@@ -110,6 +140,14 @@ const StyledPrintAreaHeader = styled.header`
 
 const HrEmployeesBonus = ({year, month, employees}) => {
   const tableRef = useRef();
+  const [employeesData, setEmployeesData] = useState(employees);
+  // eslint-disable-next-line no-unused-vars
+  const [updatedEmployees, setUpdatedEmployees] = useState(employeesData);
+  let employeesBonusAmount = 0;
+
+  useEffect(() => {
+    setEmployeesData((employeesData) => employeesData);
+  }, [employeesData]);
 
   const handlePrint = useReactToPrint({
     content: () => tableRef.current,
@@ -158,6 +196,11 @@ const HrEmployeesBonus = ({year, month, employees}) => {
     return {employeeBonusAmount: amountBonus};
   };
 
+  const handleRemoveFromViewClick = (idx) => {
+    setUpdatedEmployees((updatedEmployees) => employeesData.splice(idx, 1));
+    setEmployeesData((employeesData) => employeesData);
+  };
+
   return (
     <StyledHrRtsReport>
       <IconButton size="xl" isActive={false} onClickAction={handlePrint}>
@@ -178,6 +221,7 @@ const HrEmployeesBonus = ({year, month, employees}) => {
         <table>
           <thead>
             <tr>
+              <th>Usuń</th>
               <th>Pracownik</th>
               <th>Kwota premii</th>
               <th>Pracownik</th>
@@ -185,14 +229,24 @@ const HrEmployeesBonus = ({year, month, employees}) => {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee, idx) => {
+            {employeesData.map((employee, idx) => {
               const fullName = `${employee.name} ${employee.surname}`;
               const currentMonthData = getGivenMonthData(employee.calendar, year, month)[0];
               const employeeData = getEmployeeData(currentMonthData);
               const {employeeBonusAmount} = employeeData;
+              employeesBonusAmount += employeeBonusAmount;
               console.log('employeeBonusAmount', employeeBonusAmount);
               return employeeBonusAmount > 0 ? (
                 <tr key={`${idx}${fullName}`}>
+                  <td>
+                    <IconButton
+                      size="normal"
+                      isActive={false}
+                      onClickAction={() => handleRemoveFromViewClick(idx)}
+                    >
+                      <SvgRemove />
+                    </IconButton>
+                  </td>
                   <td>{fullName}</td>
                   <td>{employeeBonusAmount.toFixed(2)}</td>
                   <td>{fullName}</td>
@@ -202,6 +256,11 @@ const HrEmployeesBonus = ({year, month, employees}) => {
             })}
           </tbody>
         </table>
+        <div>
+          <p>
+            Całkowita kwota premii: <span>{employeesBonusAmount.toFixed(2)}</span> <span>pln</span>
+          </p>
+        </div>
       </StyledPrintArea>
     </StyledHrRtsReport>
   );
