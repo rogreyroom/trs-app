@@ -17,6 +17,7 @@ import useSWR, {mutate} from 'swr';
 import isWeekend from 'date-fns/isWeekend';
 import {getGivenMonthData} from '@/lib/utils';
 import {confirmAlert} from 'react-confirm-alert';
+import eachDayOfInterval from 'date-fns/eachDayOfInterval';
 import {EvalAlert} from './EvalAlert';
 import {
   StyledRtsFormContainer,
@@ -89,6 +90,100 @@ export const RtsForm = ({id}) => {
   // Get ees data
   const {data: eesData} = useSWR(`api/ees/`);
   // const { data: employeesData } = useSWR('/api/employees')
+
+  // ================================================================================================
+
+  const getLeaveDays = (arrayData, type) => {
+    const resultArray = arrayData.reduce((accArr, month) => {
+      switch (type) {
+        case 'holiday':
+          month.holiday_leave.length > 0 && accArr.push(...month.holiday_leave.map((el) => el));
+          break;
+        case 'sick':
+          month.sick_leave.length > 0 && accArr.push(...month.sick_leave.map((el) => el));
+          break;
+        case 'other':
+          month.other_leave.length > 0 && accArr.push(...month.other_leave.map((el) => el));
+          break;
+        default:
+          return null;
+      }
+      return accArr;
+    }, []);
+    return resultArray;
+  };
+
+  // it should take current month and year from the calendar ????
+  const currentYear = new Date().getFullYear();
+  const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
+
+  // get employee holidays
+  const holidayDays = getLeaveDays(employeeMonthsData, 'holiday');
+  const holidayDaysArray = holidayDays.reduce((acc, cur) => {
+    const holidayInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+    holidayInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'holidayDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  // get employee sick days
+  const sickDays = getLeaveDays(employeeMonthsData, 'sick');
+  const sickDaysArray = sickDays.reduce((acc, cur) => {
+    const sickInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+
+    sickInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'sickDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  // get employee other leave days
+  const otherDays = getLeaveDays(employeeMonthsData, 'other');
+  const otherDaysArray = otherDays.reduce((acc, cur) => {
+    const otherInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+
+    otherInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'otherDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  // get worked days (days with week hours or weekend hours)
+
+  // combine all above single day into single array and add it to the calendar picker
+
+  const allLeaveDaysArray = [...holidayDaysArray, ...sickDaysArray, ...otherDaysArray];
+  console.log('allLeaveDaysArray', allLeaveDaysArray);
+
+  // ================================================================================================
 
   const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
@@ -546,6 +641,7 @@ export const RtsForm = ({id}) => {
                 onBlur={onBlur}
                 locale={plLocale}
                 calendarClassName="custom-calendar"
+                customDaysClassName={allLeaveDaysArray}
                 shouldHighlightWeekends
                 error={!!errors.due_date}
               />

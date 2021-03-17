@@ -125,3 +125,16 @@
     filter: hue-rotate(220deg) saturate(5);
   }
 }
+
+
+.holidayDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  border: 2px solid rgba(136, 255, 190, 0.719) !important;
+}
+
+.sickDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  border: 2px solid rgba(255, 154, 136, 0.719) !important;
+}
+
+.otherDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  border: 2px solid rgba(255, 247, 136, 0.719) !important;
+}
