@@ -12,6 +12,8 @@ import handleEssRequest from './api/ees';
 import handleEesByIdRequest from './api/eesId';
 import handleResponsibilitiesByEmployeeRequest from './api/responsibilities';
 
+import handlePublicHolidaysRequest from './api/holidays';
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -49,6 +51,9 @@ app.put('/api/ees/:id', handleEesByIdRequest);
 app.get('/api/responsibilities/:id', handleResponsibilitiesByEmployeeRequest);
 app.post('/api/responsibilities/:id', handleResponsibilitiesByEmployeeRequest);
 app.put('/api/responsibilities/:id', handleResponsibilitiesByEmployeeRequest);
+
+app.get('/api/holidays/:year', handlePublicHolidaysRequest);
+app.post('/api/holidays', handlePublicHolidaysRequest);
 
 // starting the server
 app.listen(port, () => {
