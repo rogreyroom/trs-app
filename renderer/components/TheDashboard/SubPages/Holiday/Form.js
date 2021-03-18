@@ -19,6 +19,8 @@ import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
 import {SubPagesContext} from '@/contexts/SubPagesContext';
 
+import {getEmployeeHolidayDays, getEmployeeWorkedDays} from '@/lib/utils';
+
 const schema = Joi.object().keys({
   holidayRangeDates: Joi.object()
     .keys({
@@ -29,7 +31,7 @@ const schema = Joi.object().keys({
 });
 
 export const HolidayForm = ({id}) => {
-  // eslint-disable-next-line no-unused-vars
+  // // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
@@ -41,6 +43,16 @@ export const HolidayForm = ({id}) => {
   });
 
   const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
+
+  // it should take current month and year from the calendar ????
+  const currentYear = new Date().getFullYear();
+  const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
+
+  // get employee holidays
+  const holidayDaysArray = getEmployeeHolidayDays(employeeMonthsData);
+
+  // get employee worked days
+  const workedDaysArray = getEmployeeWorkedDays(employeeMonthsData);
 
   const onSubmit = async (data) => {
     const datesRange = data.holidayRangeDates;
@@ -128,6 +140,7 @@ export const HolidayForm = ({id}) => {
               onChange={onChange}
               locale={plLocale}
               calendarClassName="custom-calendar"
+              customDaysClassName={[...holidayDaysArray, ...workedDaysArray]}
               shouldHighlightWeekends
               error={!!errors.holidayRangeDates}
             />

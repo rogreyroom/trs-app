@@ -22,7 +22,7 @@ export default async function handleEmployeeByIdRequest(req, res, next) {
   const queryFields = req.body ? req.body.queryFields : null;
   const value = req.body ? req.body.value : null;
 
-  console.log('handleEmployeeByIdRequest', method, id, field, value);
+  // console.log('handleEmployeeByIdRequest', method, id, field, value);
 
   switch (method) {
     case 'GET':

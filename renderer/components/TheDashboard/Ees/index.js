@@ -1,5 +1,6 @@
 import {useRouter} from 'next/router';
 import {axios} from '@/lib/axios-config';
+import {mutate} from 'swr';
 import {useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
@@ -10,6 +11,9 @@ import {
   StyledEesForm,
   StyledFormControlsWrapper,
 } from '@/common/CommonWrappers';
+
+import {useContext} from 'react';
+import {EesContext} from '@/contexts/EesContext';
 
 import {errorMessages} from '@/lib/errorMessages';
 
@@ -30,19 +34,26 @@ const countTypeSelectOptions = [
   {label: 'Ręcznie', value: 'manual'},
 ];
 
+const getEesData = (id, data) => data.filter((ees) => ees._id === id)[0];
+
 export const EesForm = ({id, preloadedValues}) => {
+  const [theEes, setTheEes] = useContext(EesContext).ees;
   const router = useRouter();
   const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
     resolver: joiResolver(eesFormSchema),
-    defaultValues: preloadedValues,
+    defaultValues: theEes || {},
   });
 
-  console.log('EesForm ID', id);
-
   const onSubmit = async (data) => {
-    console.log(data);
+    const id = theEes?._id;
     await axios.put(`/api/ees/${id}`, {value: data});
+    mutate('/api/ees', async () => {
+      await axios.get('api/ees');
+      const updatedEes = await axios.get('/api/ees');
+      const updatedEmployee = getEesData(id, updatedEes.data);
+      setTheEes((theEes) => updatedEmployee);
+    });
     reset();
     router.push('/ees');
   };

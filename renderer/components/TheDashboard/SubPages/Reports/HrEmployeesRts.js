@@ -227,7 +227,7 @@ const HrRcp = ({year, month, employees}) => {
                   <td>
                     {fullName} {employee.juvenile_worker && <span>pracownik młodociany</span>}
                   </td>
-                  <td>{employeeHoursSum}</td>
+                  <td>{employeeHoursSum.toFixed(0)}</td>
                   <td>{employeeHolidaysSum}</td>
                   <td>{employeeSickSum}</td>
                   <td>{employeeOtherLeaveSum}</td>

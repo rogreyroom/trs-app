@@ -2875,6 +2875,11 @@ data-uri-to-buffer@3.0.0:
   dependencies:
     buffer-from "^1.1.1"
 
+date-easter@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/date-easter/-/date-easter-0.2.5.tgz#85ddce23ee4e08b7b71fd3420c89d3d3576bec2f"
+  integrity sha512-pMvZSqQgPBqnUQEHhRMy7f8Dk3KYY/NPFMFHGK4mU+xM1+SX+zc9IoQMcNtS3HuJjCn3mp0GQwBzsZXz3Thjww==
+
 date-fns@^2.16.1:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.19.0.tgz#65193348635a28d5d916c43ec7ce6fbd145059e1"

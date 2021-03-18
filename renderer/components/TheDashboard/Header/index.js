@@ -20,9 +20,9 @@ const EmployeeHeader = styled.header`
     grid-column: 1 / 2;
     grid-row: 2;
     margin: 0;
-    font-size: var(--s);
+    font-size: var(--fs-h6);
     font-weight: var(--fw-light);
-    color: var(--c-blue-03);
+    color: var(--c-blue-outline);
     align-self: end;
   }
 

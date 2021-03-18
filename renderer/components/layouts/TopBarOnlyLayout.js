@@ -1,4 +1,5 @@
 import {Header} from '@/components/TheTopBar';
+import {EesProvider} from '@/contexts/EesContext';
 import {Main} from '@/components/TheDashboard/Main';
 import {SWRConfig} from 'swr';
 import {axios} from '@/lib/axios-config';
@@ -13,7 +14,9 @@ const TopBarOnlyLayout = ({children}) => (
         fetcher: (...args) => axios.get(...args).then((res) => res.data),
       }}
     >
-      <Main>{children}</Main>
+      <EesProvider>
+        <Main>{children}</Main>
+      </EesProvider>
     </SWRConfig>
   </AppContainer>
 );

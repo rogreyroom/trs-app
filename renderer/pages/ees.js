@@ -1,6 +1,7 @@
 import {useRouter} from 'next/router';
 import useSWR from 'swr';
-import {useState} from 'react';
+import {useContext} from 'react';
+import {EesContext} from '@/contexts/EesContext';
 import {getLayout} from '@/layouts/TopBarOnlyLayout';
 import {Title} from '@/common/Title';
 import {IconButton} from '@/common/Buttons';
@@ -9,26 +10,21 @@ import {StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd} fro
 
 const Ees = () => {
   const router = useRouter();
-  const [eesData, setEesData] = useState([]);
+  const [eesData, setEesData] = useContext(EesContext).data;
+  // eslint-disable-next-line no-unused-vars
+  const [theEes, setTheEes] = useContext(EesContext).ees;
 
   const {data, error} = useSWR('/api/ees');
   if (error) return <h1>Something went wrong on the server!</h1>;
   if (!data) return <h1>Loading data from server...</h1>;
 
-  const eesDataCheck = Object.values(eesData).join('');
-  const dataCheck = Object.values(data).join('');
+  setEesData((eesData) => data);
 
-  if (eesDataCheck !== dataCheck) {
-    // if (data) {
-    // console.log('eesDataCheck !== dataCheck');
-    setEesData((eesData) => data);
-  }
-
-  // useEffect(() => {
-  //   setEesData((eesData) => data);
-  // }, [data]);
-
-  // console.log(eesDataCheck, dataCheck);
+  const handleEditClick = (id) => {
+    const singleEesData = eesData.filter((ees) => ees._id === id)[0];
+    setTheEes((theEes) => singleEesData);
+    router.push('/ees-edit');
+  };
 
   return (
     <>
@@ -49,17 +45,7 @@ const Ees = () => {
             {eesData.map(({_id, symbol, percent, description}) => (
               <StyledTr key={_id}>
                 <StyledTd>
-                  <IconButton
-                    size="m"
-                    onClickAction={() =>
-                      router.push({
-                        pathname: `/ees-edit/`,
-                        query: {
-                          pid: encodeURIComponent(_id),
-                        },
-                      })
-                    }
-                  >
+                  <IconButton size="m" onClickAction={() => handleEditClick(_id)}>
                     <SvgEdit />
                   </IconButton>
                 </StyledTd>
@@ -74,18 +60,6 @@ const Ees = () => {
     </>
   );
 };
-
-// export async function getServerSideProps(context) {
-//   const res = await axios.get('/ees').catch(error => `Timeout exceeded ${error}`)
-
-//   const allEesData = (res && res.data) ? await res.data : []
-
-//   return {
-//     props: {
-//       allEesData
-//     }
-//   }
-// }
 
 Ees.getLayout = getLayout;
 export default Ees;

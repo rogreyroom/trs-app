@@ -15,7 +15,13 @@ import {DashboardContext} from '@/contexts/DashboardContext';
 import {axios} from '@/lib/axios-config';
 import useSWR, {mutate} from 'swr';
 import isWeekend from 'date-fns/isWeekend';
-import {getGivenMonthData} from '@/lib/utils';
+import {
+  getGivenMonthData,
+  getEmployeeHolidayDays,
+  getEmployeeSickDays,
+  getEmployeeOtherLeaveDays,
+  getEmployeeWorkedDays,
+} from '@/lib/utils';
 import {confirmAlert} from 'react-confirm-alert';
 import {EvalAlert} from './EvalAlert';
 import {
@@ -89,6 +95,37 @@ export const RtsForm = ({id}) => {
   // Get ees data
   const {data: eesData} = useSWR(`api/ees/`);
   // const { data: employeesData } = useSWR('/api/employees')
+
+  // ================================================================================================
+
+  // it should take current month and year from the calendar ????
+  const currentYear = new Date().getFullYear();
+  const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
+
+  // get employee holidays
+  const holidayDaysArray = getEmployeeHolidayDays(employeeMonthsData);
+
+  // get employee sick days
+  const sickDaysArray = getEmployeeSickDays(employeeMonthsData);
+
+  // get employee other leave days
+  const otherDaysArray = getEmployeeOtherLeaveDays(employeeMonthsData);
+
+  // get worked days (days with week hours or weekend hours)
+  // get employee worked days
+  const workedDaysArray = getEmployeeWorkedDays(employeeMonthsData);
+
+  // combine all above single day into single array and add it to the calendar picker
+
+  const allLeaveDaysArray = [
+    ...holidayDaysArray,
+    ...sickDaysArray,
+    ...otherDaysArray,
+    ...workedDaysArray,
+  ];
+  console.log('allLeaveDaysArray', allLeaveDaysArray);
+
+  // ================================================================================================
 
   const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
@@ -546,6 +583,7 @@ export const RtsForm = ({id}) => {
                 onBlur={onBlur}
                 locale={plLocale}
                 calendarClassName="custom-calendar"
+                customDaysClassName={allLeaveDaysArray}
                 shouldHighlightWeekends
                 error={!!errors.due_date}
               />

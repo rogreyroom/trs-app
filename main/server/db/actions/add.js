@@ -1,4 +1,4 @@
-import {eesDB, employeesDB, responsibilitiesDB} from '../connection';
+import {eesDB, employeesDB, responsibilitiesDB, holidaysDB} from '../connection';
 import {eesSchema} from '../schemas';
 import {validateDataAgainstSchema} from '../schemas/validator';
 
@@ -61,3 +61,5 @@ export const ADD_EMPLOYEE_NEW_YEAR_CALENDAR = async (id, data) => {
   console.log('DB res', res);
   return res;
 };
+
+export const ADD_PUBLIC_HOLIDAYS_DATA = async (data) => holidaysDB.asyncInsert(data);

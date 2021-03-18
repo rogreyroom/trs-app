@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {axios} from '@/lib/axios-config';
+import {mutate} from 'swr';
 import {format} from 'date-fns';
 import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
@@ -80,6 +81,8 @@ const getLeaveDays = (arrayData, type) => {
   return resultArray;
 };
 
+const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
+
 export const LeaveData = ({leaveType, id}) => {
   // eslint-disable-next-line no-unused-vars
   const [employee, setEmployee] = useContext(DashboardContext).employee;
@@ -119,6 +122,12 @@ export const LeaveData = ({leaveType, id}) => {
       default:
         return null;
     }
+
+    mutate('/api/employees', async () => {
+      const updatedEmployees = await axios.get('/api/employees');
+      const updatedEmployee = getEmployeeData(id, updatedEmployees.data);
+      setEmployee((employee) => updatedEmployee);
+    });
   };
 
   return (

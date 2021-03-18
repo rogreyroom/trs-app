@@ -6,8 +6,6 @@ export default async function handleEesByIdRequest(req, res, next) {
   const {id} = req.params;
   const value = req.body ? req.body.value : null;
 
-  console.log('HANDLEEESBYIDREQUEST', method, id, value, req.params);
-
   switch (method) {
     case 'GET':
       try {
@@ -18,10 +16,8 @@ export default async function handleEesByIdRequest(req, res, next) {
       }
       break;
     case 'PUT':
-      console.log('EES PUT');
       try {
         const data = await UPDATE_EES_DATA(id, value);
-        console.log('!!!!!!', data);
         res.status(200).json(data);
       } catch (error) {
         res.status(500).json({message: 'No data to be displayed!'});

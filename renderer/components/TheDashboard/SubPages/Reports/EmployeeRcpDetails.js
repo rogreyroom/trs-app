@@ -258,7 +258,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {workedHours} <span>godz</span>
               </td>
               <td>
-                {amountWorkedHours} <span>pln</span>
+                {amountWorkedHours.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -268,7 +268,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {overtimeHours * overtimeHoursMultiplier} <span>godz</span>
               </td>
               <td>
-                {amountOvertimeHours} <span>pln</span>
+                {amountOvertimeHours.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -278,7 +278,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {weekendsHours * overtimeHoursMultiplier} <span>godz</span>
               </td>
               <td>
-                {amountWeekendsHours} <span>pln</span>
+                {amountWeekendsHours.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -288,7 +288,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {sumOfHours.toFixed(0)} <span>godz</span>
               </td>
               <td>
-                {amountSumOfHours} <span>pln</span>
+                {amountSumOfHours.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -298,7 +298,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {holidayDays} <span>{holidayDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
-                {amountHolidayDays} <span>pln</span>
+                {amountHolidayDays.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -308,7 +308,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {sickDays} <span>{sickDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
-                {amountSickDays} <span>pln</span>
+                {amountSickDays.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -318,7 +318,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 {otherLeaveDays} <span>{otherLeaveDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
-                {amountOtherLeaveDays} <span>pln</span>
+                {amountOtherLeaveDays.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -329,7 +329,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 <span>{holidayDays + sickDays + otherLeaveDays === 1 ? 'dzień' : 'dni'}</span>
               </td>
               <td>
-                {amountSumOfLeave} <span>pln</span>
+                {amountSumOfLeave.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -337,7 +337,7 @@ const EmployeeRcpDetails = ({year, month}) => {
               <td>ROR</td>
               <td>-</td>
               <td>
-                {toAccountRate} <span>pln</span>
+                {toAccountRate.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -345,7 +345,7 @@ const EmployeeRcpDetails = ({year, month}) => {
               <td>PZU</td>
               <td>-</td>
               <td>
-                {insuranceRate} <span>pln</span>
+                {insuranceRate.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -353,7 +353,7 @@ const EmployeeRcpDetails = ({year, month}) => {
               <td>PPK</td>
               <td>-</td>
               <td>
-                {retainmentRate} <span>pln</span>
+                {retainmentRate.toFixed(2)} <span>pln</span>
               </td>
             </tr>
 
@@ -371,7 +371,7 @@ const EmployeeRcpDetails = ({year, month}) => {
                 </div>
               </td>
               <td>
-                {amountBonus} <span>pln</span>
+                {amountBonus.toFixed(2)} <span>pln</span>
               </td>
             </tr>
           </tbody>

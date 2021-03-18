@@ -140,3 +140,111 @@ export const getMonthName = (month) => {
   ];
   return monthsArray[month - 1];
 };
+
+const getLeaveDays = (arrayData, type) => {
+  const resultArray = arrayData.reduce((accArr, month) => {
+    switch (type) {
+      case 'holiday':
+        month.holiday_leave.length > 0 && accArr.push(...month.holiday_leave.map((el) => el));
+        break;
+      case 'sick':
+        month.sick_leave.length > 0 && accArr.push(...month.sick_leave.map((el) => el));
+        break;
+      case 'other':
+        month.other_leave.length > 0 && accArr.push(...month.other_leave.map((el) => el));
+        break;
+      default:
+        return null;
+    }
+    return accArr;
+  }, []);
+  return resultArray;
+};
+
+export const getEmployeeHolidayDays = (employeeMonthsData) => {
+  const holidayDays = getLeaveDays(employeeMonthsData, 'holiday');
+  const holidayDaysArray = holidayDays.reduce((acc, cur) => {
+    const holidayInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+    holidayInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'holidayDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  return holidayDaysArray;
+};
+
+export const getEmployeeSickDays = (employeeMonthsData) => {
+  const sickDays = getLeaveDays(employeeMonthsData, 'sick');
+  const sickDaysArray = sickDays.reduce((acc, cur) => {
+    const sickInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+
+    sickInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'sickDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  return sickDaysArray;
+};
+
+export const getEmployeeOtherLeaveDays = (employeeMonthsData) => {
+  const otherDays = getLeaveDays(employeeMonthsData, 'other');
+  const otherDaysArray = otherDays.reduce((acc, cur) => {
+    const otherInterval = eachDayOfInterval({
+      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
+      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
+    });
+
+    otherInterval.forEach((dayDate) => {
+      const dateObject = {
+        year: dayDate.getFullYear(),
+        month: dayDate.getMonth() + 1,
+        day: dayDate.getDate(),
+        className: 'otherDay',
+      };
+      acc.push(dateObject);
+    });
+    return acc;
+  }, []);
+
+  return otherDaysArray;
+};
+
+export const getEmployeeWorkedDays = (employeeMonthsData) => {
+  const workedDays = employeeMonthsData.reduce((acc, cur) => {
+    cur.rts.length > 0 &&
+      // eslint-disable-next-line array-callback-return
+      cur.rts.map((day) => {
+        console.log('CURRRRRR', day);
+        const dateObject = {
+          ...day.due_date,
+          className: 'workedDay',
+        };
+        acc.push(dateObject);
+      });
+    return acc;
+  }, []);
+
+  console.log('workedDays', workedDays);
+
+  return workedDays;
+};
