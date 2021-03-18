@@ -15,9 +15,14 @@ import {DashboardContext} from '@/contexts/DashboardContext';
 import {axios} from '@/lib/axios-config';
 import useSWR, {mutate} from 'swr';
 import isWeekend from 'date-fns/isWeekend';
-import {getGivenMonthData} from '@/lib/utils';
+import {
+  getGivenMonthData,
+  getEmployeeHolidayDays,
+  getEmployeeSickDays,
+  getEmployeeOtherLeaveDays,
+  getEmployeeWorkedDays,
+} from '@/lib/utils';
 import {confirmAlert} from 'react-confirm-alert';
-import eachDayOfInterval from 'date-fns/eachDayOfInterval';
 import {EvalAlert} from './EvalAlert';
 import {
   StyledRtsFormContainer,
@@ -93,94 +98,31 @@ export const RtsForm = ({id}) => {
 
   // ================================================================================================
 
-  const getLeaveDays = (arrayData, type) => {
-    const resultArray = arrayData.reduce((accArr, month) => {
-      switch (type) {
-        case 'holiday':
-          month.holiday_leave.length > 0 && accArr.push(...month.holiday_leave.map((el) => el));
-          break;
-        case 'sick':
-          month.sick_leave.length > 0 && accArr.push(...month.sick_leave.map((el) => el));
-          break;
-        case 'other':
-          month.other_leave.length > 0 && accArr.push(...month.other_leave.map((el) => el));
-          break;
-        default:
-          return null;
-      }
-      return accArr;
-    }, []);
-    return resultArray;
-  };
-
   // it should take current month and year from the calendar ????
   const currentYear = new Date().getFullYear();
   const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
 
   // get employee holidays
-  const holidayDays = getLeaveDays(employeeMonthsData, 'holiday');
-  const holidayDaysArray = holidayDays.reduce((acc, cur) => {
-    const holidayInterval = eachDayOfInterval({
-      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
-      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
-    });
-    holidayInterval.forEach((dayDate) => {
-      const dateObject = {
-        year: dayDate.getFullYear(),
-        month: dayDate.getMonth() + 1,
-        day: dayDate.getDate(),
-        className: 'holidayDay',
-      };
-      acc.push(dateObject);
-    });
-    return acc;
-  }, []);
+  const holidayDaysArray = getEmployeeHolidayDays(employeeMonthsData);
 
   // get employee sick days
-  const sickDays = getLeaveDays(employeeMonthsData, 'sick');
-  const sickDaysArray = sickDays.reduce((acc, cur) => {
-    const sickInterval = eachDayOfInterval({
-      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
-      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
-    });
-
-    sickInterval.forEach((dayDate) => {
-      const dateObject = {
-        year: dayDate.getFullYear(),
-        month: dayDate.getMonth() + 1,
-        day: dayDate.getDate(),
-        className: 'sickDay',
-      };
-      acc.push(dateObject);
-    });
-    return acc;
-  }, []);
+  const sickDaysArray = getEmployeeSickDays(employeeMonthsData);
 
   // get employee other leave days
-  const otherDays = getLeaveDays(employeeMonthsData, 'other');
-  const otherDaysArray = otherDays.reduce((acc, cur) => {
-    const otherInterval = eachDayOfInterval({
-      start: new Date(cur.from.year, cur.from.month - 1, cur.from.day),
-      end: new Date(cur.to.year, cur.to.month - 1, cur.to.day),
-    });
-
-    otherInterval.forEach((dayDate) => {
-      const dateObject = {
-        year: dayDate.getFullYear(),
-        month: dayDate.getMonth() + 1,
-        day: dayDate.getDate(),
-        className: 'otherDay',
-      };
-      acc.push(dateObject);
-    });
-    return acc;
-  }, []);
+  const otherDaysArray = getEmployeeOtherLeaveDays(employeeMonthsData);
 
   // get worked days (days with week hours or weekend hours)
+  // get employee worked days
+  const workedDaysArray = getEmployeeWorkedDays(employeeMonthsData);
 
   // combine all above single day into single array and add it to the calendar picker
 
-  const allLeaveDaysArray = [...holidayDaysArray, ...sickDaysArray, ...otherDaysArray];
+  const allLeaveDaysArray = [
+    ...holidayDaysArray,
+    ...sickDaysArray,
+    ...otherDaysArray,
+    ...workedDaysArray,
+  ];
   console.log('allLeaveDaysArray', allLeaveDaysArray);
 
   // ================================================================================================
