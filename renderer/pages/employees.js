@@ -126,7 +126,7 @@ const getCurrentYearPublicHolidays = (currentYear) => {
   const fixedHolidays = [
     {year: currentYear, month: 1, day: 1, name: 'Nowy Rok'},
     {year: currentYear, month: 1, day: 6, name: 'Święto Trzech Króli'},
-    {year: currentYear, month: 5, day: 1, name: 'Świętem Pracy'},
+    {year: currentYear, month: 5, day: 1, name: 'Święto Pracy'},
     {year: currentYear, month: 5, day: 3, name: 'Święto Narodowe Trzeciego Maja'},
     {year: currentYear, month: 8, day: 15, name: 'Wniebowzięcie Najświętszej Marii Panny'},
     {year: currentYear, month: 11, day: 1, name: 'Wszystkich Świętych'},
