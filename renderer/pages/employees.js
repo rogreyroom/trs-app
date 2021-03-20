@@ -26,6 +26,7 @@ const HolidaysWrapper = styled.div`
   grid-area: content;
   display: grid;
   grid-template-columns: 1fr 500px;
+  grid-gap: 2rem;
 `;
 const HolidaysContent = styled.section`
   color: var(--c-white);
@@ -50,8 +51,9 @@ const SpecialDateTimeDecorator = styled.div`
   & span {
     margin: 0;
     display: block;
-    line-height: 0.8;
+    line-height: 0.9;
     text-align: right;
+    text-shadow: -2px -2px 2px var(--c-blue-01);
     width: 100%;
   }
 
@@ -62,6 +64,7 @@ const SpecialDateTimeDecorator = styled.div`
   .specialDayName {
     font-size: 3rem;
     display: inline-block;
+    text-transform: capitalize;
   }
 
   .specialWeekNumber {
