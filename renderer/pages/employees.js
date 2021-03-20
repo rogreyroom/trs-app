@@ -6,7 +6,8 @@ import {Main} from '@/dashboard/Main';
 import {Button} from '@/components/common/Buttons';
 import {Title} from '@/components/common/Title';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
+import {DashboardContext} from '@/contexts/DashboardContext';
 
 import {easter} from 'date-easter';
 import addDays from 'date-fns/addDays';
@@ -185,7 +186,7 @@ const Employees = () => {
   const employees = getEmployees();
   const currentYear = new Date().getFullYear();
   const [holidaysData, setHolidaysData] = useState({});
-  const [publicHolidays, setPublicHolidays] = useState([]);
+  const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const {data, error} = useSWR(`/api/holidays/${currentYear}`);
 
   const [date, setDate] = useState(new Date());
