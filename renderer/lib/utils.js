@@ -234,12 +234,18 @@ export const getEmployeeWorkedDays = (employeeMonthsData) => {
     cur.rts.length > 0 &&
       // eslint-disable-next-line array-callback-return
       cur.rts.map((day) => {
-        console.log('CURRRRRR', day);
-        const dateObject = {
-          ...day.due_date,
-          className: 'workedDay',
-        };
-        acc.push(dateObject);
+        if (
+          (day.due_date && day.evaluation.length > 0) ||
+          day.working_hours > 0 ||
+          day.overtime_hours > 0 ||
+          day.weekend_hours > 0
+        ) {
+          const dateObject = {
+            ...day.due_date,
+            className: 'workedDay',
+          };
+          acc.push(dateObject);
+        }
       });
     return acc;
   }, []);
