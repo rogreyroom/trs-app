@@ -12,7 +12,7 @@ import {DashboardContext} from '@/contexts/DashboardContext';
 import {easter} from 'date-easter';
 import addDays from 'date-fns/addDays';
 import {format} from 'date-fns';
-// import parseISO from 'date-fns/parseISO';
+import {pl} from 'date-fns/locale';
 
 import styled from 'styled-components';
 
@@ -294,7 +294,7 @@ const Employees = () => {
           </HolidaysContent>
           <SpecialDateTimeDecorator>
             <span className="specialDate">{format(new Date(), 'yyyy.MM.dd')}</span>
-            <span className="specialDayName">{format(new Date(), 'cccc')}</span>
+            <span className="specialDayName">{(format(new Date(), 'cccc'), {locale: pl})}</span>
             <span className="specialTime">{format(date, 'kk:mm:ss')}</span>
             <span className="specialWeekNumber">TK {format(new Date(), 'II')}</span>
           </SpecialDateTimeDecorator>
