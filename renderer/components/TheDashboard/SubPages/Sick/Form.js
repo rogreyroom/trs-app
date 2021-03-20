@@ -35,6 +35,8 @@ export const SickForm = ({id}) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
+  // eslint-disable-next-line no-unused-vars
+  const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const calendarDefaultValue = {from: null, to: null};
   const {control, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
@@ -142,6 +144,7 @@ export const SickForm = ({id}) => {
               locale={plLocale}
               calendarClassName="custom-calendar"
               customDaysClassName={[...sickDaysArray, ...workedDaysArray]}
+              disabledDays={publicHolidays}
               shouldHighlightWeekends
               error={!!errors.sickRangeDates}
             />
