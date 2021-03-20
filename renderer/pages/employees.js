@@ -294,7 +294,7 @@ const Employees = () => {
           </HolidaysContent>
           <SpecialDateTimeDecorator>
             <span className="specialDate">{format(new Date(), 'yyyy.MM.dd')}</span>
-            <span className="specialDayName">{(format(new Date(), 'cccc'), {locale: pl})}</span>
+            <span className="specialDayName">{format(new Date(), 'cccc', {locale: pl})}</span>
             <span className="specialTime">{format(date, 'kk:mm:ss')}</span>
             <span className="specialWeekNumber">TK {format(new Date(), 'II')}</span>
           </SpecialDateTimeDecorator>
