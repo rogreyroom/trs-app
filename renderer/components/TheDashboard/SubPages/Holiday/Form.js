@@ -35,6 +35,8 @@ export const HolidayForm = ({id}) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
+  // eslint-disable-next-line no-unused-vars
+  const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const calendarDefaultValue = {from: null, to: null};
   const {control, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
@@ -141,6 +143,7 @@ export const HolidayForm = ({id}) => {
               locale={plLocale}
               calendarClassName="custom-calendar"
               customDaysClassName={[...holidayDaysArray, ...workedDaysArray]}
+              disabledDays={publicHolidays}
               shouldHighlightWeekends
               error={!!errors.holidayRangeDates}
             />

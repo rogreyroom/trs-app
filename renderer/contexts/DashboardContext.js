@@ -8,7 +8,12 @@ export const DashboardProvider = ({children, ...otherProps}) => {
   const [employee, setEmployee] = useState(null);
   const [employeesFilter, setEmployeesFilter] = useState(true);
   const [addEmployeePage, setAddEmployeePage] = useState(null);
+  const [publicHolidays, setPublicHolidays] = useState([]);
   const {data, error} = useSWR('/api/employees');
+  const sortEmployees = (employeesData) =>
+    employeesData?.sort((a, b) => a.surname.localeCompare(b.surname));
+
+  data && sortEmployees(data);
 
   useEffect(() => {
     setEmployees((employees) => data);
@@ -24,6 +29,7 @@ export const DashboardProvider = ({children, ...otherProps}) => {
         employee: [employee, setEmployee],
         filter: [employeesFilter, setEmployeesFilter],
         add: [addEmployeePage, setAddEmployeePage],
+        publicHolidays: [publicHolidays, setPublicHolidays],
       }}
     >
       {children}

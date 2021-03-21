@@ -44,7 +44,7 @@ const StyledPrintArea = styled.div`
     width: 100%;
 
     @media print {
-      max-width: 80%;
+      max-width: 100%;
       margin: 0 auto;
     }
   }
@@ -81,15 +81,21 @@ const StyledPrintArea = styled.div`
       color: var(--c-print-black);
     }
 
-    & span {
-      font-size: var(--fs-h6);
-      font-style: italic;
-    }
-
     &:first-child {
+      padding: var(--xxs);
+
+      & button {
+        margin: 0 auto;
+      }
+
       @media print {
         display: none;
       }
+    }
+
+    & span {
+      font-size: var(--fs-h6);
+      font-style: italic;
     }
   }
 

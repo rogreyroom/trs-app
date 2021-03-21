@@ -6,12 +6,13 @@ import {Main} from '@/dashboard/Main';
 import {Button} from '@/components/common/Buttons';
 import {Title} from '@/components/common/Title';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
+import {DashboardContext} from '@/contexts/DashboardContext';
 
 import {easter} from 'date-easter';
 import addDays from 'date-fns/addDays';
 import {format} from 'date-fns';
-// import parseISO from 'date-fns/parseISO';
+import {pl} from 'date-fns/locale';
 
 import styled from 'styled-components';
 
@@ -25,6 +26,7 @@ const HolidaysWrapper = styled.div`
   grid-area: content;
   display: grid;
   grid-template-columns: 1fr 500px;
+  grid-gap: 2rem;
 `;
 const HolidaysContent = styled.section`
   color: var(--c-white);
@@ -49,8 +51,9 @@ const SpecialDateTimeDecorator = styled.div`
   & span {
     margin: 0;
     display: block;
-    line-height: 0.8;
+    line-height: 0.9;
     text-align: right;
+    text-shadow: -2px -2px 2px var(--c-blue-01);
     width: 100%;
   }
 
@@ -61,6 +64,7 @@ const SpecialDateTimeDecorator = styled.div`
   .specialDayName {
     font-size: 3rem;
     display: inline-block;
+    text-transform: capitalize;
   }
 
   .specialWeekNumber {
@@ -125,7 +129,7 @@ const getCurrentYearPublicHolidays = (currentYear) => {
   const fixedHolidays = [
     {year: currentYear, month: 1, day: 1, name: 'Nowy Rok'},
     {year: currentYear, month: 1, day: 6, name: 'Święto Trzech Króli'},
-    {year: currentYear, month: 5, day: 1, name: 'Świętem Pracy'},
+    {year: currentYear, month: 5, day: 1, name: 'Święto Pracy'},
     {year: currentYear, month: 5, day: 3, name: 'Święto Narodowe Trzeciego Maja'},
     {year: currentYear, month: 8, day: 15, name: 'Wniebowzięcie Najświętszej Marii Panny'},
     {year: currentYear, month: 11, day: 1, name: 'Wszystkich Świętych'},
@@ -184,8 +188,9 @@ const getCurrentYearPublicHolidays = (currentYear) => {
 const Employees = () => {
   const employees = getEmployees();
   const currentYear = new Date().getFullYear();
+  // eslint-disable-next-line no-unused-vars
   const [holidaysData, setHolidaysData] = useState({});
-  const [publicHolidays, setPublicHolidays] = useState([]);
+  const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const {data, error} = useSWR(`/api/holidays/${currentYear}`);
 
   const [date, setDate] = useState(new Date());
@@ -199,20 +204,9 @@ const Employees = () => {
     };
   });
 
-  // useEffect(() => {
-  //   setHolidaysData((holidaysData) => data);
-  // }, [data, holidaysData]);
-
-  // if (error) return <h1>Something went wrong on the server!</h1>;
   error && console.log('ERROR', error);
 
-  // console.log(getHolidays, publicHolidays);
-
-  data && console.log('DATA', data, holidaysData);
-
   if (publicHolidays.length === 0 && data) {
-    console.log('HMMMMMM', publicHolidays, holidaysData);
-
     setPublicHolidays((publicHolidays) => {
       const holidaysArray = data.public_holidays;
       return holidaysArray?.sort((a, b) =>
@@ -253,14 +247,10 @@ const Employees = () => {
 
   const getCurrentYearPublicHolidaysHandler = () => {
     getCurrentYearPublicHolidays(currentYear);
-    // const updatedData = getPublicHolidays(currentYear);
     mutate('/api/holidays', async () => {
       const updatedHolidays = await axios.get(`/api/holidays/${currentYear}`);
       setHolidaysData((holidaysData) => updatedHolidays);
     });
-    // setGetHolidays((getHolidays) => true);
-
-    // console.log('holidaysData', holidaysData);
   };
 
   return (
@@ -293,7 +283,7 @@ const Employees = () => {
           </HolidaysContent>
           <SpecialDateTimeDecorator>
             <span className="specialDate">{format(new Date(), 'yyyy.MM.dd')}</span>
-            <span className="specialDayName">{format(new Date(), 'cccc')}</span>
+            <span className="specialDayName">{format(new Date(), 'cccc', {locale: pl})}</span>
             <span className="specialTime">{format(date, 'kk:mm:ss')}</span>
             <span className="specialWeekNumber">TK {format(new Date(), 'II')}</span>
           </SpecialDateTimeDecorator>

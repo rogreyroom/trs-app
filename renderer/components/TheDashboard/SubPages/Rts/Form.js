@@ -44,7 +44,8 @@ const schema = Joi.object().keys({
 });
 
 export const RtsForm = ({id}) => {
-  // const [employees, setEmployees] = useContext(DashboardContext).data
+  // eslint-disable-next-line no-unused-vars
+  const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   const [isEvalEdit, setIsEvalEdit] = useState(false);
   const [editedEvalIndex, setEditedEvalIndex] = useState(null);
@@ -584,6 +585,7 @@ export const RtsForm = ({id}) => {
                 locale={plLocale}
                 calendarClassName="custom-calendar"
                 customDaysClassName={allLeaveDaysArray}
+                disabledDays={publicHolidays}
                 shouldHighlightWeekends
                 error={!!errors.due_date}
               />

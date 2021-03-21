@@ -6,6 +6,7 @@ import {SvgDashboard, SvgEes, SvgPdf, SvgLogout} from '@/icons';
 const StyledNav = styled.nav`
   display: flex;
   margin: 0;
+  justify-content: end;
 
   & button {
     margin-left: var(--l);
