@@ -188,6 +188,7 @@ const getCurrentYearPublicHolidays = (currentYear) => {
 const Employees = () => {
   const employees = getEmployees();
   const currentYear = new Date().getFullYear();
+  // eslint-disable-next-line no-unused-vars
   const [holidaysData, setHolidaysData] = useState({});
   const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const {data, error} = useSWR(`/api/holidays/${currentYear}`);
@@ -203,20 +204,9 @@ const Employees = () => {
     };
   });
 
-  // useEffect(() => {
-  //   setHolidaysData((holidaysData) => data);
-  // }, [data, holidaysData]);
-
-  // if (error) return <h1>Something went wrong on the server!</h1>;
   error && console.log('ERROR', error);
 
-  // console.log(getHolidays, publicHolidays);
-
-  data && console.log('DATA', data, holidaysData);
-
   if (publicHolidays.length === 0 && data) {
-    console.log('HMMMMMM', publicHolidays, holidaysData);
-
     setPublicHolidays((publicHolidays) => {
       const holidaysArray = data.public_holidays;
       return holidaysArray?.sort((a, b) =>
@@ -257,14 +247,10 @@ const Employees = () => {
 
   const getCurrentYearPublicHolidaysHandler = () => {
     getCurrentYearPublicHolidays(currentYear);
-    // const updatedData = getPublicHolidays(currentYear);
     mutate('/api/holidays', async () => {
       const updatedHolidays = await axios.get(`/api/holidays/${currentYear}`);
       setHolidaysData((holidaysData) => updatedHolidays);
     });
-    // setGetHolidays((getHolidays) => true);
-
-    // console.log('holidaysData', holidaysData);
   };
 
   return (
