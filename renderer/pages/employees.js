@@ -77,49 +77,49 @@ const SpecialDateTimeDecorator = styled.div`
   }
 `;
 
-const getEmployees = () => axios.get('/api/employees');
-const createCalendarForCurrentYear = async (currentYear, yearData) => {
-  const monthsArray = [];
-  const {
-    hourly_rate,
-    overtime_rate,
-    holiday_rate,
-    sick_leave_rate,
-    other_leave_rate,
-    insurance_rate,
-    retainment_rate,
-    bonus_rate,
-    to_account_rate,
-    overtime_rate_multiplier,
-    overtime_hours_multiplier,
-  } = yearData;
+// const getEmployees = () => axios.get('/api/employees');
+// const createCalendarForCurrentYear = async (currentYear, yearData) => {
+//   const monthsArray = [];
+//   const {
+//     hourly_rate,
+//     overtime_rate,
+//     holiday_rate,
+//     sick_leave_rate,
+//     other_leave_rate,
+//     insurance_rate,
+//     retainment_rate,
+//     bonus_rate,
+//     to_account_rate,
+//     overtime_rate_multiplier,
+//     overtime_hours_multiplier,
+//   } = yearData;
 
-  for (let idx = 1; idx <= 12; idx += 1) {
-    monthsArray.push({
-      month: idx,
-      holiday_leave: [],
-      sick_leave: [],
-      other_leave: [],
-      rts: [],
-      hourly_rate,
-      overtime_rate,
-      holiday_rate,
-      sick_leave_rate,
-      other_leave_rate,
-      insurance_rate,
-      retainment_rate,
-      bonus_rate,
-      to_account_rate,
-      overtime_rate_multiplier,
-      overtime_hours_multiplier,
-    });
-  }
+//   for (let idx = 1; idx <= 12; idx += 1) {
+//     monthsArray.push({
+//       month: idx,
+//       holiday_leave: [],
+//       sick_leave: [],
+//       other_leave: [],
+//       rts: [],
+//       hourly_rate,
+//       overtime_rate,
+//       holiday_rate,
+//       sick_leave_rate,
+//       other_leave_rate,
+//       insurance_rate,
+//       retainment_rate,
+//       bonus_rate,
+//       to_account_rate,
+//       overtime_rate_multiplier,
+//       overtime_hours_multiplier,
+//     });
+//   }
 
-  return {
-    year: currentYear,
-    months: monthsArray,
-  };
-};
+//   return {
+//     year: currentYear,
+//     months: monthsArray,
+//   };
+// };
 
 const getCurrentYearPublicHolidays = (currentYear) => {
   // 18-03-2021
@@ -186,7 +186,7 @@ const getCurrentYearPublicHolidays = (currentYear) => {
 // ===================================================================================
 
 const Employees = () => {
-  const employees = getEmployees();
+  // const employees = getEmployees();
   const currentYear = new Date().getFullYear();
   // eslint-disable-next-line no-unused-vars
   const [holidaysData, setHolidaysData] = useState({});
@@ -217,33 +217,35 @@ const Employees = () => {
   }
 
   // TODO: refactor to get rid of callbacks
-  employees
-    .then((res) => {
-      // eslint-disable-next-line array-callback-return
-      res.data.map((employee) => {
-        const employeeCalendar = employee.calendar;
-        const hasCurrentYear = employeeCalendar.find(({year}) => year === currentYear);
-        if (!hasCurrentYear) {
-          const previousYearMonthsData = employeeCalendar.filter(
-            ({year}) => year === currentYear - 1
-          )[0].months;
-          const previousYearLastMonthData =
-            previousYearMonthsData[previousYearMonthsData.length - 1];
-          const newData = createCalendarForCurrentYear(currentYear, previousYearLastMonthData);
-          newData
-            .then((monthsData) => {
-              axios.put(`/api/employees/${employee._id}`, {
-                field: 'newYear',
-                value: {...monthsData},
-              });
-            })
-            .catch((monthsErr) => console.error(monthsErr));
-        }
-      });
-    })
-    .catch((err) => console.error(err));
+  // employees
+  //   .then((res) => {
+  //     // eslint-disable-next-line array-callback-return
+  //     res.data.map((employee) => {
+  //       const employeeCalendar = employee.calendar;
+  //       const hasCurrentYear = employeeCalendar.find(({year}) => year === currentYear);
+  //       if (!hasCurrentYear) {
+  //         const previousYearMonthsData = employeeCalendar.filter(
+  //           ({year}) => year === currentYear - 1
+  //         )[0].months;
+  //         const previousYearLastMonthData =
+  //           previousYearMonthsData[previousYearMonthsData.length - 1];
+  //         const newData = createCalendarForCurrentYear(currentYear, previousYearLastMonthData);
+  //         newData
+  //           .then((monthsData) => {
+  //             axios.put(`/api/employees/${employee._id}`, {
+  //               field: 'newYear',
+  //               value: {...monthsData},
+  //             });
+  //           })
+  //           .catch((monthsErr) => console.error(monthsErr));
+  //       }
+  //     });
+  //   })
+  //   .catch((err) => console.error(err));
 
-  mutate('employees');
+  // employees && console.log('EMPLOYEES', employees);
+
+  // mutate('employees');
 
   const getCurrentYearPublicHolidaysHandler = () => {
     getCurrentYearPublicHolidays(currentYear);
