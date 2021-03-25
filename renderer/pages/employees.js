@@ -204,17 +204,19 @@ const Employees = () => {
     };
   });
 
-  error && console.log('ERROR', error);
+  useEffect(() => {
+    if (publicHolidays.length === 0 && data) {
+      setPublicHolidays((publicHolidays) => {
+        const holidaysArray = data.public_holidays;
+        return holidaysArray?.sort((a, b) =>
+          // eslint-disable-next-line no-nested-ternary
+          a.month > b.month ? 1 : a.month === b.month ? (a.day > b.day ? 1 : -1) : -1
+        );
+      });
+    }
+  }, [data, publicHolidays, setPublicHolidays]);
 
-  if (publicHolidays.length === 0 && data) {
-    setPublicHolidays((publicHolidays) => {
-      const holidaysArray = data.public_holidays;
-      return holidaysArray?.sort((a, b) =>
-        // eslint-disable-next-line no-nested-ternary
-        a.month > b.month ? 1 : a.month === b.month ? (a.day > b.day ? 1 : -1) : -1
-      );
-    });
-  }
+  error && console.log('ERROR', error);
 
   // TODO: refactor to get rid of callbacks
   // employees
