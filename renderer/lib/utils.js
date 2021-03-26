@@ -1,5 +1,4 @@
 import {eachDayOfInterval, isSaturday, isSunday} from 'date-fns';
-// import { pl } from 'date-fns/locale'
 
 const getNumberOfWorkingDays = (startDate, endDate) => {
   // TODO: add some array of public holidays and subtract them from datesArray
@@ -38,7 +37,6 @@ export const getOtherLeaveDaysForCurrentMonth = (currentMonthData) => {
   const otherLeaveDaysArray = currentMonthData.other_leave.map((leave) => {
     const dateFrom = new Date(leave.from.year, leave.from.month - 1, leave.from.day);
     const dateTo = new Date(leave.to.year, leave.to.month - 1, leave.to.day);
-    // Tacierzyński i okolicznościowy nie jest liczony w weekendy
     return getNumberOfWorkingDays(dateFrom, dateTo);
   });
   return otherLeaveDaysArray.reduce((a, b) => parseInt(a, 10) + parseInt(b, 10), 0);
@@ -249,8 +247,6 @@ export const getEmployeeWorkedDays = (employeeMonthsData) => {
       });
     return acc;
   }, []);
-
-  console.log('workedDays', workedDays);
 
   return workedDays;
 };

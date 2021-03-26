@@ -3,19 +3,15 @@ import {DashboardContext} from '@/contexts/DashboardContext';
 import {SubPagesContext} from '@/contexts/SubPagesContext';
 import {useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
-// import { employeeEditFormSchema } from '@/lib/db/schemas'
 import Joi from 'joi';
 import {axios} from '@/lib/axios-config';
 import {mutate} from 'swr';
 import {errorMessages} from '@/lib/errorMessages';
 import {Button} from '@/common/Buttons';
 import {Input, InputDatePicker, Select} from '@/common/Inputs';
-
-// TO be fixed
 import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
 import {StyledEmployeeForm, StyledEditEmployeeInputsWrapper, StyledEditFieldsWrap} from './styles';
 
-// Edit schema
 const employeeEditFormSchema = Joi.object().keys({
   year: Joi.required(),
   month: Joi.required(),
@@ -152,8 +148,6 @@ export const EditEmployeeForm = ({id}) => {
   };
 
   const onSubmit = async (data) => {
-    // TODO: add modal to confirm if user want to save edited data
-
     const employeeYearMonthValues = getYearMonthData(
       employee,
       parseInt(data.year, 10),
@@ -216,11 +210,6 @@ export const EditEmployeeForm = ({id}) => {
     const employeeCalendarInfo =
       JSON.stringify(employeeCalendarInfoData) === JSON.stringify(employeeCalendarYearMonthValues);
 
-    // if ( !employeeBasicInfo ) {
-    //   if ( employeeBasicInfoData.employment_start_date !== null ) employeeBasicInfoData.employment_status = false
-    //   await axios.put(`/api/employees/${id}`, { field: 'employee', value: { ...employeeBasicInfoData }})
-    // }
-
     if (!employeeBasicInfo)
       await axios.put(`/api/employees/${id}`, {
         field: 'employee',
@@ -237,12 +226,7 @@ export const EditEmployeeForm = ({id}) => {
       const updatedEmployee = getEmployeeData(id, updatedEmployees.data);
       setEmployee((employee) => updatedEmployee);
     });
-    console.log(
-      'employeeBasicInfo',
-      employeeBasicInfo,
-      'employeeCalendarInfo',
-      employeeCalendarInfo
-    );
+
     setPage((page) => 'rts');
   };
 

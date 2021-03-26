@@ -9,17 +9,13 @@ import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
 import {StyledResponsibilitiesForm} from './styles';
 
 const ResponsibilitiesFormAdd = ({id}) => {
-  // const [employee, setEmployee] = useContext(DashboardContext).employee;
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
   const formDefaultValues = {text: ''};
   const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
-    // resolver: joiResolver(employeesFormSchema),
     defaultValues: formDefaultValues,
   });
-
-  // const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
   const onSubmit = async (data) => {
     const newResponsibilitiesData = {

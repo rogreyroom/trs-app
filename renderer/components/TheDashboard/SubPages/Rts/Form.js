@@ -95,28 +95,13 @@ export const RtsForm = ({id}) => {
   const [isRtsEdit, setIsRtsEdit] = useState(false);
   // Get ees data
   const {data: eesData} = useSWR(`api/ees/`);
-  // const { data: employeesData } = useSWR('/api/employees')
 
-  // ================================================================================================
-
-  // it should take current month and year from the calendar ????
   const currentYear = new Date().getFullYear();
   const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
-
-  // get employee holidays
   const holidayDaysArray = getEmployeeHolidayDays(employeeMonthsData);
-
-  // get employee sick days
   const sickDaysArray = getEmployeeSickDays(employeeMonthsData);
-
-  // get employee other leave days
   const otherDaysArray = getEmployeeOtherLeaveDays(employeeMonthsData);
-
-  // get worked days (days with week hours or weekend hours)
-  // get employee worked days
   const workedDaysArray = getEmployeeWorkedDays(employeeMonthsData);
-
-  // combine all above single day into single array and add it to the calendar picker
 
   const allLeaveDaysArray = [
     ...holidayDaysArray,
@@ -124,9 +109,6 @@ export const RtsForm = ({id}) => {
     ...otherDaysArray,
     ...workedDaysArray,
   ];
-  console.log('allLeaveDaysArray', allLeaveDaysArray);
-
-  // ================================================================================================
 
   const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
 
@@ -144,11 +126,6 @@ export const RtsForm = ({id}) => {
     const newValue = getValuesFunction('weekend_hours');
     setWeekendHours((weekendHours) => newValue);
   };
-
-  // const handleEwEvalCalendar = e => {
-  //   const newValue = e.target.value
-  //   setEwEvalCalendarDate(ewEvalCalendarDate => newValue)
-  // }
 
   const handleEwEvalPercent = (e) => {
     const newValue = e.target.value;
@@ -240,7 +217,6 @@ export const RtsForm = ({id}) => {
     }, []);
 
     if (isEdit === 'edit' && evalArray.length > 0) {
-      console.log('isEdit');
       const evalArrayObj = evalArray[editedEvalIndex];
       const evaluationArrayIndex = evaluationArray.findIndex(
         (obj) => JSON.stringify(obj) === JSON.stringify(evalArrayObj)
@@ -266,8 +242,7 @@ export const RtsForm = ({id}) => {
         return {res: false, data: parseInt(ewEvalPercent, 10)};
       }
     }
-    console.log('ewEvalValue', evaluationArray, ewEvalPercent);
-    // if new entry should be checked if the entry is equal or not 200
+
     if (parseInt(ewEvalPercent, 10) > 200) {
       const newPercent = parseInt(ewEvalPercent, 10) - 200;
       const maxToAddIs = parseInt(ewEvalPercent, 10) - newPercent;
@@ -296,8 +271,6 @@ export const RtsForm = ({id}) => {
               onClose();
             }}
             noAction={() => {
-              // setEvaluation(null)
-              // setEvalDescription(null)
               setEwEvalPercent((ewEvalPercent) => 0);
               onClose();
             }}
@@ -305,8 +278,6 @@ export const RtsForm = ({id}) => {
         ),
       });
     } else if (isToMuch.res && isToMuch.data === 0) {
-      // console.log('isToMuch.res && isToMuch.data === 0')
-
       confirmAlert({
         customUI: ({onClose}) => (
           <EvalAlert
@@ -324,8 +295,6 @@ export const RtsForm = ({id}) => {
         ),
       });
     } else if (!isToMuch.res) {
-      // console.log('!isToMuch.res')
-
       if (theCheck === 'add') {
         makeAdd(isToMuch.data);
       } else if (theCheck === 'edit') {
@@ -382,10 +351,7 @@ export const RtsForm = ({id}) => {
     const monthIs = resultData.due_date.month;
     const valueIs = {...resultData};
 
-    // mutate(`/api/employees/${id}`, { field: 'update_rts', queryFields: { year: yearIs, month: monthIs }, value: { ...valueIs }}, false)
-
     if (isRtsEdit) {
-      // mutate([...employees, employeesData])
       await axios.put(`/api/employees/${id}`, {
         field: 'update_rts',
         queryFields: {year: yearIs, month: monthIs},
@@ -393,9 +359,6 @@ export const RtsForm = ({id}) => {
       });
       setIsRtsEdit((isRtsEdit) => false);
     } else {
-      // mutate([...employees, employeesData])
-      // mutate([...employee, employeeData])
-      // mutate(`/api/employees/${id}`)
       await axios.put(`/api/employees/${id}`, {
         field: 'add_rts',
         queryFields: {year: yearIs, month: monthIs},
@@ -403,46 +366,14 @@ export const RtsForm = ({id}) => {
       });
     }
 
-    // console.log('onSubmit', resultData, employees);
-
     setSubmittedData((submittedData) => resultData);
     reset(formFieldsDefaultValues);
     setValue('due_date', null);
-
-    // console.log('------isSubmitSuccessful', isSubmitSuccessful);
-
     mutate('/api/employees', async (mutatedEmployees) => {
       const updatedEmployees = await axios.get('/api/employees');
       const updatedEmployee = getEmployeeData(id, updatedEmployees.data);
       setEmployee((employee) => updatedEmployee);
     });
-
-    // if (isSubmitSuccessful) {
-
-    //   console.log('onSubmit isSubmitSuccessful =======================================', employees);
-
-    //   mutate('/api/employees', async mutatedEmployees => {
-    //     // let's update the todo with ID `1` to be completed,
-    //     // this API returns the updated data
-    //     const updatedEmployees = await axios.get('/api/employees')
-
-    //     setEmployees(employees => updatedEmployees)
-
-    //     // filter the list, and return it with the updated item
-    //     // const filteredTodos = todos.filter(todo => todo.id !== '1')
-    //     // return [...filteredTodos, updatedTodo]
-    //   })
-
-    //   console.log('===================================================================', employees);
-
-    // }
-
-    // const employeeData = getEmployeeData(id, employeesData)
-
-    // console.log('onSubmit employeeData', id, employeeData);
-    // setEmployee(employee => employeeData)
-
-    // console.log('onSubmit employee', employee)
   };
 
   const handleReset = (e) => {
@@ -458,25 +389,16 @@ export const RtsForm = ({id}) => {
     objects.every((obj) => JSON.stringify(obj) === JSON.stringify(objects[0]));
 
   const getCurrentMonthData = (employeeCalendar, givenYear, givenMonth, givenDate) => {
-    // console.log('getCurrentMonthData')
     const givenYearMonths = employeeCalendar.filter(({year}) => parseInt(year, 10) === givenYear)[0]
       ?.months;
     const givenMonthRts = givenYearMonths?.filter(
       ({month}) => parseInt(month, 10) === givenMonth
     )[0]?.rts;
-
-    // console.log('getCurrentMonthData givenMonthRts', givenMonthRts)
     return givenMonthRts?.filter(({due_date}) => isEqual(due_date, givenDate))[0];
   };
   // ------end utils
 
   useEffect(() => {
-    // console.log('RTS useEffect', employees, employeesData);
-    // const mut = () => mutate(`/api/employees/`)
-    // const r = mut()
-
-    // console.log('RTS useEffect -------> mutated', employees, employeesData, mut, r);
-
     if (watchCalendarChange !== null) {
       if (
         isWeekend(
@@ -494,38 +416,6 @@ export const RtsForm = ({id}) => {
       setEvalDescription((evalDescription) => '');
       setEwEvalCalendarDate((ewEvalCalendarDate) => watchCalendarChange);
 
-      // console.log('watchCalendarChange employee', employee.calendar, watchCalendarChange.year, watchCalendarChange.month, watchCalendarChange);
-
-      // console.log('onSubmit isSubmitSuccessful =======================================', employees);
-
-      // mutate('/api/employees', async mutatedEmployees => {
-      //   // let's update the todo with ID `1` to be completed,
-      //   // this API returns the updated data
-      //   const updatedEmployees = await axios.get('/api/employees')
-
-      //   // setEmployees(employees => updatedEmployees)
-
-      //   console.log('updatedEmployees', id, updatedEmployees.data);
-
-      //   const updatedEmployee = getEmployeeData(id, updatedEmployees.data)
-
-      //   // const updatedEmployeeCheck = Object.values(updatedEmployee).join('')
-      //   // const employeeCheck = Object.values(employee).join('')
-
-      //   // console.log(updatedEmployeeCheck, employeeCheck);
-
-      //   // if ( updatedEmployeeCheck !== employeeCheck ) {
-      //   //   console.log('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
-      //     setEmployee(employee => updatedEmployee)
-      //   // }
-
-      //   // filter the list, and return it with the updated item
-      //   // const filteredTodos = todos.filter(todo => todo.id !== '1')
-      //   // return [...filteredTodos, updatedTodo]
-      // })
-
-      // console.log('===================================================================', employees);
-
       const res = getCurrentMonthData(
         employee.calendar,
         watchCalendarChange.year,
@@ -533,10 +423,7 @@ export const RtsForm = ({id}) => {
         watchCalendarChange
       );
 
-      // console.log('RES', res);
-
       if (res) {
-        // console.log('useEffect res', res);
         setEvalArray((evalArray) => [...res.evaluation]);
         setWorkingHours((workingHours) => res.working_hours);
         setOvertimeHours((overtimeHours) => res.overtime_hours);
@@ -552,13 +439,6 @@ export const RtsForm = ({id}) => {
     }
 
     if (isSubmitSuccessful) {
-      // console.log('isSubmitSuccessful')
-      // reset(formFieldsDefaultValues)
-
-      // setEmployees(employees => employeesData)
-      // const employeeData = getEmployeeData(id)
-      // employeeData && setEmployee(employee => employeeData)
-
       reset({...submittedData});
       setValue('due_date', null);
       setEvaluation(null);
@@ -576,7 +456,6 @@ export const RtsForm = ({id}) => {
           <Controller
             control={control}
             name="due_date"
-            // setValue={watchCalendarChange}
             render={({onChange, value, onBlur}) => (
               <Calendar
                 value={value}

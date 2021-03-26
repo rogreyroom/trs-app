@@ -13,7 +13,6 @@ const ResponsibilitiesFormEdit = ({id, text}) => {
   const [page, setPage] = useContext(SubPagesContext).page;
   const {register, errors, handleSubmit, reset} = useForm({
     mode: 'onBlur',
-    // resolver: joiResolver(employeesFormSchema),
     defaultValues: text,
   });
 

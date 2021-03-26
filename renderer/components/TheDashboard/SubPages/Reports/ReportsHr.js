@@ -19,15 +19,6 @@ const StyledHrReportsPages = styled.section`
   grid-template-rows: 1fr;
 `;
 
-// const StyledHrReportsAside = styled.div`
-//   grid-area: aside
-//   display: flex;
-//   flex-direction: column;
-//   border-right: 1px solid var(--c-blue-03);
-//   margin: 0;
-//   height: 100%;
-// `
-
 const StyledReportLinks = styled.section`
   border-right: 1px solid var(--c-blue-03);
   padding-top: var(--l);
@@ -164,14 +155,6 @@ export const ReportsHr = () => {
             {reportPage === 'hrEmployeesRts' ? (
               <HrEmployeesRts year={year} month={month} employees={employees} />
             ) : null}
-
-            {/* {reportPage === 'hrEmployeesRts222' ? (
-              <HrEmployeesRts222
-                year={year}
-                month={month}
-                employees={employees}
-              />
-            ) : null} */}
           </StyledReportPrintArea>
         </StyledHrReportsPages>
       </>

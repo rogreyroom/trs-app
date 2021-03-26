@@ -28,8 +28,6 @@ const ResponsibilitiesPage = ({employeeId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  console.log(data, showForm);
-
   return (
     <StyledResponsibilitiesPage>
       <Title isWhite>Zakres obowiązków</Title>

@@ -241,7 +241,7 @@ const HrEmployeesBonus = ({year, month, employees}) => {
               const employeeData = getEmployeeData(currentMonthData);
               const {employeeBonusAmount} = employeeData;
               employeesBonusAmount += employeeBonusAmount;
-              console.log('employeeBonusAmount', employeeBonusAmount);
+
               return employeeBonusAmount > 0 ? (
                 <tr key={`${idx}${fullName}`}>
                   <td>

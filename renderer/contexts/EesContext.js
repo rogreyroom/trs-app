@@ -13,7 +13,6 @@ export const EesProvider = ({children, ...otherProps}) => {
   }, [data, ees, theEes]);
 
   if (error) return <h1>Something went wrong on the server!</h1>;
-  // if (!data) return <h1>Loading data from server!!!...</h1>
 
   return (
     <EesContext.Provider

@@ -12,9 +12,6 @@ import {Calendar} from 'react-modern-calendar-datepicker';
 import {mutate} from 'swr';
 import {axios} from '@/lib/axios-config';
 import {useForm, Controller} from 'react-hook-form';
-// import { joiResolver } from '@hookform/resolvers/joi'
-// import Joi from 'joi';
-// import { eesFormSchema } from '../../../lib/db/schemas'
 import {useRouter} from 'next/router';
 
 export const EmploymentStatusForm = ({id}) => {
@@ -23,18 +20,10 @@ export const EmploymentStatusForm = ({id}) => {
   const [employee, setEmployee] = useContext(DashboardContext).employee;
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useContext(SubPagesContext).page;
+  // eslint-disable-next-line no-unused-vars
   const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter;
   const calendarDefaultValue = employee.employment_termination_date;
   const {handleSubmit, control, reset, errors} = useForm();
-
-  console.log(
-    'EmploymentStatusForm employeesFilter',
-    employeesFilter,
-    ' calendarDefaultValue',
-    calendarDefaultValue,
-    ' employee',
-    employee
-  );
 
   const onSubmit = async (data, e) => {
     console.log('EmploymentStatusForm SUBMIT');

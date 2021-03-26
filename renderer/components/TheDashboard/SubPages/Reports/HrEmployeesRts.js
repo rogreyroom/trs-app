@@ -131,9 +131,7 @@ const StyledPrintAreaHeader = styled.header`
 
 const HrRcp = ({year, month, employees}) => {
   const tableRef = useRef();
-
   const [employeesData, setEmployeesData] = useState(employees);
-  // const [updatedEmployees, setUpdatedEmployees] = useState(employeesData)
   // eslint-disable-next-line no-unused-vars
   const [updatedEmployees, setUpdatedEmployees] = useState(employeesData);
 
@@ -151,7 +149,6 @@ const HrRcp = ({year, month, employees}) => {
     const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier;
     const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier;
     const sumOfHours = workedHours + overtimeHours + weekendsHours;
-
     const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
     const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData);
     const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData);
@@ -164,12 +161,7 @@ const HrRcp = ({year, month, employees}) => {
     };
   };
 
-  console.log(employeesData);
-
   const handleRemoveFromViewClick = (idx) => {
-    // setUpdatedEmployees((updatedEmployees) => {
-    //   updatedEmployees = employeesData.splice(idx, 1);
-    // });
     setUpdatedEmployees((updatedEmployees) => employeesData.splice(idx, 1));
     setEmployeesData((employeesData) => employeesData);
   };
@@ -213,7 +205,6 @@ const HrRcp = ({year, month, employees}) => {
               } = employeeData;
 
               return (
-                // !isHidden &&
                 <tr key={`${idx}${fullName}`}>
                   <td>
                     <IconButton

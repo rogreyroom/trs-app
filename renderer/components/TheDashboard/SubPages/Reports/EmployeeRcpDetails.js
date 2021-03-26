@@ -161,7 +161,6 @@ const EmployeeRcpDetails = ({year, month}) => {
   const insuranceRate = currentMonthData.insurance_rate;
   const retainmentRate = currentMonthData.retainment_rate;
   const bonusRate = currentMonthData.bonus_rate;
-  // const overtimeRateMultiplier = currentMonthData.overtime_rate_multiplier
   const overtimeHoursMultiplier = currentMonthData.overtime_hours_multiplier;
 
   const workedHours = getCurrentMonthWorkedHours(currentMonthData);

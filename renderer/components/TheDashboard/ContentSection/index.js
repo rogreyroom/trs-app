@@ -46,7 +46,6 @@ export const ContentSection = ({employeeId}) => {
       case 'leave':
         return <Leave employeeId={id} />;
       case 'rts':
-        // console.log('RTS', id);
         return <Rts employeeId={id} />;
       case 'reports':
         return <Reports employeeId={id} />;

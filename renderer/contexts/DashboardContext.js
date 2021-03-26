@@ -60,11 +60,8 @@ export const DashboardProvider = ({children, ...otherProps}) => {
   data && sortEmployees(data);
 
   useEffect(() => {
-    // console.log('useEffect CONTEXT');
-    setEmployees((employees) => data);
-    // console.log('CONTEX employees', employees);
-
     const currentYear = new Date().getFullYear();
+    setEmployees((employees) => data);
     employees &&
       employees.map(async (employee) => {
         const employeeCalendar = employee.calendar;
@@ -79,7 +76,6 @@ export const DashboardProvider = ({children, ...otherProps}) => {
             currentYear,
             previousYearLastMonthData
           );
-          // console.log('newData', newData);
           newData &&
             axios.put(`/api/employees/${employee._id}`, {
               field: 'newYear',
@@ -87,16 +83,9 @@ export const DashboardProvider = ({children, ...otherProps}) => {
             });
         }
       });
-
-    // return setEmployees((employees) => []);
   }, [data, employee, employees]);
 
-  // }, [data, employees, employee]);
-
   if (error) return <h1>Something went wrong on the server!</h1>;
-  // if (!data) return <h1>Loading data from server!!!...</h1>
-
-  // console.log('CONTEX employees', employees);
 
   return (
     <DashboardContext.Provider
@@ -112,29 +101,3 @@ export const DashboardProvider = ({children, ...otherProps}) => {
     </DashboardContext.Provider>
   );
 };
-
-// employees
-//   .then((res) => {
-//     // eslint-disable-next-line array-callback-return
-//     res.data.map((employee) => {
-//       const employeeCalendar = employee.calendar;
-//       const hasCurrentYear = employeeCalendar.find(({year}) => year === currentYear);
-//       if (!hasCurrentYear) {
-//         const previousYearMonthsData = employeeCalendar.filter(
-//           ({year}) => year === currentYear - 1
-//         )[0].months;
-//         const previousYearLastMonthData =
-//           previousYearMonthsData[previousYearMonthsData.length - 1];
-//         const newData = createCalendarForCurrentYear(currentYear, previousYearLastMonthData);
-//         newData
-//           .then((monthsData) => {
-//             axios.put(`/api/employees/${employee._id}`, {
-//               field: 'newYear',
-//               value: {...monthsData},
-//             });
-//           })
-//           .catch((monthsErr) => console.error(monthsErr));
-//       }
-//     });
-//   })
-//   .catch((err) => console.error(err));
