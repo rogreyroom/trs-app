@@ -9,7 +9,6 @@ const DashboardLayout = ({children}) => (
     <Header />
     <SWRConfig
       value={{
-        refreshInterval: 2000,
         fetcher: (...args) => axios.get(...args).then((res) => res.data),
       }}
     >
