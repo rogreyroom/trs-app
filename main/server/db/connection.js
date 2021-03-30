@@ -42,3 +42,8 @@ export const holidaysDB = new AsyncNedb({
   filename: path.join(dbDirectory, 'holidays.db'),
   autoload: true,
 });
+
+export const usersDB = new AsyncNedb({
+  filename: path.join(dbDirectory, 'users.db'),
+  autoload: true,
+});
