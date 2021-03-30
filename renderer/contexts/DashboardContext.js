@@ -1,6 +1,9 @@
 import {createContext, useState, useEffect} from 'react';
 import useSWR from 'swr';
 import {axios} from '@/lib/axios-config';
+import {useRouter} from 'next/router';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
 
 const createCalendarForCurrentYear = (currentYear, yearData) => {
   const monthsArray = [];
@@ -48,6 +51,7 @@ const createCalendarForCurrentYear = (currentYear, yearData) => {
 export const DashboardContext = createContext();
 
 export const DashboardProvider = ({children, ...otherProps}) => {
+  const router = useRouter();
   const [employees, setEmployees] = useState([]);
   const [employee, setEmployee] = useState(null);
   const [employeesFilter, setEmployeesFilter] = useState(true);
@@ -85,7 +89,26 @@ export const DashboardProvider = ({children, ...otherProps}) => {
       });
   }, [data, employee, employees]);
 
-  if (error) return <h1>Something went wrong on the server!</h1>;
+  if (error) {
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd serwera"
+              message="Nie udało pobrać się niezbędnych danych!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                router.push('/employees');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
+  }
 
   return (
     <DashboardContext.Provider

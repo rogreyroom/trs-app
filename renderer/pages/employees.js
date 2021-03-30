@@ -14,6 +14,10 @@ import addDays from 'date-fns/addDays';
 import {format} from 'date-fns';
 import {pl} from 'date-fns/locale';
 
+import {useRouter} from 'next/router';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
+
 import styled from 'styled-components';
 
 const HolidaysTitle = styled.section`
@@ -134,12 +138,12 @@ const getCurrentYearPublicHolidays = (currentYear) => {
 };
 
 const Employees = () => {
+  const router = useRouter();
   const currentYear = new Date().getFullYear();
   // eslint-disable-next-line no-unused-vars
   const [holidaysData, setHolidaysData] = useState({});
   const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const {data, error} = useSWR(`/api/holidays/${currentYear}`);
-
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -163,7 +167,26 @@ const Employees = () => {
     }
   }, [data, publicHolidays, setPublicHolidays]);
 
-  error && console.log('ERROR', error);
+  if (error) {
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd serwera"
+              message="Nie udało pobrać się niezbędnych danych!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                router.push('/employees');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
+  }
 
   const getCurrentYearPublicHolidaysHandler = () => {
     getCurrentYearPublicHolidays(currentYear);

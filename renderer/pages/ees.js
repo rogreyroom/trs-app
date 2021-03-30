@@ -7,6 +7,8 @@ import {Title} from '@/common/Title';
 import {IconButton} from '@/common/Buttons';
 import {SvgEdit} from '@/icons';
 import {StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd} from '@/common/Table';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
 
 const Ees = () => {
   const router = useRouter();
@@ -15,7 +17,26 @@ const Ees = () => {
   const [theEes, setTheEes] = useContext(EesContext).ees;
 
   const {data, error} = useSWR('/api/ees');
-  if (error) return <h1>Something went wrong on the server!</h1>;
+  if (error) {
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd serwera"
+              message="Nie udało pobrać się niezbędnych danych!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                router.push('/ees');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
+  }
   if (!data) return <h1>Loading data from server...</h1>;
 
   setEesData((eesData) => data);
