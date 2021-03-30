@@ -66,15 +66,7 @@ export const Login = () => {
     );
   }
   if (loading) {
-    return (
-      <Loader
-        type="Puff"
-        color="var(--c-blue-03)"
-        height={100}
-        width={100}
-        timeout={3000} // 3 secs
-      />
-    );
+    return <Loader type="Puff" color="var(--c-blue-03)" height={100} width={100} />;
   }
   return (
     <Panel>
