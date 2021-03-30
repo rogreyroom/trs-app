@@ -7,6 +7,9 @@ import {useState} from 'react';
 import {axios} from '@/lib/axios-config';
 import styled from 'styled-components';
 import {StyledFormControlsWrapper, StyledForm} from '@/common/CommonWrappers';
+import Loader from 'react-loader-spinner';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
 
 const Panel = styled.section`
   background-image: var(--g-panel);
@@ -42,11 +45,36 @@ export const Login = () => {
   };
 
   if (wrongLogin) {
-    // TODO: add new component with return to login form button
-    return <h1>Nieprawidłowy login i/lub hasło!</h1>;
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd logowania"
+              message="Wprowadzono nieprawidłowy login i/lub hasło!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                setWrongLogin((wrongLogin) => false);
+                router.push('/');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
   }
   if (loading) {
-    return <h1>Loading data...............</h1>;
+    return (
+      <Loader
+        type="Puff"
+        color="var(--c-blue-03)"
+        height={100}
+        width={100}
+        timeout={3000} // 3 secs
+      />
+    );
   }
   return (
     <Panel>
