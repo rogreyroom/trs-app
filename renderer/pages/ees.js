@@ -9,6 +9,8 @@ import {SvgEdit} from '@/icons';
 import {StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd} from '@/common/Table';
 import {confirmAlert} from 'react-confirm-alert';
 import {Alert} from '@/common/Alert';
+import Loader from 'react-loader-spinner';
+import {StyledSpinnerContainer} from '@/common/CommonWrappers';
 
 const Ees = () => {
   const router = useRouter();
@@ -37,7 +39,12 @@ const Ees = () => {
       </>
     );
   }
-  if (!data) return <h1>Loading data from server...</h1>;
+  if (!data)
+    return (
+      <StyledSpinnerContainer>
+        <Loader type="Puff" color="var(--c-blue-03)" height={100} width={100} />
+      </StyledSpinnerContainer>
+    );
 
   setEesData((eesData) => data);
 
