@@ -23,7 +23,7 @@ import {
   getEmployeeWorkedDays,
 } from '@/lib/utils';
 import {confirmAlert} from 'react-confirm-alert';
-import {EvalAlert} from './EvalAlert';
+import {Alert} from '@/common/Alert';
 import {
   StyledRtsFormContainer,
   StyledRtsForm,
@@ -256,7 +256,7 @@ export const RtsForm = ({id}) => {
     if (isToMuch.res && isToMuch.data > 0) {
       confirmAlert({
         customUI: ({onClose}) => (
-          <EvalAlert
+          <Alert
             title="Limit osiągnięty"
             message={`Możesz dodać jedynie ${isToMuch.data}% żeby nie przekroczyć miesięcznej maksymalnej wartości 200%`}
             yesButtonLabel="Dodaj"
@@ -280,7 +280,7 @@ export const RtsForm = ({id}) => {
     } else if (isToMuch.res && isToMuch.data === 0) {
       confirmAlert({
         customUI: ({onClose}) => (
-          <EvalAlert
+          <Alert
             title="Limit osiągnięty"
             message="Limit oceny EW w tym miesiącu został osiągnięty!"
             yesButtonLabel="Rozumię"
@@ -308,7 +308,7 @@ export const RtsForm = ({id}) => {
     if (watchCalendarChange === null) {
       confirmAlert({
         customUI: ({onClose}) => (
-          <EvalAlert
+          <Alert
             title="Uwaga"
             message="Nie wybrano daty! Ocena zostanie usunięta."
             yesButtonLabel="OK"

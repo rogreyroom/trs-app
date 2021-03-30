@@ -24,7 +24,7 @@ const StyledAlertForm = styled.div`
   }
 `;
 
-export const EvalAlert = ({
+export const Alert = ({
   title,
   message,
   yesButtonLabel,
