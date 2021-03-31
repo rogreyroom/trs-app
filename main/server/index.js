@@ -1,11 +1,3 @@
-// yarn add cors joi helmet morgan
-
-// importing the dependencies
-// const router = express.Router
-// console.log('EXPRESS APP path', router.stack);
-
-// ----------------------
-
 import handleEmployeesRequest from './api/employees';
 import handleEmployeesByIdRequest from './api/employeesId';
 import handleEssRequest from './api/ees';
@@ -24,7 +16,6 @@ const port = 3001;
 // defining the Express app
 const app = express();
 
-console.log('SERVER CALL');
 app.use(express.json());
 
 // adding Helmet to enhance your API's security

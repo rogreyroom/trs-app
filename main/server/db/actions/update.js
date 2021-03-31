@@ -16,24 +16,10 @@ export const UPDATE_EES_DATA = async (id, data) => {
   );
 };
 
-// export const UPDATE_EMPLOYEE_CALENDAR_DATA = async (id, data) => {
-// 	console.log('UPDATE_EMPLOYEE_CALENDAR_DATA', id, data)
-// 	// const { type, count_type, symbol, percent, percent_range, description } = data
-// 	const res = await employeesDB.asyncUpdate(
-// 		{ _id: id },
-// 		{ $push: { calendar: data } },
-// 		// { upsert: false }
-// 	)
-
-// 	// console.log('DB res', res)
-// 	return res
-// }
-
 export const UPDATE_EMPLOYEE_JUVENILE_STATUS = async (id, data) =>
   employeesDB.asyncUpdate({_id: id}, {$set: {juvenile_worker: data.newJuvenileStatus}});
 
 export const UPDATE_EMPLOYEE_TERMINATION_DATE = async (id, data) =>
-  // console.log('UPDATE_EMPLOYEE_TERMINATION_DATE', id, data);
   employeesDB.asyncUpdate(
     {_id: id},
     {
@@ -45,7 +31,6 @@ export const UPDATE_EMPLOYEE_TERMINATION_DATE = async (id, data) =>
   );
 
 export const UPDATE_EMPLOYEE_HOLIDAY_DATES = async (id, queryFields, data) => {
-  // console.log('UPDATE_EMPLOYEE_HOLIDAY_DATES id:', id, 'q:', queryFields, 'd:', data);
   const employee = await employeesDB.asyncFindOne({_id: id});
   const employeeYearIndex = employee.calendar.findIndex((year) => year.year === queryFields.year);
   const employeeMonthIndex = employee.calendar
@@ -141,29 +126,16 @@ export const REMOVE_EMPLOYEE_OTHER_LEAVE_DATES = async (id, queryFields, data) =
   );
 };
 
-// !!!!!!!!!!!!!!!!!!!! how to add new data to rts array and update existing data
 export const UPDATE_EMPLOYEE_RTS_DATA = async (id, queryFields, data) => {
-  // console.log('UPDATE_EMPLOYEE_RTS_DATA', id, queryFields, data);
   const employee = await employeesDB.asyncFindOne({_id: id});
   const employeeYearIndex = employee.calendar.findIndex((year) => year.year === queryFields.year);
   const employeeMonthIndex = employee.calendar
     .filter((year) => year.year === queryFields.year)[0]
     .months.findIndex((el) => el.month === queryFields.month);
-
-  // return await employeesDB.asyncUpdate({ _id: id }, { $push: { [`calendar.${employeeYearIndex}.months.${employeeMonthIndex}.rts`]: data }})
-
-  // When editing rts date
   const rtsDayIndex = employee.calendar
     .filter((year) => year.year === queryFields.year)[0]
     .months.filter((el) => el.month === queryFields.month)[0]
     .rts.findIndex((day) => JSON.stringify(day.due_date) === JSON.stringify(data.due_date));
-
-  // 	console.log('employee', employee)
-  // console.log('employeeYearIndex', employeeYearIndex, 'employeeMonthIndex', employeeMonthIndex)
-  // console.log('To be push to: ', `calendar.${employeeYearIndex}.months.${employeeMonthIndex}.rts.${rtsDayIndex}`)
-
-  // console.log('data', data);
-  // return 0
 
   return employeesDB.asyncUpdate(
     {_id: id},
@@ -176,7 +148,6 @@ export const UPDATE_EMPLOYEE_RTS_DATA = async (id, queryFields, data) => {
 };
 
 export const UPDATE_BASIC_EMPLOYEE_INFO = async (id, data) =>
-  // console.log('UPDATE_BASIC_EMPLOYEE_INFO', data)
   employeesDB.asyncUpdate(
     {_id: id},
     {
@@ -192,9 +163,7 @@ export const UPDATE_BASIC_EMPLOYEE_INFO = async (id, data) =>
   );
 
 export const UPDATE_EMPLOYEE_MONTHLY_RATES = async (id, data) => {
-  // console.log('UPDATE_EMPLOYEE_MONTHLY_RATES', data)
   const {year, month} = data;
-  // console.log('year', year, 'month', month)
   const employee = await employeesDB.asyncFindOne({_id: id});
   const employeeYearIndex = employee.calendar.findIndex((y) => y.year === year);
   const resArray = [];
@@ -202,7 +171,6 @@ export const UPDATE_EMPLOYEE_MONTHLY_RATES = async (id, data) => {
     const employeeMonthIndex = employee.calendar
       .filter((y) => y.year === year)[0]
       .months.findIndex((el) => el.month === monthIterator);
-    // console.log('employeeYearIndex', employeeYearIndex, 'employeeMonthIndex', employeeMonthIndex)
     const res = employeesDB.asyncUpdate(
       {_id: id},
       {
@@ -223,14 +191,10 @@ export const UPDATE_EMPLOYEE_MONTHLY_RATES = async (id, data) => {
     );
     resArray.push(res);
   }
-  // console.log('UPDATE_EMPLOYEE_MONTHLY_RATES resArray', resArray)
   return resArray;
-  // return 1
 };
 
 export const UPDATE_EMPLOYEE_DATA = async (id, data) => {
-  // console.log('UPDATE_EMPLOYEE_DATA', id, data)
-  // const { type, count_type, symbol, percent, percent_range, description } = data
   const {
     name,
     surname,

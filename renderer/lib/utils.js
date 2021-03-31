@@ -1,7 +1,6 @@
 import {eachDayOfInterval, isSaturday, isSunday} from 'date-fns';
 
 const getNumberOfWorkingDays = (startDate, endDate) => {
-  // TODO: add some array of public holidays and subtract them from datesArray
   const datesArray = eachDayOfInterval({start: startDate, end: endDate});
   const weekDaysArray = datesArray.reduce((res, date) => {
     if (!isSaturday(date) && !isSunday(date)) res.push(date);
@@ -10,7 +9,6 @@ const getNumberOfWorkingDays = (startDate, endDate) => {
   return weekDaysArray.length;
 };
 const getNumberOfDays = (startDate, endDate) => {
-  // TODO: add some array of public holidays and subtract them from datesArray
   const datesArray = eachDayOfInterval({start: startDate, end: endDate});
   return datesArray.length;
 };

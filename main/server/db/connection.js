@@ -11,17 +11,9 @@ if (isProd) {
   // dbDirectory = path.join(app.getAppPath(), '../../../../db');
   // portable win
   dbDirectory = path.join(process.env.PORTABLE_EXECUTABLE_DIR, '/db');
-  console.log('PRODUCTION dbDirectory', dbDirectory);
 } else {
   dbDirectory = path.join(process.cwd(), 'resources/db');
-  console.log('DEVELOPMENT dbDirectory', dbDirectory);
 }
-
-// const app = require('electron').remote.app
-
-// console.log('REMOTE', app.getAppPath(), '||||', path.join(app.getAppPath(), '../resource/db'));
-
-console.log('process.cwd()', process.cwd(), dbDirectory);
 
 export const eesDB = new AsyncNedb({
   filename: path.join(dbDirectory, 'ees.db'),

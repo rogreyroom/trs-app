@@ -26,7 +26,6 @@ export const EmploymentStatusForm = ({id}) => {
   const {handleSubmit, control, reset, errors} = useForm();
 
   const onSubmit = async (data, e) => {
-    console.log('EmploymentStatusForm SUBMIT');
     const {terminationDate} = data;
     await mutate(`/api/employees/${id}`, (employee) => ({
       ...employee,
@@ -45,7 +44,6 @@ export const EmploymentStatusForm = ({id}) => {
 
   const handleReset = (e) => {
     e.preventDefault();
-    console.log('EmploymentStatusForm ANULUJ');
     reset({terminationDate: calendarDefaultValue});
     setPage((page) => 'rts');
   };
