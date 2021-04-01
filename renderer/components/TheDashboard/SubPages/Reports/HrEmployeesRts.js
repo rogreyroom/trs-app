@@ -25,7 +25,7 @@ const StyledPrintArea = styled.div`
   margin: 0;
   padding: var(--xl);
   display: grid;
-  grid-template-areas: 'header' 'table';
+  grid-template-areas: 'header' 'table' 'signature';
   grid-template-columns: 1fr;
   grid-gap: var(--xl);
   align-items: baseline;
@@ -99,6 +99,27 @@ const StyledPrintArea = styled.div`
     & span {
       font-size: var(--fs-h6);
       font-style: italic;
+    }
+  }
+
+  & div {
+    display: none;
+    @media print {
+      display: block;
+      grid-area: signature;
+      justify-self: end;
+      width: 300px;
+      height: 100px;
+      margin-right: var(--xl);
+      border-bottom: 1px dashed var(--c-grey);
+      position: relative;
+
+      & ::after {
+        content: 'podpis';
+        color: var(--c-grey);
+        position: absolute;
+        bottom: -30px;
+      }
     }
   }
 `;
@@ -227,6 +248,8 @@ const HrRcp = ({year, month, employees}) => {
             })}
           </tbody>
         </table>
+        {/* Signature field - visible when printing */}
+        <div />
       </StyledPrintArea>
     </StyledHrRtsReport>
   );
