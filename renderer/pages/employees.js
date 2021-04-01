@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {getLayout} from '@/layouts/DashboardLayout';
 import {Aside} from '@/dashboard/Sidebar';
 import useSWR, {mutate} from 'swr';
@@ -13,6 +14,10 @@ import {easter} from 'date-easter';
 import addDays from 'date-fns/addDays';
 import {format} from 'date-fns';
 import {pl} from 'date-fns/locale';
+
+import {useRouter} from 'next/router';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
 
 import styled from 'styled-components';
 
@@ -32,7 +37,6 @@ const HolidaysContent = styled.section`
   color: var(--c-white);
   font-weight: var(--fw-light);
   font-size: var(--fs-text);
-  /* text-align: center; */
   padding: var(--xs) var(--normal);
   margin: var(--xxs) 0;
 
@@ -44,7 +48,6 @@ const SpecialDateTimeDecorator = styled.div`
   color: var(--c-blue-03);
   font-weight: var(--fw-black);
   font-size: var(--fs-h1);
-  /* text-align: center; */
   padding: var(--xs) var(--normal);
   margin: var(--xxs) 0;
 
@@ -77,55 +80,7 @@ const SpecialDateTimeDecorator = styled.div`
   }
 `;
 
-const getEmployees = () => axios.get('/api/employees');
-const createCalendarForCurrentYear = async (currentYear, yearData) => {
-  const monthsArray = [];
-  const {
-    hourly_rate,
-    overtime_rate,
-    holiday_rate,
-    sick_leave_rate,
-    other_leave_rate,
-    insurance_rate,
-    retainment_rate,
-    bonus_rate,
-    to_account_rate,
-    overtime_rate_multiplier,
-    overtime_hours_multiplier,
-  } = yearData;
-
-  for (let idx = 1; idx <= 12; idx += 1) {
-    monthsArray.push({
-      month: idx,
-      holiday_leave: [],
-      sick_leave: [],
-      other_leave: [],
-      rts: [],
-      hourly_rate,
-      overtime_rate,
-      holiday_rate,
-      sick_leave_rate,
-      other_leave_rate,
-      insurance_rate,
-      retainment_rate,
-      bonus_rate,
-      to_account_rate,
-      overtime_rate_multiplier,
-      overtime_hours_multiplier,
-    });
-  }
-
-  return {
-    year: currentYear,
-    months: monthsArray,
-  };
-};
-
 const getCurrentYearPublicHolidays = (currentYear) => {
-  // 18-03-2021
-  // easter = require('date-easter')
-  // addDays = require('date-fns/addDays')
-
   const fixedHolidays = [
     {year: currentYear, month: 1, day: 1, name: 'Nowy Rok'},
     {year: currentYear, month: 1, day: 6, name: 'Święto Trzech Króli'},
@@ -183,16 +138,13 @@ const getCurrentYearPublicHolidays = (currentYear) => {
   axios.post(`/api/holidays/`, publicHolidaysArray);
 };
 
-// ===================================================================================
-
 const Employees = () => {
-  const employees = getEmployees();
+  const router = useRouter();
   const currentYear = new Date().getFullYear();
   // eslint-disable-next-line no-unused-vars
   const [holidaysData, setHolidaysData] = useState({});
   const [publicHolidays, setPublicHolidays] = useContext(DashboardContext).publicHolidays;
   const {data, error} = useSWR(`/api/holidays/${currentYear}`);
-
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -204,46 +156,38 @@ const Employees = () => {
     };
   });
 
-  error && console.log('ERROR', error);
-
-  if (publicHolidays.length === 0 && data) {
-    setPublicHolidays((publicHolidays) => {
-      const holidaysArray = data.public_holidays;
-      return holidaysArray?.sort((a, b) =>
-        // eslint-disable-next-line no-nested-ternary
-        a.month > b.month ? 1 : a.month === b.month ? (a.day > b.day ? 1 : -1) : -1
-      );
-    });
-  }
-
-  // TODO: refactor to get rid of callbacks
-  employees
-    .then((res) => {
-      // eslint-disable-next-line array-callback-return
-      res.data.map((employee) => {
-        const employeeCalendar = employee.calendar;
-        const hasCurrentYear = employeeCalendar.find(({year}) => year === currentYear);
-        if (!hasCurrentYear) {
-          const previousYearMonthsData = employeeCalendar.filter(
-            ({year}) => year === currentYear - 1
-          )[0].months;
-          const previousYearLastMonthData =
-            previousYearMonthsData[previousYearMonthsData.length - 1];
-          const newData = createCalendarForCurrentYear(currentYear, previousYearLastMonthData);
-          newData
-            .then((monthsData) => {
-              axios.put(`/api/employees/${employee._id}`, {
-                field: 'newYear',
-                value: {...monthsData},
-              });
-            })
-            .catch((monthsErr) => console.error(monthsErr));
-        }
+  useEffect(() => {
+    if (publicHolidays.length === 0 && data) {
+      setPublicHolidays((publicHolidays) => {
+        const holidaysArray = data.public_holidays;
+        return holidaysArray?.sort((a, b) =>
+          // eslint-disable-next-line no-nested-ternary
+          a.month > b.month ? 1 : a.month === b.month ? (a.day > b.day ? 1 : -1) : -1
+        );
       });
-    })
-    .catch((err) => console.error(err));
+    }
+  }, [data, publicHolidays, setPublicHolidays]);
 
-  mutate('employees');
+  if (error) {
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd serwera"
+              message="Nie udało pobrać się niezbędnych danych!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                router.push('/');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
+  }
 
   const getCurrentYearPublicHolidaysHandler = () => {
     getCurrentYearPublicHolidays(currentYear);
@@ -255,11 +199,14 @@ const Employees = () => {
 
   return (
     <>
+      <Head>
+        <title>Pracownicy</title>
+      </Head>
       <Aside />
       <Main>
         <HolidaysTitle>
           <Title>Dni ustawowo wolne od pracy Święta Państwowe</Title>
-          {/* show only when no holidays data for current year */}
+          {/* show only when no holidays data for the current year is present in DB */}
           {publicHolidays.length === 0 && (
             <Button type="button" onClickAction={getCurrentYearPublicHolidaysHandler}>
               Pobierz święta dla obecnego roku

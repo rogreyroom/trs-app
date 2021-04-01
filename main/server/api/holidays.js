@@ -6,14 +6,10 @@ export default async function handlePublicHolidaysRequest(req, res, next) {
   const {year} = req.params;
   const value = req.body ? req.body : null;
 
-  // console.log('handlePublicHolidaysRequest', method, year, value);
-
   switch (method) {
     case 'GET':
       try {
-        // console.log('!!!!!!!!!GET', method, year);
         const data = await GET_PUBLIC_HOLIDAYS_DATA_BY_YEAR(parseInt(year, 10));
-        // console.log('!!!!!!!!!GET DATA', data);
         res.status(200).json(data);
       } catch (error) {
         res.status(500).json({message: 'No data to be displayed!'});

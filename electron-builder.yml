@@ -17,6 +17,7 @@ files:
 extraFiles:
   - from: resources/db
     filter:
+      - users.db
       - employees.db
       - ees.db
       - responsibilities.db

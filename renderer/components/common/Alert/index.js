@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import {Title} from '@/common/Title';
 import {Button} from '@/common/Buttons';
-
 import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
 
 const StyledAlertForm = styled.div`
@@ -25,7 +24,7 @@ const StyledAlertForm = styled.div`
   }
 `;
 
-export const EvalAlert = ({
+export const Alert = ({
   title,
   message,
   yesButtonLabel,

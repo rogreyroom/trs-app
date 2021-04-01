@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {useRouter} from 'next/router';
 import useSWR from 'swr';
 import {useContext} from 'react';
@@ -7,6 +8,10 @@ import {Title} from '@/common/Title';
 import {IconButton} from '@/common/Buttons';
 import {SvgEdit} from '@/icons';
 import {StyledTable, StyledThead, StyledTBody, StyledTr, StyledTh, StyledTd} from '@/common/Table';
+import {confirmAlert} from 'react-confirm-alert';
+import {Alert} from '@/common/Alert';
+import Loader from 'react-loader-spinner';
+import {StyledSpinnerContainer} from '@/common/CommonWrappers';
 
 const Ees = () => {
   const router = useRouter();
@@ -15,8 +20,32 @@ const Ees = () => {
   const [theEes, setTheEes] = useContext(EesContext).ees;
 
   const {data, error} = useSWR('/api/ees');
-  if (error) return <h1>Something went wrong on the server!</h1>;
-  if (!data) return <h1>Loading data from server...</h1>;
+  if (error) {
+    return (
+      <>
+        {confirmAlert({
+          customUI: ({onClose}) => (
+            <Alert
+              title="Błąd serwera"
+              message="Nie udało pobrać się niezbędnych danych!"
+              yesButtonLabel="Zaloguj"
+              isNoButtonPresent={false}
+              yesAction={() => {
+                router.push('/ees');
+                onClose();
+              }}
+            />
+          ),
+        })}
+      </>
+    );
+  }
+  if (!data)
+    return (
+      <StyledSpinnerContainer>
+        <Loader type="Puff" color="var(--c-blue-03)" height={100} width={100} />
+      </StyledSpinnerContainer>
+    );
 
   setEesData((eesData) => data);
 
@@ -28,6 +57,9 @@ const Ees = () => {
 
   return (
     <>
+      <Head>
+        <title>System oceny pracownika</title>
+      </Head>
       <header>
         <Title>System Oceny Pracownika</Title>
       </header>

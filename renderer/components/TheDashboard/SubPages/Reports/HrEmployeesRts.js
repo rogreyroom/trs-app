@@ -25,7 +25,7 @@ const StyledPrintArea = styled.div`
   margin: 0;
   padding: var(--xl);
   display: grid;
-  grid-template-areas: 'header' 'table';
+  grid-template-areas: 'header' 'table' 'signature';
   grid-template-columns: 1fr;
   grid-gap: var(--xl);
   align-items: baseline;
@@ -101,6 +101,27 @@ const StyledPrintArea = styled.div`
       font-style: italic;
     }
   }
+
+  & div {
+    display: none;
+    @media print {
+      display: block;
+      grid-area: signature;
+      justify-self: end;
+      width: 300px;
+      height: 100px;
+      margin-right: var(--xl);
+      border-bottom: 1px dashed var(--c-grey);
+      position: relative;
+
+      & ::after {
+        content: 'podpis';
+        color: var(--c-grey);
+        position: absolute;
+        bottom: -30px;
+      }
+    }
+  }
 `;
 
 const StyledPrintAreaHeader = styled.header`
@@ -131,9 +152,7 @@ const StyledPrintAreaHeader = styled.header`
 
 const HrRcp = ({year, month, employees}) => {
   const tableRef = useRef();
-
   const [employeesData, setEmployeesData] = useState(employees);
-  // const [updatedEmployees, setUpdatedEmployees] = useState(employeesData)
   // eslint-disable-next-line no-unused-vars
   const [updatedEmployees, setUpdatedEmployees] = useState(employeesData);
 
@@ -151,7 +170,6 @@ const HrRcp = ({year, month, employees}) => {
     const overtimeHours = getCurrentMonthOvertimeHours(currentMonthData) * overtimeHoursMultiplier;
     const weekendsHours = getCurrentMonthWeekendsHours(currentMonthData) * overtimeHoursMultiplier;
     const sumOfHours = workedHours + overtimeHours + weekendsHours;
-
     const holidayDays = getHolidayLeaveDaysForCurrentMonth(currentMonthData);
     const sickDays = getSickLeaveDaysForCurrentMonth(currentMonthData);
     const otherLeaveDays = getOtherLeaveDaysForCurrentMonth(currentMonthData);
@@ -164,12 +182,7 @@ const HrRcp = ({year, month, employees}) => {
     };
   };
 
-  console.log(employeesData);
-
   const handleRemoveFromViewClick = (idx) => {
-    // setUpdatedEmployees((updatedEmployees) => {
-    //   updatedEmployees = employeesData.splice(idx, 1);
-    // });
     setUpdatedEmployees((updatedEmployees) => employeesData.splice(idx, 1));
     setEmployeesData((employeesData) => employeesData);
   };
@@ -213,7 +226,6 @@ const HrRcp = ({year, month, employees}) => {
               } = employeeData;
 
               return (
-                // !isHidden &&
                 <tr key={`${idx}${fullName}`}>
                   <td>
                     <IconButton
@@ -236,6 +248,8 @@ const HrRcp = ({year, month, employees}) => {
             })}
           </tbody>
         </table>
+        {/* Signature field - visible when printing */}
+        <div />
       </StyledPrintArea>
     </StyledHrRtsReport>
   );

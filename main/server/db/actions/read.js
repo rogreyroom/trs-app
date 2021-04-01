@@ -1,4 +1,4 @@
-import {eesDB, employeesDB, responsibilitiesDB, holidaysDB} from '../connection';
+import {eesDB, employeesDB, responsibilitiesDB, holidaysDB, usersDB} from '../connection';
 
 export const GET_ALL_EES_DATA = async () => eesDB.asyncFind({});
 
@@ -13,3 +13,5 @@ export const GET_RESPONSIBILITIES_DATA_BY_EMPLOYEE = async (id) =>
 
 export const GET_PUBLIC_HOLIDAYS_DATA_BY_YEAR = async (theYear) =>
   holidaysDB.asyncFindOne({year: theYear});
+
+export const GET_USER = async (name) => usersDB.asyncFindOne({user: name});

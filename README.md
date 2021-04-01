@@ -5,13 +5,18 @@ The application does not require any external database or internet connection as
 
 ## Application 🚀
 
-![Dashboard screen](renderer/public/screenshots/dashboard.png)
-![Dashboard leave screen](renderer/public/screenshots/leave-screen.png)
-![Dashboard rts screen](renderer/public/screenshots/rts-screen.png)
-![Dashboard ees screen](renderer/public/screenshots/ees-screen.png)
-![Dashboard hr reports screen](renderer/public/screenshots/hr-screen.png)
-![Dashboard employee details screen](renderer/public/screenshots/employee-details-screen.png)
-![Dashboard employee calendar screen](renderer/public/screenshots/employee-calendar-screen.png)
+Application screenshots with dummy data
+
+![Login screen](renderer/public/screenshots/login-screen.png)
+![Employees dashboard screen](renderer/public/screenshots/employees-dashboard-screen.png)
+![Employee trs screen](renderer/public/screenshots/employee-trs-screen.png)
+![Employee holiday screen](renderer/public/screenshots/employee-holiday-screen.png)
+![Employee detail report screen](renderer/public/screenshots/employee-detail-report-screen.png)
+![Employee calendar report screen](renderer/public/screenshots/employee-calendar-report-screen.png)
+![Ees screen](renderer/public/screenshots/ees-screen.png)
+![Ees edit screen](renderer/public/screenshots/ees-edit-screen.png)
+![Hr trs report screen](renderer/public/screenshots/hr-trs-report-screen.png)
+![Hr bonus report screen](renderer/public/screenshots/hr-bonus-report-screen.png)
 
 ## What is it
 

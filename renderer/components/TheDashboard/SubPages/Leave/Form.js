@@ -13,12 +13,10 @@ import {Calendar} from 'react-modern-calendar-datepicker';
 import {Button} from '@/common/Buttons';
 import {Error} from '@/common/Errors';
 import {errorMessages} from '@/lib/errorMessages';
-
 import {mutate} from 'swr';
 import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
 import {SubPagesContext} from '@/contexts/SubPagesContext';
-
 import {getEmployeeOtherLeaveDays, getEmployeeWorkedDays} from '@/lib/utils';
 
 const schema = Joi.object().keys({
@@ -45,15 +43,9 @@ export const LeaveForm = ({id}) => {
   });
 
   const getEmployeeData = (id, data) => data.filter((employee) => employee._id === id)[0];
-
-  // it should take current month and year from the calendar ????
   const currentYear = new Date().getFullYear();
   const employeeMonthsData = employee.calendar.find((year) => year.year === currentYear).months;
-
-  // get employee holidays
   const otherDaysArray = getEmployeeOtherLeaveDays(employeeMonthsData);
-
-  // get employee worked days
   const workedDaysArray = getEmployeeWorkedDays(employeeMonthsData);
 
   const onSubmit = async (data) => {

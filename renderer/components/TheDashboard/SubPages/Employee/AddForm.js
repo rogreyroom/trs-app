@@ -3,20 +3,15 @@ import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
 import {useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
-// import { employeeAddFormSchema } from '@/lib/db/schemas'
 import Joi from 'joi';
 import {axios} from '@/lib/axios-config';
 import {errorMessages} from '@/lib/errorMessages';
 import {Button} from '@/common/Buttons';
 import {Input, InputDatePicker, Select} from '@/common/Inputs';
-
-// TO be fixed
 import {StyledFormControlsWrapper} from '@/common/CommonWrappers';
-
 import {useRouter} from 'next/router';
 import {StyledEmployeeForm, StyledAddEmployeeInputsWrapper} from './styles';
 
-// Add schema
 const employeeAddFormSchema = Joi.object().keys({
   employment_start_date: Joi.object({
     year: Joi.number().empty(null),
@@ -52,8 +47,6 @@ const employeeAddFormSchema = Joi.object().keys({
   overtime_hours_multiplier: Joi.number(),
 });
 
-// const fetcher = (url) => axios.get(url).then((res) => res.data);
-
 const juvenileWorkerOptions = [
   {label: 'Tak', value: true},
   {label: 'Nie', value: false},
@@ -74,7 +67,6 @@ const createMonthsData = (month, data) => {
     overtime_hours_multiplier,
   } = data;
 
-  // TODO: check the bellow when calculating reports
   const overtime_rate = hourly_rate * overtime_rate_multiplier;
 
   for (let idx = 1; idx <= 12; idx += 1) {
@@ -122,7 +114,6 @@ const createMonthsData = (month, data) => {
 
 export const AddEmployeeForm = ({preloadedValues}) => {
   const router = useRouter();
-  // const {data, mutate} = useSWR('api/employees', fetcher);
   // eslint-disable-next-line no-unused-vars
   const [addEmployeePage, setAddEmployeePage] = useContext(DashboardContext).add;
   // eslint-disable-next-line no-unused-vars
@@ -185,14 +176,10 @@ export const AddEmployeeForm = ({preloadedValues}) => {
       ],
     };
 
-    console.log('Add form onSubmit', employees);
-    // employees ? mutate([...employees, newEmployeeData]) : mutate([newEmployeeData])
     await axios.post('/api/employees', {...newEmployeeData});
-    // console.log('RRRR: ', r);
     mutate();
     reset(formDefaultValues);
     setAddEmployeePage((addEmployeePage) => null);
-    console.log('redirect');
     router.push('/employees');
   };
 

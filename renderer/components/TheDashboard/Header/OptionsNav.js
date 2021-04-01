@@ -30,8 +30,6 @@ export const OptionsNav = ({id}) => {
     } || {}
   );
 
-  console.log('OptionsNav1 ', employee.juvenile_worker);
-
   useEffect(() => {
     if (employeeChange !== id) {
       setEmployeeChange((employeeChange) => id);
@@ -45,13 +43,11 @@ export const OptionsNav = ({id}) => {
   }, [id, employee, employeeChange]);
 
   const handleSubPageClick = (pageName) => {
-    console.log('handleSubPageClick');
     setPage((page) => pageName);
   };
 
   const handleYoungSwitch = async () => {
     const newJuvenileStatus = !employeeData.juvenile;
-    console.log('handleYoungSwitch newJuvenileStatus', newJuvenileStatus);
     setJuvenileStatus((juvenileStatus) => newJuvenileStatus);
     await mutate(`/api/employees/${id}`, (data) => ({
       ...data,
@@ -63,8 +59,6 @@ export const OptionsNav = ({id}) => {
     });
     mutate();
   };
-
-  console.log('OptionsNav2 ', employee.juvenile_worker);
 
   return (
     <EmployeeOptionsNav>

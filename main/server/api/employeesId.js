@@ -22,8 +22,6 @@ export default async function handleEmployeeByIdRequest(req, res, next) {
   const queryFields = req.body ? req.body.queryFields : null;
   const value = req.body ? req.body.value : null;
 
-  // console.log('handleEmployeeByIdRequest', method, id, field, value);
-
   switch (method) {
     case 'GET':
       try {
@@ -92,7 +90,6 @@ export default async function handleEmployeeByIdRequest(req, res, next) {
             res.status(204).end(`No data found!`);
         }
       } catch (error) {
-        console.error('END Error', error);
         res.status(500).json({message: 'No data to be displayed!'});
       }
       break;

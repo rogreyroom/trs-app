@@ -187,3 +187,8 @@ export const StyledFormControlsWrapper = styled.div`
     margin-left: var(--l);
   }
 `;
+
+export const StyledSpinnerContainer = styled.div`
+  grid-area: content;
+  margin: auto;
+`;

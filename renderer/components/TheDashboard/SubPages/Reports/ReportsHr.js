@@ -19,15 +19,6 @@ const StyledHrReportsPages = styled.section`
   grid-template-rows: 1fr;
 `;
 
-// const StyledHrReportsAside = styled.div`
-//   grid-area: aside
-//   display: flex;
-//   flex-direction: column;
-//   border-right: 1px solid var(--c-blue-03);
-//   margin: 0;
-//   height: 100%;
-// `
-
 const StyledReportLinks = styled.section`
   border-right: 1px solid var(--c-blue-03);
   padding-top: var(--l);
@@ -63,7 +54,6 @@ const StyledReportPrintArea = styled.section`
 `;
 
 const getEmployeesYearsArray = (employees) => {
-  console.log('getEmployeesYearsArray employees', employees);
   const employeesYears = employees.reduce((resArr, currEmployee) => {
     const {calendar} = currEmployee;
     const years = getEmployeeYears(calendar);
@@ -110,6 +100,8 @@ export const ReportsHr = () => {
   if (employees !== null) {
     yearsOptions === null && setYearsOptions((yearsOptions) => getEmployeesYearsArray(employees));
     monthsOptions === null && setMonthsOptions((monthsOptions) => getEmployeeMonthsArray());
+
+    employees.sort((a, b) => a.surname.localeCompare(b.surname));
 
     const handleYearChange = (e) => {
       const {value} = e.target;
@@ -164,14 +156,6 @@ export const ReportsHr = () => {
             {reportPage === 'hrEmployeesRts' ? (
               <HrEmployeesRts year={year} month={month} employees={employees} />
             ) : null}
-
-            {/* {reportPage === 'hrEmployeesRts222' ? (
-              <HrEmployeesRts222
-                year={year}
-                month={month}
-                employees={employees}
-              />
-            ) : null} */}
           </StyledReportPrintArea>
         </StyledHrReportsPages>
       </>

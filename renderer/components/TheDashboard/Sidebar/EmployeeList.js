@@ -26,23 +26,8 @@ const StyledListItem = styled.li`
   justify-content: flex-end;
 `;
 
-// const StyledInfo = styled.div`
-//   display: flex;
-//   width: 100%;
-//   height: 100%;
-//   justify-content: center;
-//   align-items: center;
-
-//   h1 {
-//     color: var(--c-white);
-//     font-family: inherit;
-//     font-size: var(--fs-text);
-//   }
-
-//   /* maybe add some spinner + styles when loading */
-// `;
-
 export const EmployeeList = () => {
+  const router = useRouter();
   const [employees, setEmployees] = useContext(DashboardContext).data;
   // eslint-disable-next-line no-unused-vars
   const [employeesFilter, setEmployeesFilter] = useContext(DashboardContext).filter;
@@ -52,15 +37,9 @@ export const EmployeeList = () => {
   const [isActive, setIsActive] = useState('');
   const {data} = useSWR(`/api/employees`, {initialData: employees});
 
-  // console.log('EmployeeList employee', employee, isActive);
-  const router = useRouter();
-
   useEffect(() => {
     setEmployees((employees) => data);
     employee && setIsActive((isActive) => employee._id);
-    // return () => {
-    //   setEmployees(employees => employees)
-    // }
   }, [data, employee, setEmployees]);
 
   const getEmployeeData = (id) => data.filter((employee) => employee._id === id)[0];
@@ -70,9 +49,7 @@ export const EmployeeList = () => {
     setAddEmployeePage((addEmployeePage) => null);
     const employeeData = getEmployeeData(id);
     employeeData && setEmployee((employee) => employeeData);
-    // console.log('handleEmployeeClick id', id, ' isActiveE ', isActive);
     setIsActive((isActive) => id);
-    // setIsActive(isActive => id)
     router.push('/dashboard');
   };
 

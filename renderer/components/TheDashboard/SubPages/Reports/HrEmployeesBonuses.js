@@ -22,7 +22,7 @@ const StyledPrintArea = styled.div`
   margin: 0;
   padding: var(--xl);
   display: grid;
-  grid-template-areas: 'header' 'table' 'summary';
+  grid-template-areas: 'header' 'table' 'summary' 'signature';
   grid-template-columns: 1fr;
   grid-gap: var(--xl);
   align-items: baseline;
@@ -99,7 +99,7 @@ const StyledPrintArea = styled.div`
     }
   }
 
-  & div {
+  & section {
     grid-area: summary;
     margin: 0;
     font-size: var(--fs-text);
@@ -114,6 +114,27 @@ const StyledPrintArea = styled.div`
 
     & span {
       font-weight: var(--fw-normal);
+    }
+  }
+
+  & div {
+    display: none;
+    @media print {
+      display: block;
+      grid-area: signature;
+      justify-self: end;
+      width: 300px;
+      height: 100px;
+      margin-right: var(--xl);
+      border-bottom: 1px dashed var(--c-grey);
+      position: relative;
+
+      & ::after {
+        content: 'podpis';
+        color: var(--c-grey);
+        position: absolute;
+        bottom: -30px;
+      }
     }
   }
 `;
@@ -241,7 +262,7 @@ const HrEmployeesBonus = ({year, month, employees}) => {
               const employeeData = getEmployeeData(currentMonthData);
               const {employeeBonusAmount} = employeeData;
               employeesBonusAmount += employeeBonusAmount;
-              console.log('employeeBonusAmount', employeeBonusAmount);
+
               return employeeBonusAmount > 0 ? (
                 <tr key={`${idx}${fullName}`}>
                   <td>
@@ -262,11 +283,13 @@ const HrEmployeesBonus = ({year, month, employees}) => {
             })}
           </tbody>
         </table>
-        <div>
+        <section>
           <p>
             Całkowita kwota premii: <span>{employeesBonusAmount.toFixed(2)}</span> <span>pln</span>
           </p>
-        </div>
+        </section>
+        {/* Signature field - visible when printing */}
+        <div />
       </StyledPrintArea>
     </StyledHrRtsReport>
   );

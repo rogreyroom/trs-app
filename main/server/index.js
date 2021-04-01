@@ -1,18 +1,10 @@
-// yarn add cors joi helmet morgan
-
-// importing the dependencies
-// const router = express.Router
-// console.log('EXPRESS APP path', router.stack);
-
-// ----------------------
-
 import handleEmployeesRequest from './api/employees';
 import handleEmployeesByIdRequest from './api/employeesId';
 import handleEssRequest from './api/ees';
 import handleEesByIdRequest from './api/eesId';
 import handleResponsibilitiesByEmployeeRequest from './api/responsibilities';
-
 import handlePublicHolidaysRequest from './api/holidays';
+import handleUserCredentialsRequest from './api/auth';
 
 const express = require('express');
 const cors = require('cors');
@@ -24,11 +16,6 @@ const port = 3001;
 // defining the Express app
 const app = express();
 
-// ----------------------
-
-// console.log('handleEmployeesRequest', handleEmployeesRequest);
-
-console.log('SERVER CALL');
 app.use(express.json());
 
 // adding Helmet to enhance your API's security
@@ -41,6 +28,7 @@ app.use(cors());
 app.use(morgan('combined'));
 
 // defining an endpoints
+app.post('/api/login', handleUserCredentialsRequest);
 app.get('/api/employees', handleEmployeesRequest);
 app.post('/api/employees', handleEmployeesRequest);
 app.get('/api/employees/:id', handleEmployeesByIdRequest);
