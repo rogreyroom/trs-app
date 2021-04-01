@@ -1,4 +1,5 @@
 import {getLayout} from '@/layouts/DashboardLayout';
+import Head from 'next/head';
 import {useContext} from 'react';
 import {DashboardContext} from '@/contexts/DashboardContext';
 import {SubPagesProvider} from '@/contexts/SubPagesContext';
@@ -15,6 +16,9 @@ const Dashboard = () => {
 
   return (
     <>
+      <Head>
+        <title>Panel kierownika</title>
+      </Head>
       <Aside />
       <Main dashboard>
         <SubPagesProvider>

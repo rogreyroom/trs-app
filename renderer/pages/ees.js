@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {useRouter} from 'next/router';
 import useSWR from 'swr';
 import {useContext} from 'react';
@@ -56,6 +57,9 @@ const Ees = () => {
 
   return (
     <>
+      <Head>
+        <title>System oceny pracownika</title>
+      </Head>
       <header>
         <Title>System Oceny Pracownika</Title>
       </header>

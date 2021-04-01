@@ -6,7 +6,7 @@ import {Login} from '@/components/TheLogin';
 const HomePage = () => (
   <>
     <Head>
-      <title>Home - login</title>
+      <title>Logowanie</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Login />

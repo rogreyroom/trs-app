@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {getLayout} from '@/layouts/DashboardLayout';
 import {Aside} from '@/dashboard/Sidebar';
 import useSWR, {mutate} from 'swr';
@@ -198,6 +199,9 @@ const Employees = () => {
 
   return (
     <>
+      <Head>
+        <title>Pracownicy</title>
+      </Head>
       <Aside />
       <Main>
         <HolidaysTitle>
