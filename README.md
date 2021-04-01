@@ -50,6 +50,11 @@ $ yarn lint:fix # or npm run lint:fix
 $ yarn build:win # or npm run build:win
 ```
 
+### Use default user to interact with the application
+
+- login: admin
+- password: admin
+
 ## Build with
 
 - nextron (<https://github.com/saltyshiomix/nextron>)
