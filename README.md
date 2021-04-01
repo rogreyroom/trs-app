@@ -65,7 +65,7 @@ $ yarn build:win # or npm run build:win
 
 ## Version
 
-v.0.1.1
+v.1.0.0
 
 ## Author
 
