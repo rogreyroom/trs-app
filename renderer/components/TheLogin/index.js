@@ -77,7 +77,7 @@ export const Login = () => {
 
   return (
     <Panel>
-      <h1>Login</h1>
+      <h1>Logowanie</h1>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <Input
           name="name"
@@ -103,7 +103,4 @@ export const Login = () => {
       </StyledForm>
     </Panel>
   );
-
-  // })();
-  // }
 };
