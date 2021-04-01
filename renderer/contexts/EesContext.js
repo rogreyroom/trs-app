@@ -27,7 +27,7 @@ export const EesProvider = ({children, ...otherProps}) => {
               yesButtonLabel="Zaloguj"
               isNoButtonPresent={false}
               yesAction={() => {
-                router.push('/employees');
+                router.push('/ees');
                 onClose();
               }}
             />

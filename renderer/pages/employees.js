@@ -179,7 +179,7 @@ const Employees = () => {
               yesButtonLabel="Zaloguj"
               isNoButtonPresent={false}
               yesAction={() => {
-                router.push('/employees');
+                router.push('/');
                 onClose();
               }}
             />

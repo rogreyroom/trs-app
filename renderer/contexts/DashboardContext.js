@@ -100,7 +100,7 @@ export const DashboardProvider = ({children, ...otherProps}) => {
               yesButtonLabel="Zaloguj"
               isNoButtonPresent={false}
               yesAction={() => {
-                router.push('/employees');
+                router.push('/');
                 onClose();
               }}
             />
