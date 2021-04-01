@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form';
 import {Input} from '@/common/Inputs';
 import {Button} from '@/common/Buttons';
 import {errorMessages} from '@/lib/errorMessages';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {axios} from '@/lib/axios-config';
 import styled from 'styled-components';
 import {StyledFormControlsWrapper, StyledForm} from '@/common/CommonWrappers';
@@ -44,30 +44,37 @@ export const Login = () => {
     reset();
   };
 
-  if (wrongLogin) {
-    return (
-      <>
-        {confirmAlert({
-          customUI: ({onClose}) => (
-            <Alert
-              title="Błąd logowania"
-              message="Wprowadzono nieprawidłowy login i/lub hasło!"
-              yesButtonLabel="Zaloguj"
-              isNoButtonPresent={false}
-              yesAction={() => {
-                setWrongLogin((wrongLogin) => false);
-                router.push('/');
-                onClose();
-              }}
-            />
-          ),
-        })}
-      </>
-    );
-  }
+  useEffect(() => {
+    const isWrongLogin = () => {
+      if (wrongLogin) {
+        return (
+          <>
+            {confirmAlert({
+              customUI: ({onClose}) => (
+                <Alert
+                  title="Błąd logowania"
+                  message="Wprowadzono nieprawidłowy login i/lub hasło!"
+                  yesButtonLabel="Zaloguj"
+                  isNoButtonPresent={false}
+                  yesAction={() => {
+                    setWrongLogin((wrongLogin) => false);
+                    router.push('/');
+                    onClose();
+                  }}
+                />
+              ),
+            })}
+          </>
+        );
+      }
+    };
+    isWrongLogin();
+  }, [router, wrongLogin]);
+
   if (loading) {
     return <Loader type="Puff" color="var(--c-blue-03)" height={100} width={100} />;
   }
+
   return (
     <Panel>
       <h1>Login</h1>
@@ -96,4 +103,7 @@ export const Login = () => {
       </StyledForm>
     </Panel>
   );
+
+  // })();
+  // }
 };
