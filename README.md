@@ -7,16 +7,16 @@ The application does not require any external database or internet connection as
 
 Application screenshots with dummy data
 
-![Login screen](public/screenshots/login-screen.png)
-![Employees dashboard screen](public/screenshots/employees-dashboard-screen.png)
-![Employee trs screen](public/screenshots/employee-trs-screen.png)
-![Employee holiday screen](public/screenshots/employee-holiday-screen.png)
-![Employee detail report screen](public/screenshots/employee-detail-report-screen.png)
-![Employee calendar report screen](public/screenshots/employee-calendar-report-screen.png)
-![Ees screen](public/screenshots/ees-screen.png)
-![Ees edit screen](public/screenshots/ees-edit-screen.png)
-![Hr trs report screen](public/screenshots/hr-trs-report-screen.png)
-![Hr bonus report screen](public/screenshots/hr-bonus-report-screen.png)
+![Login screen](renderer/public/screenshots/login-screen.png)
+![Employees dashboard screen](renderer/public/screenshots/employees-dashboard-screen.png)
+![Employee trs screen](renderer/public/screenshots/employee-trs-screen.png)
+![Employee holiday screen](renderer/public/screenshots/employee-holiday-screen.png)
+![Employee detail report screen](renderer/public/screenshots/employee-detail-report-screen.png)
+![Employee calendar report screen](renderer/public/screenshots/employee-calendar-report-screen.png)
+![Ees screen](renderer/public/screenshots/ees-screen.png)
+![Ees edit screen](renderer/public/screenshots/ees-edit-screen.png)
+![Hr trs report screen](renderer/public/screenshots/hr-trs-report-screen.png)
+![Hr bonus report screen](renderer/public/screenshots/hr-bonus-report-screen.png)
 
 ## What is it
 
